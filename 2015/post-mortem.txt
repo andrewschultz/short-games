@@ -1,0 +1,65 @@
+Heezy Park (EctoComp) retrospective
+
+Spoilers abound. The game shouldn't take too long to play, and you just need to guess a verb at the end, so...hopefully it'll only take 5 minutes if you're interested.
+
+The short version: I'm happy with it. I'm happy others seemed to be happy with it. I put a lot into it, but it never felt too heavy. And reflecting on it, the idea didn't just pop into my brain. I bet the deadline helped, but I had a few things floating around, and I said, what if I could do X or Y simply? And a few things came together. So maybe this will help other people make things click, whether it's for the IF New Year's thing, EctoComp next year, or maybe even someone will have a string of short games tied in a packet for the Spring Thing Backyard. Or if it provides a theme for an IFComp 2016 game.
+
+On the one hand, it's just a silly game that lasts 13 moves if you do it right, something I threw together . On the other hand, it was a bit more than that. Deadlines can help push an idea through, and I had the idea for a game where you had to guess the verb to win, and not much else, for a long time. Geoff Moore's Headless, Hapless, which I found funny, takes a different tack to guessing right. There was another game from that comp which I felt could've worked but didn't quite. (The author's done other cool stuff, so I'll save them the embarrassment.) But the idea stuck with me that it SHOULD work if someone found the proper key. So I hope this makes them feel better about experimenting. That's the thing about experiments--you don't know what they'll tip off.
+
+So I had the idea for a while--probably even before then. In fact, one of the Chronicles of Narnia had a puzzle that stuck with me. That puzzle being "Under Me" in The Silver Chair, where Eustace, Jill and Puddleglum traverse the E but miss the overall sign. I wanted to put it in a game, but I couldn't make it too obvious or too obscure.
+
+And this is the second year in a row I've wanted to write something with actual story but wound up with a silly semi-abstract puzzle. The idea popped out on October 29th in the shower. I felt I could work with it with just one piece of paper and a night's sleep. It feels a bit artificial, but it went through a few stages. I started thinking back to what verbs you could use and how they could be clued. And what you could do to simulate something written out. How could I force the player through a path and make a sensible word?
+
+The word fell out. You just ran around in a park. I'd work out why later: chasing or being chased. But I needed a few more ways to clue it. The candy wrappers are hints (deja boo and boomerang) and also are a hat tip to my own "growing up" and the first time I overconfidently said those puns are for babies. Some are still pretty lousy. But I have perspective on them. I  hope we all do.
+
+I also always had a fascination with calculators as well and the words you could make. I think I figured, well, there's only so many with ten digits, and everyone knew about turning 77340 upside down, or even more "cleverly," 8008135. And I still have an old solar calculator I love. I figured MegaSol had humor value since it's the sort of useless landmark towns take pride in because, why not. Plus it blocked off the center of the park quite nicely! "Don't touch MegaSol!" So I had not only something to funnel the player but something to clue them.
+
+I was able to verify a few "scary" phrases worked and I decided to leave one out and let the player guess. The only problem was, I said "Oh! Look! A word with each vowel!" Then there were more viable letters than I thought, because I didn't try every one.
+
+.1.
+2.3
+.4.
+5.6
+.7.
+
+Tilde/not means exclude
+
+A=~7
+B=~13
+C=~346
+D=~12
+E=~36
+F=~367
+G=~5 (lowercase)
+H=~17
+I=36
+J=367
+K=undoable
+L=257
+N=~47
+O=~4
+P=~67
+Q=undoable
+R=125
+S=~35 (might be a 5)
+T=undoable (surprising, though 136 gone is a possibility)
+U=~14
+V=undoable
+W=undoable
+X=undoable
+Y=~15
+Z=~26 (might be a 2)
+
+Undoable: K, M, Q, V, W, X
+
+So...I calculated this on November 1st. It happens.
+
+I'm also not big on heavy-duty scariness. But there are themes I revisit--people bossing others around, etc. We're all scared by this in some mundane way or another. And when I went back to my list of names to use someday, I saw Full Nelson. There actually was a guy named Nelson back in grade school. He wasn't the worst of the bullies, but I remember him blocking me halfway between first and second in a game of indoor whiffleball. Then during a discussion of wrestling moves years later I heard that term and half nelson and it stuck with me. Nelson also had a younger brother whose name I forget, so I kind of called him Half Nelson in retrospect. And they both made it in--but I think if the characters in my game were brothers, Half Nelson's life would be much worse if he stood up to Full Nelson.
+
+HP also plays on one theme that gave me a constant sense of fear that I didn't understand. I was one of the youngest in my grade school classes, and some parents deliberately redshirted their kids or had kids born so they were the oldest in their class and so they'd be most likely to start on a sports team. Malcolm Gladwell's Outsiders essay years later gave me a sense of relief that I wasn't seeing things or just being lazy and not a fast runner, but I remember not being able to chase someone down, or run away from them, and having this feeling I wasn't trying. So this game was a sort of catharsis, that way.
+
+I threw this game out figuring I probably missed some quick tune-ups but also being pretty satisfied with the basic puzzle. And I think that's accurate. However, I missed a big clue. It might have spoiled everything, though, and made it too easy. I'll put it in ROT13.
+
+Lbh znl guvax onpx gb ubj lbh fgnegrq jvgu fhpu bcgvzvfz ng fvk b'pybpx, orpnhfr--jryy--ubj jbhyq ZrtnFby vagrecerg gung?
+
+So, it's on to post-comp stuff, along with adding "say" and maybe specifying why doubling back or cutting across the center of the park doesn't quite work.

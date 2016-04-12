@@ -1,0 +1,63 @@
+Walkthrough for Dash Slapney and the Calamitous Candy Corn Cornucopia
+
+get all
+answer phone
+w
+n
+fill bucket
+get all
+s
+w
+get all
+e
+s
+sign
+s";
+splash water on boy
+s
+enter car
+drive to gas station
+open glove compartment
+get chocolate bar
+get out
+give bar to smitty
+enter car
+drive to seedy street
+give shaving cream
+give toothpaste tube
+drive to golf course
+switch loudspeaker
+drive to hospital
+put battery in brownie
+get out
+n
+give box to boy
+s
+enter car
+drive to pecklers
+wear costume
+get out
+n
+put carton in fireplace
+d
+open cabinet
+get document
+u
+s
+enter car
+drive to corny's
+get out
+n
+show document to corny
+s
+enter ford
+drive to city hall
+get out
+n
+show document to mayor
+show invoice to mayor
+show files to mayor
+get out
+n
+u
+sleep
