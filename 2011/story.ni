@@ -68,7 +68,7 @@ Chapter Your Main Hallway
 
 Your Main Hallway is west of Your Bedroom. "You can go north to your bathroom, east to your bedroom, and west to your kitchen from here. There are also stairs up, but the sofa in your living room is too tempting. You've got a job to do."
 
-check going up in your main hallway:
+check going up in your bedroom:
 	if city hall steps is goable:
 		say "[one of]It's just far too messy up there right now. On September 30 you promised yourself you'd clean it up next month. But it was like at 11:57 PM, so that might've meant November.[or]Best to ride your luck and get going, Dash.[stopping]"
 
