@@ -24,6 +24,8 @@ a room can be unblocked or blockedoff. a room is usually unblocked.
 
 a room has a number called xval. a room has a number called yval.
 
+a room is usually privately-named.
+
 r00 is a room. r01 is east of r00. r02 is east of r01. r03 is east of r02. r04 is east of r03.
 r10 is a room. r11 is east of r10. r12 is east of r11. r13 is east of r12. r14 is east of r13.
 r20 is a room. r21 is east of r20. r22 is east of r21. r23 is east of r22. r24 is east of r23.
@@ -50,11 +52,6 @@ yval of r40 is 5. yval of r41 is 5. yval of r42 is 5. yval of r43 is 5. yval of 
 
 to wfak:
 	if debug-state is false, wait for any key;
-
-section debug state
-
-when play begins:
-	now debug-state is true;
 
 volume initialization
 
@@ -231,8 +228,6 @@ before going:
 		say "You're not good enough for heaven." instead;
 	if noun is down:
 		say "You're not bad enough for hell." instead;
-	if debug-state is true:
-		say "DEBUG: [noun] [xv] [yv].";
 	if noun is north and yv is 1:
 		say "That'd be out of city bounds." instead;
 	if noun is south and yv is 5:
@@ -244,13 +239,17 @@ before going:
 
 definition: a direction (called d) is viable:
 	let r be location of player;
-	unless d is east or d is west or d is north or d is south, decide no;
+	unless d is linear, decide no;
 	if d is east and xval of r is 5, decide no;
 	if d is west and xval of r is 1, decide no;
 	if d is north and yval of r is 1, decide no;
 	if d is south and yval of r is 5, decide no;
 	if the room d of location of player is blocked-room, decide no;
 	decide yes;
+
+definition: a direction (called d) is linear:
+	if d is north or d is south or d is east or d is west, decide yes;
+	decide no;
 
 to say xing of (r - a room):
 	let x be xval of r;
@@ -297,9 +296,43 @@ to say sta of (rm - a room):
 		say ".[no line break]"
 
 rule for printing a parser error when the latest parser error is the not a verb I recognise error:
-	say "You can't do much here except go in directions, or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if]."
+	say "You can't do much here except go in directions (SS for instance goes to the edge), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if]."
+
+volume speeding
+
+chapter ssing
+
+zooming is an action applying to one thing.
+
+carry out zooming:
+	let moved be 0;
+	if the room noun of location of player is nowhere, say "You are at the [noun] border." instead;
+	if the room noun of location of player is blockedoff, say "The church is [noun]." instead;
+	while the room noun of the location of player is not nowhere and the room noun of the location of player is not blockedoff:
+		move player to the room noun of location of player, without printing a room description;
+	say "[description of location of player][line break]";
+	say "You went [moved] square[unless moved is 1]s[end if].";
+
+chapter ssing
+
+runing is an action applying to one thing.
+
+understand the command "run" as something new.
+
+understand "run [direction]" as runing.
+
+carry out runing:
+	unless noun is linear, try going noun instead;
+	try zooming noun;
 
 volume debug - not for release
+
+chapter set debugging
+
+when play begins (this is the debug flag rule):
+	now debug-state is true;
+
+the debug flag rule is listed first in the when play begins rulebook.
 
 chapter fiving
 
@@ -314,6 +347,6 @@ carry out fiving:
 		do-the-next;
 	the rule succeeds;
 
-when play begins:
+[when play begins:
 	repeat with Q running through rooms:
-		say "DEBUG: [Q], [xval of Q], [yval of Q], [blocklevel of Q].";
+		say "DEBUG: [Q], [xval of Q], [yval of Q], [blocklevel of Q].";]
