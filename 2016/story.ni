@@ -1,5 +1,7 @@
 "A Checkered Haunting" by Andrew Schultz
 
+the story headline is "A puzzling afterlife experience".
+
 volume includes
 
 include basic screen effects by Emily Short
@@ -8,11 +10,27 @@ debug-state is a truth state that varies.
 
 use no scoring.
 
-volume silliness
-
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
-volume the map
+volume silliness
+
+chapter abouting
+
+abouting is an action out of world.
+
+understand the command "about" as something new.
+
+understand "about" as abouting.
+
+carry out abouting:
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes.[line break]";
+	if cur-level < 5:
+		say "Typing ABOUT twice at the final suburb tells you how to win.";
+	else:
+		say "[one of]You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again will show them all[or]	PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text[stopping].";
+	the rule succeeds;
+
+volume main game
 
 a room has a number called blocklevel. blocklevel of a room is usually 5.
 
@@ -263,7 +281,7 @@ to say sta of (rm - a room):
 		say ".[no line break]"
 
 rule for printing a parser error when the latest parser error is the not a verb I recognise error:
-	say "You can't do much here except go in directions (RUN/R  a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if]."
+	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game."
 
 volume speeding
 
