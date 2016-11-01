@@ -50,6 +50,11 @@ yval of r20 is 3. yval of r21 is 3. yval of r22 is 3. yval of r23 is 3. yval of 
 yval of r30 is 4. yval of r31 is 4. yval of r32 is 4. yval of r33 is 4. yval of r34 is 4.
 yval of r40 is 5. yval of r41 is 5. yval of r42 is 5. yval of r43 is 5. yval of r44 is 5.
 
+blocklevel of r00 is 1. blocklevel of r04 is 1. blocklevel of r40 is 1. blocklevel of r44 is 1.
+blocklevel of r11 is 2. blocklevel of r13 is 2. blocklevel of r31 is 2. blocklevel of r33 is 2.
+blocklevel of r20 is 3. blocklevel of r24 is 3. blocklevel of r42 is 3. blocklevel of r02 is 3.
+blocklevel of r22 is 4.
+
 to wfak:
 	if debug-state is false, wait for any key;
 
@@ -69,14 +74,10 @@ when play begins:
 	say "Well, you have nothing better to do. And you're still a bit resentful of people who did better than you in the pre-life, even if they're going to do worse in the afterlife. So you decide, why not give it a shot?";
 
 to shuf-blox:
-	let g be 4;
-	while g > 0:
-		let g2 be a random number between 1 and g;
-		let g3 be entry g2 of lshuf;
-		remove entry g2 from lshuf;
-		repeat through table of blockies:
-			if bl entry is g, now blocklevel of rm entry is g3;
-		decrement g;
+	sort lshuf in random order;
+	repeat with G running through rooms:
+		unless blocklevel of G is 5:
+			now blocklevel of G is entry (blocklevel of G) in lshuf;
 
 definition: a room (called myr) is black:
 	if the remainder after dividing (xval + yval) by 2 is 0, decide yes;
@@ -96,8 +97,8 @@ to start-play:
 	now blocked-room is a random curlev room;
 	now blocked-room is blockedoff;
 	now right hand status line is "X=[xing of blocked-room]";
-	if debug-state is true:
-		say "DEBUG: [blocked-room] is unavailable.";
+[	if debug-state is true:
+		say "DEBUG: [blocked-room] is unavailable.";]
 	move player to random unblocked room, without printing a room description;
 
 check going to a blockedoff room:
@@ -199,22 +200,6 @@ after printing the locale description:
 		now map-help is true;
 		say "[italic type][bracket]There's not much to do here except move in the 4 cardinal directions, or MAP to see where you have been and need to go.[close bracket][roman type]";
 
-table of blockies
-rm	bl
-r00	1
-r44	1
-r40	1
-r04	1
-r11	2
-r13	2
-r31	2
-r33	2
-r20	3
-r02	3
-r24	3
-r42	3
-r22	4
-
 the printed name of a room is "[entry cur-level of citylist], [xing of the item described]".
 
 the description of a room is "You can go [list of viable directions]. The blocked intersection is [xing of blocked-room]."
@@ -296,34 +281,30 @@ to say sta of (rm - a room):
 		say ".[no line break]"
 
 rule for printing a parser error when the latest parser error is the not a verb I recognise error:
-	say "You can't do much here except go in directions (SS for instance goes to the edge), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if]."
+	say "You can't do much here except go in directions (RUN/R  a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if]."
 
 volume speeding
 
-chapter ssing
+chapter runing
 
-zooming is an action applying to one thing.
+runing is an action applying to one visible thing.
 
-carry out zooming:
+understand the command "run" as something new.
+understand the command "r" as something new.
+
+understand "run [direction]" as runing.
+understand "r [direction]" as runing.
+
+carry out runing:
+	unless noun is linear, try going noun instead;
 	let moved be 0;
 	if the room noun of location of player is nowhere, say "You are at the [noun] border." instead;
 	if the room noun of location of player is blockedoff, say "The church is [noun]." instead;
 	while the room noun of the location of player is not nowhere and the room noun of the location of player is not blockedoff:
 		move player to the room noun of location of player, without printing a room description;
+		increment moved;
 	say "[description of location of player][line break]";
 	say "You went [moved] square[unless moved is 1]s[end if].";
-
-chapter ssing
-
-runing is an action applying to one thing.
-
-understand the command "run" as something new.
-
-understand "run [direction]" as runing.
-
-carry out runing:
-	unless noun is linear, try going noun instead;
-	try zooming noun;
 
 volume debug - not for release
 
