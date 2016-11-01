@@ -12,7 +12,28 @@ use no scoring.
 
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
-volume verb and parser error tweaks
+volume verb and parser tweaks
+
+chapter long form of verbs
+
+Include (-
+Replace LanguageVerb;
+-) after "Definitions.i6t".
+
+Include (-
+[ LanguageVerb i;
+	switch (i) {
+	  'i//','inv','inventory':
+			   print "take inventory";
+	  'r//', 'run//':   print "run to";
+	  'l//':   print "look";
+	  'x//':   print "examine";
+	  'z//':   print "wait";
+	  default: rfalse;
+	}
+	rtrue;
+];
+-) after "Language.i6t".
 
 chapter abouting
 
@@ -23,12 +44,7 @@ understand the command "about" as something new.
 understand "about" as abouting.
 
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes.[line break]";
-	if cur-level < 5:
-		say "Typing ABOUT twice at the final suburb tells you how to win.";
-	else:
-		say "[one of]You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again will show them all[or]	PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text[stopping].";
-	the rule succeeds;
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes.[paragraph break][if cur-level < 5]Typing ABOUT twice at the final suburb tells you how to win[else][one of]You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again will show them all[or]	PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text[stopping][end if].";
 
 chapter mapiting
 
@@ -51,19 +67,18 @@ carry out mapiting:
 	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
 	say "O [sta of r30] [sta of r31] [sta of r32] [sta of r33] [sta of r34] [line break]";
 	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44] [line break][variable letter spacing]";
-	the rule succeeds;
 
 to say sta of (rm - a room):
 	if debug-state is true and rm is location of checkerboard:
-		say "X[no line break]";
+		say "X";
 	else if rm is location of player:
-		say "U[no line break]";
+		say "U";
 	else if rm is visited:
-		say "+[no line break]";
+		say "+";
 	else if rm is blockedoff:
-		say "*[no line break]";
+		say "*";
 	else:
-		say ".[no line break]"
+		say "-"
 
 chapter runing
 
@@ -90,8 +105,9 @@ carry out runing:
 
 chapter parser
 
-rule for printing a parser error when the latest parser error is the not a verb I recognise error:
-	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game."
+rule for printing a parser error when player is not off-stage (this is the simplify parser errors rule):
+	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game.";
+	reject the player's command;
 
 volume main game
 
@@ -215,11 +231,13 @@ carry out gamewinning:
 	end the story finally;
 
 after printing the locale description:
-	if number of unvisited rooms is 2:
+	if number of unvisited rooms is 2: [yeah, you just visited the room, but it doesn't count/register yet. So it's 2 and not 1.]
 		do-the-next;
 	if walled-in:
-		if debug-state is true:
-			say "[number of unvisited rooms] [list of unvisited rooms].";
+[		if debug-state is true:
+			say "[number of unvisited rooms].";
+			say "[list of unvisited rooms].";
+			repeat with Q running through unvisited rooms: say "[Q].";]
 		if cur-level < 5:
 			say "Oh no! You are trapped! You manage to hide out from being spotted.[paragraph break]'Oh, come on,' you hear a voice say. 'Surely you can do better than that?' You're given another chance.";
 		else:
