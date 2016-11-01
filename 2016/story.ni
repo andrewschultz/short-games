@@ -18,8 +18,6 @@ a room has a number called blocklevel. blocklevel of a room is usually 5.
 
 a room can be sidey. a room is usually not sidey.
 
-a room can be black or red. a room is usually black.
-
 a room can be unblocked or blockedoff. a room is usually unblocked.
 
 a room has a number called xval. a room has a number called yval.
@@ -63,7 +61,10 @@ volume initialization
 lshuf is a list of number variables. lshuf is { 1, 2, 3, 4 }
 
 when play begins:
-	shuf-blox;
+	sort lshuf in random order;
+	repeat with G running through rooms:
+		unless blocklevel of G is 5:
+			now blocklevel of G is entry (blocklevel of G) in lshuf;
 	start-play;
 	say "Limbo isn't so bad, really. There's not a whole lot to do, even if you wind up reflecting more on what you never got around to doing. It got better when you learned not to haunt earth when it just made you jealous of people who you spied getting more stuff done. But wait...what's that?";
 	wfak;
@@ -72,16 +73,6 @@ when play begins:
 	say "'All you gotta do is haunt five suburbs. Suburbs full of people richer than they deserve to be. They deserve it, right? But you need to haunt them efficiently. No crossing back over where you've gone before. They might see you. Just five blocks by five blocks. The only catch? There's a church you can't run past. The people who go aren't very churchy, but hey, them's the rules. You up for it?";
 	wfak;
 	say "Well, you have nothing better to do. And you're still a bit resentful of people who did better than you in the pre-life, even if they're going to do worse in the afterlife. So you decide, why not give it a shot?";
-
-to shuf-blox:
-	sort lshuf in random order;
-	repeat with G running through rooms:
-		unless blocklevel of G is 5:
-			now blocklevel of G is entry (blocklevel of G) in lshuf;
-
-definition: a room (called myr) is black:
-	if the remainder after dividing (xval + yval) by 2 is 0, decide yes;
-	decide no.
 
 cur-level is a number that varies. cur-level is 1.
 
@@ -100,12 +91,6 @@ to start-play:
 [	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";]
 	move player to random unblocked room, without printing a room description;
-
-check going to a blockedoff room:
-	say "Whoah! You'd better not go there." instead;
-
-check going to a visited room:
-	say "Oops! You already were there." instead;
 
 to say move-board:
 	move checkerboard to a random unblocked room;
@@ -158,7 +143,6 @@ after printing the locale description:
 			say "Oh no! You are trapped! You manage to hide out from being spotted.[paragraph break]'Oh, come on,' you hear a voice say. 'Surely you can do better than that?' You're given another chance.";
 		else:
 			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
-			if debug-state is true, say "DEBUG: checkerboard in [location of checkerboard].";
 		now all rooms are unvisited;
 		if cur-level is 1:
 			move player to random unblocked room, without printing a room description;
@@ -213,14 +197,10 @@ before going:
 		say "You're not good enough for heaven." instead;
 	if noun is down:
 		say "You're not bad enough for hell." instead;
-	if noun is north and yv is 1:
-		say "That'd be out of city bounds." instead;
-	if noun is south and yv is 5:
-		say "That'd be out of city bounds." instead;
-	if noun is west and xv is 1:
-		say "That'd be out of city bounds." instead;
-	if noun is east and xv is 5:
-		say "That'd be out of city bounds." instead;
+	let q be the room noun of location of player;
+	if q is nowhere, say "You're at the [noun] edge." instead;
+	if q is blockedoff, say "Whoah! You'd better not go near the church." instead;
+	if q is visited, say "Oops! You already were there." instead;
 
 definition: a direction (called d) is viable:
 	let r be location of player;
@@ -262,7 +242,7 @@ understand "ma" as mapiting.
 understand "m" as mapiting.
 
 carry out mapiting:
-	say "+ = visited, . = unvisited, * = blocked off.";
+	say "+ = visited, . = unvisited, * = church.";
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
 	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
 	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
@@ -271,7 +251,9 @@ carry out mapiting:
 	the rule succeeds;
 
 to say sta of (rm - a room):
-	if rm is location of player:
+	if debug-state is true and rm is location of checkerboard:
+		say "X[no line break]";
+	else if rm is location of player:
 		say "U[no line break]";
 	else if rm is visited:
 		say "+[no line break]";
