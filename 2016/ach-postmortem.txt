@@ -1,0 +1,106 @@
+First of all, before any of the technical stuff, thanks to JJ Guest for conceiving and once again hosting EctoComp. And for letting my late entry slip in. I actually sent it in just a bit after midnight, MY time, and crossed my fingers. So I appreciate it (you might not, and I don't blame you.) I always forget if the deadline is the 30th or 31st, and I forget the time zones, too. The year Duncan Bowsman kindly guest-hosted it sticks in my mind, because I got an EXTRA EIGHT HOURS due to the time zone differences.
+
+It's given me a chance to just try lots of weird stuff, programming or problem related. I suppose the scariness in my game may be the "what the hell's been going on" or "did they send me after a left-handed smokebender?" or "why am I stuck?" Which to me can be as scary as any physical traps. Unfortunately, I probably overdosed the player on this.
+
+And of course I forgot to hide debug code, and I forgot to save walkthrough.txt before including it in my zip file. But I included the source! And on the bright side, I figured a new title at the last minute, which I think is better than "The Efficientest Ghost."
+
+It was too ambitious for three hours, but after a day's rest I am pleased with the changes I made.
+
+WARNING: Postmortem below contains spoilers and tangents about procrastination. It's kind of long at 10kb, for a 15kb-source game.
+
+=================================================
+
+Yes. Yes they did send you after a left-handed smokebender.
+
+I'd always wanted to base a game, or a game-let, on one of my favorite mathematical problems. Perhaps I should've entered this in the Grand Guignol to have time to program and test everything. But it didn't feel big or significant or scary enough, and plus, it was in z5 format! (And I wanted to try to keep it there. I did. It's x400 bytes under right now.) So I tried to shoot the gap and write something pretty complex in 3 hours of typing. I split my tasks up, but not as well as I hoped.
+
+I took a day or two to write notes down physically, pseudocode, etc. I created the folder on October 7th and took an hour to put the basic mechanics in place. That took about 70 minutes. And I sort of needed a break, and I was just thrilled the code worked.
+
+That left the question, does the game work? Or how should it? I was concerned about whether I should let the player win (it seemed polite, but would I just drop increasing hints?) and how. Would I have them run through the final rigged maze 10 times? How would I make it so people who understood the parity problem could say aha and guess right away? Should I even do it?
+
+The last was a biggie. The game felt like it could really annoy people, and I sort of wanted that: give them something doable, then flip the switch. But I remembered Lea Albaugh's Wisp from 2013, which...I liked the idea, and I think she mentioned she was aware the execution didn't work, and she didn't see a way around that. But I felt it should and could've, maybe with a post-comp release, and just because it didn't reach its vision didn't make her a bad writer, and it very obviously wasn't a troll entry. Sometimes you just miss the mark.
+
+So I decided to go for it, even if I missed. But that internal back and forth took a bit out of me. And if you are thinking of this, I'd advise just pushing ahead.
+
+Still I had a couple weeks left for 110 minutes of coding. But an unforeseen circumstance I probably should've foreseen popped up.
+
+The World Series. You see, I'm a Cubs fan. And, well, they were the favorites to make it there after a long drought. In fact, as they kept winning, they became even more likely. And of course I could've taken the final 110 minutes any time, but I kept pushing it off. I'll have a few more ideas later, etc. And of course what happened? Now I know they had days off, but I did other stuff because I didn't want to shift gears to EctoComp. And October 29/30 were pretty big games. The game of the 30th was actually past the official deadline. But I managed to do stuff during the commercial breaks. When you have just 3 hours you don't want to spend a lot of time staring at the screen, and I kept finding other projects where I had more ideas.
+
+So I was in and out on October 30, writing notes as I watched a very, very good game, realizing I might not be creating one too.
+
+Of course, I could've done all this for the other World Series games, or the National League championship or division series, but I wound up cleaning my place or other things, because I had time, you know? Then in the Series, game 1 was the First, so I wanted to focus. Game 2, probably the Cubs' first win after a few early runs. Game 3, I'd wait til the Cubs scored (they didn't. It was a great pitching duel.) Game 4, I watched in disbelief as the Cubs made mistakes and the Indians didn't. And one thing I do, after a sports result I can't control, is do boring necessary stuff I'd put off, because I'm not in a partying mood anyway. It works. But it distracted me from, well, EctoComp.
+
+So in game 5, I wound up missing Eddie Vedder singing the 7th-inning stretch to avoid the possibility of that annoying Skip Bayless commercial and write code. Oops. Fortunately, it got uploaded to YouTube quickly. Technology!
+
+You probably have your own ways you procrastinated, but that's mine. And I think taking a five minutes every 20 minutes to write a bit of code worked well. I focused on what I didn't like, what I might've forgotten, etc. Then I used the remaining time to fill in narrative, though I cut things off probably with 15 minutes to go. I didn't track time perfectly and didn't want to overrun.
+
+One thing I forgot was to hide debug code. You see, I had:
+
+section debug startup
+
+when play begins (this is the debug flag rule):
+	now debug-state is true;
+
+It should've read "debug only - not for release" and if I'd just clicked on the release binary (the Inform IDE uses debug) I'd have seen it and made a 5 second fix. But I didn't. Adrenaline from watching Game 5. So, lesson there. Also, i didn't realize I could move the rule to the "volume debug - not for release" volume and said
+
+the debug flag rule is listed first in the when play begins rulebook.
+
+It was just something I never saw before or did in my previous works, and after a night of sleep I wondered how I'd never done so before.
+
+Now, about the problem. It's usually phrased as "you have an 8x8 checkerboard and you cut off opposite corners. Can you tile it with 31 1x2 dominoes?" The answer is that you can't. If you color the checkerboard alternately red and black, you took off two red (or black) leaving 30 and 32 of each. A domino removes one of each. The same concept roughly occurs for running through the board. Every two squares makes a domino.
+
+Obviously an 8x8 would be incredibly annoying. But perhaps a 4x4 could show things. I included a proof at the end, but the TLDR is, you can see you run out of space, but that doesn't happen with 6x6.
+
+My pile of notes didn't really grow much. I liked the idea of the checkerboard with the corners torn off, because that's how I first saw the parity problem. And I also liked the idea of making the checkerboard smaller and smaller sizes, because I remember trying that as a kid, only to hear "WELL, YOU DON'T RUN OUT OF OPTIONS SO EASILY AT 8x8." So I liked that clue.
+
+But I was confused and upset I didn't know how to let a player who knew that say it automatically.
+
+So 4x4 might be a bit small and give the wrong way to look at the puzzle in the big picture. But the 5x5 board popped up as a good compromise. Because though you couldn't have an equal number of each color square, removing one could make it that way.
+
+It wasn't hard to draw up the town (cutting and pasting code) and although my code wasn't perfectly efficient (see <a href="https://github.com/andrewschultz/ectocomp/tree/master/2015">here</a> for the source and changes) it worked well enough once I figured what/how to debug. I fixed a bug or added narrative every half-inning but ran out of time. It's not my first game where I got the abstract stuff as I liked it but was relatively weak on narrative.
+
+Afterwards you can see the changes I made, and being close to the Z5 upper limit (which hampered adding narrative) was nice motivation to clean up my code. So I was pleased with the tweaks I made. You can see them in the link above, and maybe you'll find tricks that help. This made my project a success from the programming perspective.
+
+As for the creative/story side, I also liked being able to express, abstractly, the idea of being ordered around by people who may not be smarter than you but who know how to gain and keep power. I mean, I don't like that. But I like games that express this, and I was hoping to write more in about trying to explain to them, and they saying WELL FIND A WAY, BELIEVE AND YOU CAN ACHIEVE and not caring about practical restraints. Because I firmly believe incurious people like that are in, and create, hell, and that's different from encouraging/helping people who just feel trapped to do more. It may even make them feel more trapped. (Note: if people just aren't interested, that's okay. The big problem occurs when they want to grab power and ignore important details that get in the way.)
+
+So with no ideas for the end beyond "throw in a few verbs" I sort of had to throw in what I had. I really like my idea as a way to show the concept of parity as not just a mathematical concept but something you can play around in. I'd still be interested in how to make the end better.
+
+The game title that fell in at the last moment also provided (I think) a sort of clue. Probably too incidental, but it worked. But it didn't show a way to actually solving the game.
+
+===================
+
+4x4 proof.
+
+If you start and end at the corners, you pretty much have to move as follows (a..m)
+
+x..m
+....
+....
+a..x
+
+x..m
+....
+....
+abcx (you could move up, but that'd just mirror things)
+
+Moving up from b would mean the square to the left is a dead end, and you'd have to end there, but you end at m and start at a. Therefore one corner MUST be a throughway.
+
+Now let's assume that you don't touch the square up/right of c, below, from b or d. (I'm throwing the letters around a bit here)
+
+x... > x... > x...
+.... > a... > ba..
+b... > b... > c...
+cd.x > cdex > defx
+
+Since b and f in the 3rd box can't both be endings, we pick b as a not-end. Then above a and below it must be start and end since they're dead ends. Then however we can trace a path from the start (1). if we go to 2, then south means we must go west or we split the board in 2, but then north from f splits the board in 2. There's only one way from 3.
+
+ and remember we can't form any more dead ends, but there's a problem once we get to 4. West leaves a dead end below 4, but south leaves one west of 4.
+
+x123
+ba.4
+c.6.
+defx
+
+If we wind up at 6, the board is split in 2, so we need to go 4-west-west to avoid that immediately, but then we wind up at 6 after f anyway.
+
+The thing is, though--if you run through enough you may notice the remaining two squares are always diagonal, or 2 away, from each other. In other words, the same color. So while "no ways to get through 4x4" doesn't mean "no ways to get through 8x8" it may make the proof (you always leave two squares of the same color) pop out. I remember trying this when younger and seeing 4x4 didn't work and other older kids who knew the answer saying "THAT'S NOT GOOD ENOUGH, YOU DON'T GET IT." It's funnier now, looking back.
