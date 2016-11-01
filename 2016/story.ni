@@ -4,7 +4,7 @@ the story headline is "A puzzling afterlife experience".
 
 volume includes
 
-include basic screen effects by Emily Short
+include Basic Screen Effects by Emily Short.
 
 debug-state is a truth state that varies.
 
@@ -12,7 +12,7 @@ use no scoring.
 
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
-volume silliness
+volume verb and parser error tweaks
 
 chapter abouting
 
@@ -29,6 +29,69 @@ carry out abouting:
 	else:
 		say "[one of]You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again will show them all[or]	PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text[stopping].";
 	the rule succeeds;
+
+chapter mapiting
+
+mapiting is an action applying to nothing.
+
+understand the command "mapit" as something new.
+understand the command "map" as something new.
+understand the command "ma" as something new.
+understand the command "m" as something new.
+
+understand "mapit" as mapiting.
+understand "map" as mapiting.
+understand "ma" as mapiting.
+understand "m" as mapiting.
+
+carry out mapiting:
+	say "+ = visited, . = unvisited, * = church.";
+	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
+	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
+	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
+	say "O [sta of r30] [sta of r31] [sta of r32] [sta of r33] [sta of r34] [line break]";
+	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44] [line break][variable letter spacing]";
+	the rule succeeds;
+
+to say sta of (rm - a room):
+	if debug-state is true and rm is location of checkerboard:
+		say "X[no line break]";
+	else if rm is location of player:
+		say "U[no line break]";
+	else if rm is visited:
+		say "+[no line break]";
+	else if rm is blockedoff:
+		say "*[no line break]";
+	else:
+		say ".[no line break]"
+
+chapter runing
+
+runing is an action applying to one visible thing.
+
+understand the command "run" as something new.
+understand the command "r" as something new.
+
+understand "run [direction]" as runing.
+understand "r [direction]" as runing.
+
+carry out runing:
+	unless noun is linear, try going noun instead;
+	let moved be 0;
+	let q be the room noun of location of player;
+	if q is nowhere, say "You are at the [noun] border." instead;
+	if q is blockedoff, say "The church is [noun]." instead;
+	while q is not nowhere and q is not blockedoff:
+		move player to q, without printing a room description;
+		say "[bold type][q][roman type][paragraph break]";
+		now q is the room noun of q;
+		increment moved;
+	say "[description of location of player][line break]";
+
+chapter parser
+
+rule for printing a parser error when the latest parser error is the not a verb I recognise error:
+	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game."
 
 volume main game
 
@@ -200,7 +263,7 @@ map-help is a truth state that varies.
 after printing the locale description:
 	if map-help is false:
 		now map-help is true;
-		say "[italic type][bracket]There's not much to do here except move in the 4 cardinal directions, or MAP to see where you have been and need to go.[close bracket][roman type]";
+		say "[italic type][bracket]There's not much to do here except move in the 4 cardinal directions, or MAP to see where you have been and need to go.[close bracket][roman type][line break]";
 
 the printed name of a room is "[entry cur-level of citylist], [xing of the item described]".
 
@@ -245,67 +308,6 @@ vlist is a list of text variable. vlist is { "Lake", "Maple", "North", "Oak", "P
 
 citylist is a list of text variable. citylist is { "Lawyerville", "Doctorville", "Agentville" , "Financeville", "Programmerville" }
 
-chapter mapiting
-
-mapiting is an action applying to nothing.
-
-understand the command "mapit" as something new.
-understand the command "map" as something new.
-understand the command "ma" as something new.
-understand the command "m" as something new.
-
-understand "mapit" as mapiting.
-understand "map" as mapiting.
-understand "ma" as mapiting.
-understand "m" as mapiting.
-
-carry out mapiting:
-	say "+ = visited, . = unvisited, * = church.";
-	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
-	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
-	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
-	say "O [sta of r30] [sta of r31] [sta of r32] [sta of r33] [sta of r34] [line break]";
-	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44] [line break][variable letter spacing]";
-	the rule succeeds;
-
-to say sta of (rm - a room):
-	if debug-state is true and rm is location of checkerboard:
-		say "X[no line break]";
-	else if rm is location of player:
-		say "U[no line break]";
-	else if rm is visited:
-		say "+[no line break]";
-	else if rm is blockedoff:
-		say "*[no line break]";
-	else:
-		say ".[no line break]"
-
-rule for printing a parser error when the latest parser error is the not a verb I recognise error:
-	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game."
-
-volume speeding
-
-chapter runing
-
-runing is an action applying to one visible thing.
-
-understand the command "run" as something new.
-understand the command "r" as something new.
-
-understand "run [direction]" as runing.
-understand "r [direction]" as runing.
-
-carry out runing:
-	unless noun is linear, try going noun instead;
-	let moved be 0;
-	if the room noun of location of player is nowhere, say "You are at the [noun] border." instead;
-	if the room noun of location of player is blockedoff, say "The church is [noun]." instead;
-	while the room noun of the location of player is not nowhere and the room noun of the location of player is not blockedoff:
-		move player to the room noun of location of player, without printing a room description;
-		increment moved;
-	say "[description of location of player][line break]";
-	say "You went [moved] square[unless moved is 1]s[end if].";
-
 volume debug - not for release
 
 chapter set debugging
@@ -316,6 +318,8 @@ when play begins (this is the debug flag rule):
 the debug flag rule is listed first in the when play begins rulebook.
 
 chapter fiving
+
+[ * this kicks the player to the final puzzle ]
 
 fiving is an action applying to nothing.
 
