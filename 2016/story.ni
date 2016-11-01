@@ -94,9 +94,8 @@ carry out runing:
 	unless noun is linear, try going noun instead;
 	let moved be 0;
 	let q be the room noun of location of player;
-	if q is nowhere, say "You are at the [noun] border." instead;
-	if q is blockedoff, say "The church is [noun]." instead;
-	while q is not nowhere and q is not blockedoff:
+	if noun is not okay, say "[if q is nowhere]You can't go further[else if q is blockedoff]The church is[else]You've already been[end if] [noun]." instead;
+	while noun is okay:
 		move player to q, without printing a room description;
 		say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
