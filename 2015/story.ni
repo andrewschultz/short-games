@@ -311,11 +311,25 @@ every turn when full nelson is in NW Heezy:
 	if argue-times is 8:
 		say "Full Nelson and Half Nelson reach an 'agreement' which gives Full Nelson 80% for managerial overhead, you estimate. They walk away with your candy. But you feel you could've swung a quick, snappy surprise...something that fully captured your unique journey to even catch UP with Half Nelson...";
 		say "[line break]Perhaps you should have [if unique-views is 0]looked at MegaSol[else if unique-views is 1]looked at MegaSol a bit more[else if unique-views is 2]paid even more attention to MegaSol[else]figured what MegaSol had to say--or didn't[end if].";
-		end the story saying "GNG! OOF! SSS!" instead;
+		say "[paragraph break]    [bold type]*** GNG! OOF! SSS!***[roman type][paragraph break]You can [bold type]UNDO[roman type] if you want, but you may get [if all-clues is true]some old[else][one of]some[or]a few more[stopping][end if] clues this way.";
+		reset-game;
+		the rule succeeds;
 	say "Full Nelson and Half Nelson haggle over who gets how much of the [one of]Choc-o-verdose[or]Doublepluschocolate[or]Cavity-Deluxe[or]PB&C[or]Three Machinegunteers[or]Caffeine Bombs[or]Neapolitan Bar[or]Spumoni Bar[or]Coffee Choco-Crunch[in random order]."
 
 every turn when player is in NW Heezy and Half Nelson is in NW Heezy:
 	say "[one of]You need to do something quick and surprising. But what? You think back to your journey--how you got there--but what could help you? MegaSol?[or]Man. The candy's right there. Be quick. Surprising. But how? You think back to your journey so far...[stopping]";
+
+to reset-game:
+	now calc-message is 0;
+	now last-viewed is -1;
+	move player to Outside Heezy Park;
+	say "[one of]Sss. You got started a bit early, at 5:55, but that optimism's gone now[or]You remember getting some goo around you at nine o'clock last year. Mean teenagers[or]You'll be asleep at 2:22. ZZZ[or]You maybe should've watched for someone[or]You thought you were old enough to have trick-or-treat hours beyond [st8], but maybe not[stopping]."
+
+all-clues is a truth state that varies.
+
+to say st8:
+	now all-clues is true; [because this is called AFTER the every turn rule above, the conditional text for all clues kicks in after the first clue here]
+	say "[one of]six o'clock to eight o'clock[or]6:00 to 8:00[cycling]"
 
 volume weird verbs
 
@@ -376,6 +390,7 @@ answerseeing is an activity.
 this is the answersee rule:
 	say "--the pun on déjà vu is déjà BOO.";
 	say "--the weapons Australians use is a BOOmerang.";
+	say "--jokes that bad should be taBOO, amirite?";
 	the rule succeeds;
 
 volume tests - not for release
@@ -386,5 +401,7 @@ when play begins (this is the yes debug rule):
 the yes debug rule is listed first in the when play begins rulebook.
 
 test win with "s/s/e/n/w/s/e/n/w/s/e/n/w/boo"
+
+test lose with "s/s/e/n/w/s/e/n/w/s/e/n/w/z/z/z/z/z/z/z/z"
 
 test winfull with "s/n/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x full/x half/talk to full/talk to half/x joe/x taffy/boo"
