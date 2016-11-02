@@ -2,7 +2,9 @@
 
 the story headline is "A Brief Chase"
 
-include basic screen effects by emily short.
+[Note this needs to be set to Z8 to compile in the IDE but I prefer Z5 for release just to say I wrote a Z5 game]
+
+Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
 use no scoring.
 
@@ -13,7 +15,28 @@ after reading a command:
 		say "You don't care much about your costume now that you need to get your candy back. Well, fortunately, it [if half nelson is in nw]hasn't inhibited[else]doesn't, and won't, inhibit[end if] running.";
 		reject the player's command;
 
+section taken from Emily Short's Basic Screen Effects
+
+Include (-
+
+[ KeyPause i;
+	i = VM_KeyChar();
+	rfalse;
+];
+
+-)
+
+to wfak:
+	if debug-state is false:
+		say "[line break](Push any key to continue)[line break]";
+		wait for any key;
+
+To wait for any key:
+	(- KeyPause(); -)
+
 volume initializer
+
+debug-state is a truth state that varies.
 
 calc-message is a number that varies.
 
@@ -30,7 +53,7 @@ to say sign-message:
 to say sta:
 	say "[bold type]*[roman type]"
 
-to say pd:
+to say pd: [I used to have periods here. I'm not sure if they work. I don't think they do.]
 	say " ";
 
 to say ful-disp:
@@ -97,10 +120,6 @@ check talking to:
 	say "You need action. Anything you said, it'd better be loud and confident." instead;
 
 volume startup
-
-to wfak:
-	say "[line break](Push any key to continue)[line break]";
-	wait for any key;
 
 when play begins:
 	say "You had a nice full bag of candy from trick-or-treating. Well, until that bully Half Nelson ran by and stole it. The first time you're big enough to trick-or-treat by yourself, BAM. You're left with nothing except the wrappers from two of the worst candies you snuck from the bag...to save the good stuff for later...";
@@ -292,11 +311,25 @@ every turn when full nelson is in NW Heezy:
 	if argue-times is 8:
 		say "Full Nelson and Half Nelson reach an 'agreement' which gives Full Nelson 80% for managerial overhead, you estimate. They walk away with your candy. But you feel you could've swung a quick, snappy surprise...something that fully captured your unique journey to even catch UP with Half Nelson...";
 		say "[line break]Perhaps you should have [if unique-views is 0]looked at MegaSol[else if unique-views is 1]looked at MegaSol a bit more[else if unique-views is 2]paid even more attention to MegaSol[else]figured what MegaSol had to say--or didn't[end if].";
-		end the story saying "GNG! OOF! SSS!" instead;
+		say "[paragraph break]    [bold type]*** GNG! OOF! SSS!***[roman type][paragraph break]You can [bold type]UNDO[roman type] if you want, but you may get [if all-clues is true]some old[else][one of]some[or]a few more[stopping][end if] clues this way.";
+		reset-game;
+		the rule succeeds;
 	say "Full Nelson and Half Nelson haggle over who gets how much of the [one of]Choc-o-verdose[or]Doublepluschocolate[or]Cavity-Deluxe[or]PB&C[or]Three Machinegunteers[or]Caffeine Bombs[or]Neapolitan Bar[or]Spumoni Bar[or]Coffee Choco-Crunch[in random order]."
 
 every turn when player is in NW Heezy and Half Nelson is in NW Heezy:
 	say "[one of]You need to do something quick and surprising. But what? You think back to your journey--how you got there--but what could help you? MegaSol?[or]Man. The candy's right there. Be quick. Surprising. But how? You think back to your journey so far...[stopping]";
+
+to reset-game:
+	now calc-message is 0;
+	now last-viewed is -1;
+	move player to Outside Heezy Park;
+	say "[one of]Sss. You got started a bit early, at 5:55, but that optimism's gone now[or]You remember getting some goo around you at nine o'clock last year. Mean teenagers[or]You'll be asleep at 2:22. ZZZ[or]You maybe should've watched for someone[or]You thought you were old enough to have trick-or-treat hours beyond [st8], but maybe not[stopping]."
+
+all-clues is a truth state that varies.
+
+to say st8:
+	now all-clues is true; [because this is called AFTER the every turn rule above, the conditional text for all clues kicks in after the first clue here]
+	say "[one of]six o'clock to eight o'clock[or]6:00 to 8:00[cycling]"
 
 volume weird verbs
 
@@ -344,13 +377,31 @@ carry out booing:
 	wfak;
 	say "That does it! Half Nelson looks back and forth between you and Full Nelson. Full Nelson pushes Half Nelson towards you, but Half Nelson pushes back. You sneak under and steal the candy bags out of Heezy Park. But there are a lot of passers by, now, and Full Nelson can't do anything. He stalks off looking for something to vandalize.";
 	say "[line break]Well, now you've got more than enough candy, you give Half Nelson his own bag back and the both of you find the other kids Half Nelson took candy from. Half Nelson looks surprised at this generosity. And in the following weeks, turns out to be more than okay, once he's out of Full Nelson's 'good' graces. He even shares his candy as he tries to lose weight.";
-	end the story saying "You got your candy back! And a new friend.";
+	end the story finally saying "You got your candy back! And a new friend.";
+
+volume endgame
+
+Table of Final Question Options (continued)
+final question wording	only if victorious	topic	final response rule	final response activity
+"see the ANSWERS to the bad candy wrapper jokes"	true	"ANSWER/ANSWERS"	answersee  rule	answerseeing
+
+answerseeing is an activity.
+
+this is the answersee rule:
+	say "--the pun on déjà vu is déjà BOO.";
+	say "--the weapons Australians use is a BOOmerang.";
+	say "--jokes that bad should be taBOO, amirite?";
+	the rule succeeds;
 
 volume tests - not for release
 
+when play begins (this is the yes debug rule):
+	now debug-state is true;
+
+the yes debug rule is listed first in the when play begins rulebook.
+
 test win with "s/s/e/n/w/s/e/n/w/s/e/n/w/boo"
 
-[test winfull with "s/n/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x full/x half/talk to full/talk to half/x joe/x taffy/boo"
+test lose with "s/s/e/n/w/s/e/n/w/s/e/n/w/z/z/z/z/z/z/z/z"
 
-commented out so builds on z5
-]
+test winfull with "s/n/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x full/x half/talk to full/talk to half/x joe/x taffy/boo"
