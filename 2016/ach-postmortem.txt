@@ -4,15 +4,29 @@ It's given me a chance to just try lots of weird stuff, programming or problem r
 
 And of course I forgot to hide debug code, and I forgot to save walkthrough.txt before including it in my zip file. But I included the source! And on the bright side, I figured a new title at the last minute, which I think is better than "The Efficientest Ghost."
 
-It was too ambitious for three hours, but after a day's rest I am pleased with the changes I made.
+It was too ambitious for three hours, but I made a few changes after a day's rest, followed by a few more.
 
-WARNING: Postmortem below contains spoilers and tangents about procrastination. It's kind of long at 10kb, for a 15kb-source game.
+I'm surprised at the relatively positive reception it got publicly. The most immediate thing was that I should probably warn the player that restarting may be counterproductive.
+
+??fix up later with details
+
+WARNING: Postmortem below contains spoilers and tangents about procrastination. It's kind of long at 13kb, for a 16kb-source game. But I hope you enjoy it.
 
 =================================================
 
-Yes. Yes they did send you after a left-handed smokebender.
+Yes. Yes they did send you after a left-handed smokebender. There's a rather nasty sleight of hand here, and if you're careful, you may notice it. Even if you don't know why things are wrong. As for the basic game layout: I randomly shuffled a lot of things. The town names, the starting squares, and so forth. The levels are divided as follows, then sorted randomly:
 
-I'd always wanted to base a game, or a game-let, on one of my favorite mathematical problems. Perhaps I should've entered this in the Grand Guignol to have time to program and test everything. But it didn't feel big or significant or scary enough, and plus, it was in z5 format! (And I wanted to try to keep it there. I did. It's x400 bytes under right now.) So I tried to shoot the gap and write something pretty complex in 3 hours of typing. I split my tasks up, but not as well as I hoped.
+* corner squares
+* edge center squares
+* squares diagonal from center
+* center square
+* final level: all remaining squares
+
+That's a bit of a clue for now if you put all of the possible squares from the first four areas together.
+
+I'd always wanted to base a game, or a game-let, on one of my favorite mathematical problems. Perhaps I should've entered this in the Grand Guignol to have time to program and test everything. But it didn't feel big or significant or scary enough, and plus, it was in z5 format! (And I wanted to try to keep it there. I did. It's x80 bytes under right now after post-comp fixes that include a LOT of code-squishing.)
+
+So I tried to shoot the gap and write something pretty complex in 3 hours of typing. I split my tasks up, but not as well as I hoped.
 
 I took a day or two to write notes down physically, pseudocode, etc. I created the folder on October 7th and took an hour to put the basic mechanics in place. That took about 70 minutes. And I sort of needed a break, and I was just thrilled the code worked.
 
@@ -69,38 +83,120 @@ The game title that fell in at the last moment also provided (I think) a sort of
 
 ===================
 
-4x4 proof.
+There's actually no easy way to write a 4x4 proof for a path through, although it is not too bad to show 7 dominos can't fit into a 4x4 with the corners off without resorting to the parity argument. The thing with the path is, you have so many different places where a path could end or start. But with dominos, you just assume that one fits in a corner, and that forces the others. If we start with 1, the others are forced.
 
-If you start and end at the corners, you pretty much have to move as follows (a..m)
+x544
+.5.3
+..23
+112x
 
-x..m
+Oops! 2/3/4/5 shut out a single square.
+
+Similarly for the 5x5 with a hole. There are two places. We can assume the first domino goes to the left (if it went to the right it'd be a symmetric case anyway.)
+
+211..
+23x..
+43.9.
+46698
+55778
+
+Oops! Another isolated square.
+
+1x334
+12254 <- 2 could go either way but they're symmetric/identical
+a9956
+ab886
+.b.77
+
+This may again give us a clue what is really happening. But it's tricky to, well, nail things down.
+
+For 4x4, we can consider the following things--what if we start at a? Then we must end at one of y or z--it doesn't matter, since if we flip across the NW/SE axis it's symmetrical.
+
+x...
 ....
+..ay
+..zx
+
+So, start at b (call it n so we have an alphabetical path) and we know what b and c and m must be.
+
+x...
+...c
+..ab
+.mnx
+
+l must be in the corner or the corner becomes a dead end. Similarly for d. Then e/k are forced and f/j must be in the same place, but then one square must be g and i. Oops. So we can't start or end in the center.
+
+x.ed
+...c
+k.ab
+lmnx
+
+Also if we start in a square 2 from a corner, note we must also end adjacent to it or we have 2 dead ends. Since we can't allow any more dead ends, we get something like below, but once we hit 1N1E of m, we're in trouble.
+
+xd..
+bc..
+a...
+nm.x
+
+If we start in a corner then we have 2 options.
+
+xgh.    x.kl
+ef..    ...m
+dcml or ..dn
+abnx    abcx
+
+In either case it's trouble. So we need to start and end next to a corner. But which one?
+
+xa..
+.b..
+..m. splits the board in half.
+..nx
+
+xa..
+cb..
+.... leaves the d/k square vulnerable.
+lmnx
+
+xabc
+ji.d
+k.fe is a problem too.
+lmnx
+
+So if the end/start are adjacent,
+
+xa..
+nb..
+m.i.
+lkjx
+
+Doesn't work, and neither does
+
+xabc
+n..d
+m..e
+lkjx
+
+And if they're 2/2 away, they must point both H or V or the board is split in half.
+
+xaB.
+.b.M
+..mn
+...x
+
+That leaves
+
+xab.
 ....
-a..x
+i.mn < oops 2 dead ends by i
+jklx
 
-x..m
-....
-....
-abcx (you could move up, but that'd just mirror things)
+xakl
+cbjm
+d.in Oops again!
+.ghx
 
-Moving up from b would mean the square to the left is a dead end, and you'd have to end there, but you end at m and start at a. Therefore one corner MUST be a throughway.
-
-Now let's assume that you don't touch the square up/right of c, below, from b or d. (I'm throwing the letters around a bit here)
-
-x... > x... > x...
-.... > a... > ba..
-b... > b... > c...
-cd.x > cdex > defx
-
-Since b and f in the 3rd box can't both be endings, we pick b as a not-end. Then above a and below it must be start and end since they're dead ends. Then however we can trace a path from the start (1). if we go to 2, then south means we must go west or we split the board in 2, but then north from f splits the board in 2. There's only one way from 3.
-
- and remember we can't form any more dead ends, but there's a problem once we get to 4. West leaves a dead end below 4, but south leaves one west of 4.
-
-x123
-ba.4
-c.6.
-defx
-
-If we wind up at 6, the board is split in 2, so we need to go 4-west-west to avoid that immediately, but then we wind up at 6 after f anyway.
+These are all the cases, and it only gets worse for the 5x5.
 
 The thing is, though--if you run through enough you may notice the remaining two squares are always diagonal, or 2 away, from each other. In other words, the same color. So while "no ways to get through 4x4" doesn't mean "no ways to get through 8x8" it may make the proof (you always leave two squares of the same color) pop out. I remember trying this when younger and seeing 4x4 didn't work and other older kids who knew the answer saying "THAT'S NOT GOOD ENOUGH, YOU DON'T GET IT." It's funnier now, looking back.
+
+================
