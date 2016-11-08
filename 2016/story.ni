@@ -43,8 +43,21 @@ understand the command "about" as something new.
 
 understand "about" as abouting.
 
+abouted is a truth state that varies.
+
+every turn:
+	now abouted is false;
+
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes.[paragraph break][if cur-level < 5]Typing ABOUT twice at the final suburb tells you how to win[else][one of]You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again will show them all[or]	PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text[stopping][end if].";
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]";
+	if cur-level is 5:
+		if abouted is true:
+			say "PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text.";
+		else:
+			say "You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again right away will show them all.";
+		now abouted is true;
+	else:
+		say "Typing ABOUT twice in a row at the final suburb tells you how to win.";
 
 chapter mapiting
 
@@ -100,11 +113,12 @@ carry out runing:
 		say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
-	say "[description of location of player][line break]";
+	say "[description of location of player][paragraph break]";
+	check-trapped;
 
 chapter parser
 
-rule for printing a parser error when player is not off-stage (this is the simplify parser errors rule):
+rule for printing a parser error (this is the simplify parser errors rule):
 	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game.";
 	reject the player's command;
 
@@ -112,13 +126,13 @@ volume main game
 
 a room has a number called blocklevel. blocklevel of a room is usually 5.
 
-a room can be sidey. a room is usually not sidey.
-
 a room can be unblocked or blockedoff. a room is usually unblocked.
 
-a room has a number called xval. a room has a number called yval.
+a room has a number called rval.
 
 a room is usually privately-named.
+
+a room can be fivedone, fivevalid or unfive. a room is usually unfive.
 
 r00 is a room. r01 is east of r00. r02 is east of r01. r03 is east of r02. r04 is east of r03.
 r10 is a room. r11 is east of r10. r12 is east of r11. r13 is east of r12. r14 is east of r13.
@@ -132,17 +146,13 @@ r12 is south of r02. r22 is south of r12. r32 is south of r22. r42 is south of r
 r13 is south of r03. r23 is south of r13. r33 is south of r23. r43 is south of r33.
 r14 is south of r04. r24 is south of r14. r34 is south of r24. r44 is south of r34.
 
-xval of r00 is 1. xval of r01 is 2. xval of r02 is 3. xval of r03 is 4. xval of r04 is 5.
-xval of r10 is 1. xval of r11 is 2. xval of r12 is 3. xval of r13 is 4. xval of r14 is 5.
-xval of r20 is 1. xval of r21 is 2. xval of r22 is 3. xval of r23 is 4. xval of r24 is 5.
-xval of r30 is 1. xval of r31 is 2. xval of r32 is 3. xval of r33 is 4. xval of r34 is 5.
-xval of r40 is 1. xval of r41 is 2. xval of r42 is 3. xval of r43 is 4. xval of r44 is 5.
+[originally had xval and yval but collapsed them to save memory]
 
-yval of r00 is 1. yval of r01 is 1. yval of r02 is 1. yval of r03 is 1. yval of r04 is 1.
-yval of r10 is 2. yval of r11 is 2. yval of r12 is 2. yval of r13 is 2. yval of r14 is 2.
-yval of r20 is 3. yval of r21 is 3. yval of r22 is 3. yval of r23 is 3. yval of r24 is 3.
-yval of r30 is 4. yval of r31 is 4. yval of r32 is 4. yval of r33 is 4. yval of r34 is 4.
-yval of r40 is 5. yval of r41 is 5. yval of r42 is 5. yval of r43 is 5. yval of r44 is 5.
+rval of r00 is 0. rval of r01 is 1. rval of r02 is 2. rval of r03 is 3. rval of r04 is 4.
+rval of r10 is 5. rval of r11 is 6. rval of r12 is 7. rval of r13 is 8. rval of r14 is 9.
+rval of r20 is 10. rval of r21 is 11. rval of r22 is 12. rval of r23 is 13. rval of r24 is 14.
+rval of r30 is 15. rval of r31 is 16. rval of r32 is 17. rval of r33 is 18. rval of r34 is 19.
+rval of r40 is 20. rval of r41 is 21. rval of r42 is 22. rval of r43 is 23. rval of r44 is 24.
 
 blocklevel of r00 is 1. blocklevel of r04 is 1. blocklevel of r40 is 1. blocklevel of r44 is 1.
 blocklevel of r11 is 2. blocklevel of r13 is 2. blocklevel of r31 is 2. blocklevel of r33 is 2.
@@ -157,9 +167,12 @@ volume initialization
 lshuf is a list of number variables. lshuf is { 1, 2, 3, 4 }
 
 when play begins:
+	shuf-law;
 	sort lshuf in random order;
 	repeat with G running through rooms:
-		unless blocklevel of G is 5:
+		if blocklevel of G is 5:
+			now G is fivevalid;
+		else:
 			now blocklevel of G is entry (blocklevel of G) in lshuf;
 	start-play;
 	say "Limbo isn't so bad, really. There's not a whole lot to do, even if you wind up reflecting more on what you never got around to doing. It got better when you learned not to haunt earth when it just made you jealous of people who you spied getting more stuff done. But wait...what's that?";
@@ -169,6 +182,9 @@ when play begins:
 	say "'All you gotta do is haunt five suburbs. Suburbs full of people richer than they deserve to be. They deserve it, right? But you need to haunt them efficiently. No crossing back over where you've gone before. They might see you. Just five blocks by five blocks. The only catch? There's a church you can't run past. The people who go aren't very churchy, but hey, them's the rules. You up for it?";
 	wfak;
 	say "Well, you have nothing better to do. And you're still a bit resentful of people who did better than you in the pre-life, even if they're going to do worse in the afterlife. So you decide, why not give it a shot?";
+
+to shuf-law:
+	(- shuffle(5); -);
 
 cur-level is a number that varies. cur-level is 1.
 
@@ -181,7 +197,13 @@ definition: a room (called myr) is curlev:
 to start-play:
 	now all rooms are unvisited;
 	now blocked-room is not blockedoff;
-	now blocked-room is a random curlev room;
+	if cur-level is 5:
+		if number of fivevalid rooms is 0:
+			now all fivedone rooms are fivevalid;
+		now blocked-room is a random fivevalid room;
+		now blocked-room is fivedone;
+	else:
+		now blocked-room is a random curlev room;
 	now blocked-room is blockedoff;
 	now right hand status line is "X=[xing of blocked-room]";
 [	if debug-state is true:
@@ -195,7 +217,30 @@ instead of doing something with checkerboard:
 	if current action is examining, continue the action;
 	say "You're incorporeal, so you can't do much with the checkerboard except EXAMINE it.";
 
-the checkerboard is a thing. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [entry 5 of citylist], somehow, if you could just find the word[end if]."
+the checkerboard is a thing. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, if you could just find the word[end if]."
+
+Include (-
+
+[ shuffle n i j tmp;
+  print (string)profs-->1;
+  for(i = n: i > 1: i-- )
+  {
+	j = random(i + 1);
+	print i;
+	print j;
+ 
+	tmp = profs-->j;
+	profs-->j = profs-->i;
+	profs-->i = tmp;
+  }
+];
+
+Array profs --> 5 "Lawyer" "Doctor" "Agent" "Finance" "Programmer";
+
+-)
+
+to say ct of (n - a number):
+	(- print (string)profs-->{n}, "ville"; -)
 
 understand "checker/board" and "checker board" as checkerboard.
 
@@ -227,21 +272,25 @@ check restarting the game:
 		say "[no-bug].";
 
 to say no-bug:
-	say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't. Or there shouldn't be."
+	say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't."
 
 gwting is an action applying to one topic.
 
-understand "parity [text]" and "color [text]" and "colors"or "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
+understand "parity [text]" and "color [text]" and "colors [text]" and "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
 
 carry out gwting:
 	try gamewinning instead;
 
 carry out gamewinning:
-	say "'You realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, you realize the 5x5 board with a hole out has the wrong color hole. You're ready to flee [entry 5 in citylist], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesing than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
+	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesing than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
 	end the story finally;
 
 after printing the locale description:
-	if number of unvisited rooms is 2: [yeah, you just visited the room, but it doesn't count/register yet. So it's 2 and not 1.]
+	check-trapped;
+
+to check-trapped:
+	now location of player is visited;
+	if number of unvisited rooms is 1:
 		do-the-next;
 	if walled-in:
 [		if debug-state is true:
@@ -269,7 +318,7 @@ to say move-board:
 	move checkerboard to random unblocked room;
 
 to do-the-next:
-	say "[one of]'Not bad! OK, on to the next suburb, [entry 2 of citylist].'[or]'You're getting the hang of it! [entry 3 of citylist] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'You're not the first person to start quickly.'[or]'Good, but nobody's done [entry 5 of citylist] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
+	say "[one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'You're not the first person to start quickly.'[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
 	start-play;
 
@@ -291,21 +340,19 @@ map-help is a truth state that varies.
 after printing the locale description:
 	if map-help is false:
 		now map-help is true;
-		say "[italic type][bracket]There's not much to do here except move in the 4 cardinal directions, or MAP to see where you have been and need to go.[close bracket][roman type][line break]";
+		say "[italic type][bracket]This game has few verbs. ABOUT shows them all.[close bracket][roman type][line break]";
 
-the printed name of a room is "[entry cur-level of citylist], [xing of the item described]".
+the printed name of a room is "[ct of cur-level], [xing of the item described]".
 
 the description of a room is "You can go [list of viable directions]. The blocked intersection is [xing of blocked-room]."
 
 before going:
-	let yv be yval of location of player;
-	let xv be xval of location of player;
-	if noun is southwest or noun is southeast or noun is northwest or noun is northeast or noun is inside or noun is outside:
-		say "No cutting through buildings." instead;
 	if noun is up:
 		say "You're not good enough for heaven." instead;
 	if noun is down:
 		say "You're not bad enough for hell." instead;
+	if noun is not linear:
+		say "No cutting through buildings." instead;
 	let q be the room noun of location of player;
 	if q is nowhere, say "You're at the [noun] edge." instead;
 	if q is blockedoff, say "Whoah! You'd better not go near the church." instead;
@@ -313,12 +360,8 @@ before going:
 
 definition: a direction (called d) is viable:
 	let r be location of player;
-	unless d is linear, decide no;
-	if d is east and xval of r is 5, decide no;
-	if d is west and xval of r is 1, decide no;
-	if d is north and yval of r is 1, decide no;
-	if d is south and yval of r is 5, decide no;
-	if the room d of location of player is blocked-room, decide no;
+	if the room d of r is blocked-room, decide no;
+	if the room d of r is nowhere, decide no;
 	decide yes;
 
 definition: a direction (called d) is linear:
@@ -326,15 +369,10 @@ definition: a direction (called d) is linear:
 	decide no;
 
 to say xing of (r - a room):
-	let x be xval of r;
-	let y be yval of r;
-	say "[entry x in hlist] and [entry y in vlist]"
-
-hlist is a list of text variable. hlist is { "1st", "2nd", "3rd", "4th", "5th" }
-
-vlist is a list of text variable. vlist is { "Lake", "Maple", "North", "Oak", "Pine" }
-
-citylist is a list of text variable. citylist is { "Lawyerville", "Doctorville", "Agentville" , "Financeville", "Programmerville" }
+	let y be rval of r / 5; [magic numbers a bit here to save memory]
+	let x be remainder after dividing rval of r by 5;
+	say "[x + 1][if x is 0]st[else if x is 1]nd[else]th[end if] and ";
+	say "[if y is 0]Lake[else if y is 1]Maple[else if y is 2]North[else if y is 3]Oak[else]Pine[end if]"
 
 volume debug - not for release
 
@@ -347,6 +385,8 @@ the debug flag rule is listed first in the when play begins rulebook.
 
 chapter fiving
 
+[this may need to be commented out for z5 debug builds. However, for z8 debug builds, it is okay]
+
 [ * this kicks the player to the final puzzle ]
 
 fiving is an action applying to nothing.
@@ -356,6 +396,7 @@ understand the command "fiv" as something new.
 understand "fiv" as fiving.
 
 carry out fiving:
+	if cur-level is 5, say "Already there." instead;
 	while cur-level < 5:
 		do-the-next;
 	the rule succeeds;
