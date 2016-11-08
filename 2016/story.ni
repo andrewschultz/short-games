@@ -218,6 +218,17 @@ understand the command "disprove" as something new.
 
 understand "parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove" as gamewinning when cur-level is 5.
 
+check quitting the game:
+	if cur-level is 5:
+		say "[no-bug].";
+
+check restarting the game:
+	if cur-level is 5:
+		say "[no-bug].";
+
+to say no-bug:
+	say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't. Or there shouldn't be."
+
 gwting is an action applying to one topic.
 
 understand "parity [text]" and "color [text]" and "colors"or "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.

@@ -30,4 +30,12 @@ Last one is not solvable because of a mathematical trick. If you label the map l
 
 To solve you sort of need to guess the verb.
 
-"parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove"
+>parity
+>color
+>colors
+>corners
+>corner
+>count
+>prove
+>disprove
+
