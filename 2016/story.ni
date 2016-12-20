@@ -43,6 +43,14 @@ understand the command "jump" as something new.
 understand the command "kiss" as something new.
 understand the command "wave" as something new.
 understand the command "push" as something new.
+understand the command "pull" as something new.
+understand the command "read" as something new.
+understand the command "sit" as something new.
+understand the command "exit" as something new.
+understand the command "enter" as something new.
+understand the command "sorry" as something new.
+understand the command "search" as something new.
+understand the command "set" as something new.
 understand the command "burn" as something new.
 understand the command "smell" as something new.
 understand the command "listen" as something new.
@@ -52,13 +60,48 @@ understand the command "turn" as something new.
 understand the command "cut" as something new.
 understand the command "no" as something new.
 understand the command "yes" as something new.
+understand the command "y" as something new.
 Understand the command "climb" as something new.
 Understand the command "scale" as something new.
 Understand the command "purchase" as something new.
+Understand the command "slice" as something new.
+Understand the command "prune" as something new.
+Understand the command "chop" as something new.
+Understand the command "cut" as something new.
+Understand the command "swallow" as something new.
+Understand the command "sip" as something new.
+Understand the command "drink" as something new.
 Understand the command "squash" as something new.
 Understand the command "squeeze" as something new.
+Understand the command "drop" as something new.
+Understand the command "carry" as something new.
+Understand the command "hold" as something new.
+Understand the command "throw" as something new.
+Understand the command "shed" as something new.
+Understand the command "remove" as something new.
+Understand the command "stand" as something new.
+Understand the command "close" as something new.
+Understand the command "open" as something new.
+Understand the command "eat" as something new.
+Understand the command "answer" as something new.
+Understand the command "say" as something new.
+Understand the command "shout" as something new.
+Understand the command "speak" as something new.
+Understand the command "tell" as something new.
+Understand the command "ask" as something new.
 ["climb".]
 
+understand the command "unlock" as something new.
+understand the command "attack" as something new.
+understand the commands "break", "smash", "hit", "fight", "torture", "wreck", "crack", and "destroy" as something new.
+
+the can't eat unless edible rule is not listed in any rulebook.
+the can't eat clothing without removing it first rule is not listed in any rulebook.
+the standard eating rule is not listed in any rulebook.
+the standard report eating rule is not listed in any rulebook.
+the can't drop what's already dropped rule is not listed in any rulebook.
+the can't drop what's not held rule is not listed in any rulebook.
+the can't drop clothes being worn rule is not listed in any rulebook.
 the can't take items out of play rule is not listed in any rulebook.
 the can't take what you're inside rule is not listed in any rulebook.
 the can't take what's already taken rule is not listed in any rulebook.
@@ -79,8 +122,17 @@ the block waving hands rule is not listed in any rulebook.
 the block burning rule is not listed in any rulebook.
 the block saying yes rule is not listed in any rulebook.
 the block saying no rule is not listed in any rulebook.
+the can't remove what's not inside rule is not listed in any rulebook.
+the can't remove from people rule is not listed in any rulebook.
+the convert remove to take rule is not listed in any rulebook.
 
+the can't take what's fixed in place rule is not listed in any rulebook.
+the can't exceed carrying capacity rule is not listed in any rulebook.
+the standard taking rule is not listed in any rulebook.
 the can't push what's fixed in place rule is not listed in any rulebook.
+
+the print empty inventory rule is not listed in any rulebook.
+the print standard inventory rule is not listed in any rulebook.
 
 chapter abouting
 
@@ -249,25 +301,17 @@ to start-play:
 [	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";]
 	move player to random unblocked room, without printing a room description;
-	say "[cur-level] a.";
 	if cur-level is 5:
-		say "b.";
 		now checkerboard is off-stage;
 		now dominoes are off-stage;
 		now magnets are off-stage;
-		say "CBR: [number of clearblack rooms].";
 		move checkerboard to random clearblack room;
-		if debug-state is true:
-			say "[cheat-prog] checkerboard moved to [location of checkerboard].";
 		if cheat-prog > 0:
 			move dominoes to random clearblack room;
-			if debug-state is true:
-				say "Dominoes moved to [location of dominoes].";
 		if cheat-prog > 1:
 			move magnets to random clearblack room;
-			if debug-state is true:
-				say "Magnets moved to [location of magnets].";
-		say "CBR: [number of clearblack rooms].";
+		if debug-state is true:
+			say "[location of checkerboard] [location of dominoes] [location of magnets].";
 
 a winnable is a kind of thing.
 
@@ -296,12 +340,9 @@ every turn when cur-level is 5:
 Include (-
 
 [ shuffle n i j tmp;
-  print (string)profs-->1;
   for(i = n: i > 1: i-- )
   {
 	j = random(i + 1);
-	print i;
-	print j;
  
 	tmp = profs-->j;
 	profs-->j = profs-->i;
@@ -448,15 +489,14 @@ to say xing of (r - a room):
 section meta
 
 check quitting the game:
+	bug-nag;
+
+to bug-nag:
 	if cur-level is 5:
-		say "[no-bug].";
+		say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't.";
 
 check restarting the game:
-	if cur-level is 5:
-		say "[no-bug].";
-
-to say no-bug:
-	say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't."
+	bug-nag;
 
 volume debug - not for release
 
@@ -481,7 +521,7 @@ understand "fiv" as fiving.
 
 carry out fiving:
 	if cur-level is 5:
-		say "Already there. Resetting.";
+		say "Reset.";
 		start-play;
 		the rule succeeds;
 	while cur-level < 5:
