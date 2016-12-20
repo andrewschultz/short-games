@@ -35,6 +35,53 @@ Include (-
 ];
 -) after "Language.i6t".
 
+cheat-prog is a number that varies.
+
+chapter byte shedding
+
+understand the command "jump" as something new.
+understand the command "kiss" as something new.
+understand the command "wave" as something new.
+understand the command "push" as something new.
+understand the command "burn" as something new.
+understand the command "smell" as something new.
+understand the command "listen" as something new.
+understand the command "buy" as something new.
+understand the command "switch" as something new.
+understand the command "turn" as something new.
+understand the command "cut" as something new.
+understand the command "no" as something new.
+understand the command "yes" as something new.
+Understand the command "climb" as something new.
+Understand the command "scale" as something new.
+Understand the command "purchase" as something new.
+Understand the command "squash" as something new.
+Understand the command "squeeze" as something new.
+["climb".]
+
+the can't take items out of play rule is not listed in any rulebook.
+the can't take what you're inside rule is not listed in any rulebook.
+the can't take what's already taken rule is not listed in any rulebook.
+the can't take scenery rule is not listed in any rulebook.
+the can only take things rule is not listed in any rulebook.
+the ambient odour rule is not listed in any rulebook.
+the ambient sound rule is not listed in any rulebook.
+the can't push scenery rule is not listed in any rulebook.
+the can't push people rule is not listed in any rulebook.
+the report pushing rule is not listed in any rulebook.
+the can't switch on unless switchable rule is not listed in any rulebook.
+the block buying rule is not listed in any rulebook.
+the block jumping rule is not listed in any rulebook.
+the block smelling rule is not listed in any rulebook.
+the block listening rule is not listed in any rulebook.
+the block kissing rule is not listed in any rulebook.
+the block waving hands rule is not listed in any rulebook.
+the block burning rule is not listed in any rulebook.
+the block saying yes rule is not listed in any rulebook.
+the block saying no rule is not listed in any rulebook.
+
+the can't push what's fixed in place rule is not listed in any rulebook.
+
 chapter abouting
 
 abouting is an action out of world.
@@ -43,21 +90,8 @@ understand the command "about" as something new.
 
 understand "about" as abouting.
 
-abouted is a truth state that varies.
-
-every turn:
-	now abouted is false;
-
 carry out abouting:
 	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]";
-	if cur-level is 5:
-		if abouted is true:
-			say "PARITY/COLOR/COLORS/CORNERS/CORNER/COUNT/PROVE/DISPROVE all win the game with the same text.";
-		else:
-			say "You sort of need to guess a verb, to show that indeed you've got an impossible mission. ABOUT again right away will show them all.";
-		now abouted is true;
-	else:
-		say "Typing ABOUT twice in a row at the final suburb tells you how to win.";
 
 chapter mapiting
 
@@ -82,9 +116,7 @@ carry out mapiting:
 	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44] [line break][variable letter spacing]";
 
 to say sta of (rm - a room):
-	if debug-state is true and rm is location of checkerboard:
-		say "X";
-	else if rm is location of player:
+	if rm is location of player:
 		say "U";
 	else if rm is visited:
 		say "+";
@@ -92,6 +124,14 @@ to say sta of (rm - a room):
 		say "*";
 	else:
 		say "-"
+
+[	if debug-state is true and rm is location of checkerboard:
+		say "X";
+	else if debug-state is true and rm is location of magnets:
+		say "M";
+	else if debug-state is true and rm is location of dominoes:
+		say "D";
+	else ]
 
 chapter runing
 
@@ -209,15 +249,49 @@ to start-play:
 [	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";]
 	move player to random unblocked room, without printing a room description;
+	say "[cur-level] a.";
+	if cur-level is 5:
+		say "b.";
+		now checkerboard is off-stage;
+		now dominoes are off-stage;
+		now magnets are off-stage;
+		say "CBR: [number of clearblack rooms].";
+		move checkerboard to random clearblack room;
+		if debug-state is true:
+			say "[cheat-prog] checkerboard moved to [location of checkerboard].";
+		if cheat-prog > 0:
+			move dominoes to random clearblack room;
+			if debug-state is true:
+				say "Dominoes moved to [location of dominoes].";
+		if cheat-prog > 1:
+			move magnets to random clearblack room;
+			if debug-state is true:
+				say "Magnets moved to [location of magnets].";
+		say "CBR: [number of clearblack rooms].";
 
-to say move-board:
-	move checkerboard to a random unblocked room;
-	
-instead of doing something with checkerboard:
+a winnable is a kind of thing.
+
+instead of doing something with winnable:
 	if current action is examining, continue the action;
-	say "You're incorporeal, so you can't do much with the checkerboard except EXAMINE it.";
+	say "You're incorporeal, so you can't do much other than EXAMINE the [noun].";
 
-the checkerboard is a thing. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, if you could just find the word[end if]."
+the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, if you could just find the word[end if]."
+
+the magnets are a plural-named winnable.
+
+the dominoes are a plural-named winnable.
+
+every turn when cur-level is 5:
+	if player does not have magnets and magnets are in location of player:
+		say "The magnets jump up and hover near you. You're obviously attracting them, somehow.";
+		now player has magnets;
+	else if player has magnets:
+		if location of player is location of dominoes and player does not have dominoes:
+			say "The magnets latch on to the dominoes.";
+			now player has dominoes;
+		else if player has dominoes:
+			if location of player is location of checkerboard:
+				say "You win!";
 
 Include (-
 
@@ -263,17 +337,6 @@ understand the command "disprove" as something new.
 
 understand "parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove" as gamewinning when cur-level is 5.
 
-check quitting the game:
-	if cur-level is 5:
-		say "[no-bug].";
-
-check restarting the game:
-	if cur-level is 5:
-		say "[no-bug].";
-
-to say no-bug:
-	say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't."
-
 gwting is an action applying to one topic.
 
 understand "parity [text]" and "color [text]" and "colors [text]" and "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
@@ -305,7 +368,7 @@ to check-trapped:
 		if cur-level is 1:
 			move player to random unblocked room, without printing a room description;
 		else:
-			move player to random unblocked room;
+			start-play;
 
 esmall is a truth state that varies.
 
@@ -313,9 +376,9 @@ to say move-board:
 	if chex is true:
 		if board-width > 4:
 			decrease board-width by 2;
+			increment cheat-prog;
 		else:
 			now esmall is true;
-	move checkerboard to random unblocked room;
 
 to do-the-next:
 	say "[one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'You're not the first person to start quickly.'[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
@@ -327,6 +390,14 @@ to decide whether walled-in:
 	if south is okay, decide no;
 	if east is okay, decide no;
 	if west is okay, decide no;
+	decide yes;
+
+definition: a room (called myrm) is clearblack:
+	if the remainder after dividing rval of myrm by 2 is 0, decide no;
+	if checkerboard is in myrm, decide no;
+	if dominoes are in myrm, decide no;
+	if magnets are in myrm, decide no;
+	if myrm is blocked-room, decide no;
 	decide yes;
 	
 definition: a direction (called d) is okay:
@@ -355,8 +426,8 @@ before going:
 		say "No cutting through buildings." instead;
 	let q be the room noun of location of player;
 	if q is nowhere, say "You're at the [noun] edge." instead;
-	if q is blockedoff, say "Whoah! You'd better not go near the church." instead;
-	if q is visited, say "Oops! You already were there." instead;
+	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
+	if q is visited, say "You feel a magnetic force push you away. Yes, you remember now, you've been [noun] already." instead;
 
 definition: a direction (called d) is viable:
 	let r be location of player;
@@ -373,6 +444,19 @@ to say xing of (r - a room):
 	let x be remainder after dividing rval of r by 5;
 	say "[x + 1][if x is 0]st[else if x is 1]nd[else]th[end if] and ";
 	say "[if y is 0]Lake[else if y is 1]Maple[else if y is 2]North[else if y is 3]Oak[else]Pine[end if]"
+
+section meta
+
+check quitting the game:
+	if cur-level is 5:
+		say "[no-bug].";
+
+check restarting the game:
+	if cur-level is 5:
+		say "[no-bug].";
+
+to say no-bug:
+	say "NOTE: if you're worried you messed up, or there's a bug in the town layout, there isn't."
 
 volume debug - not for release
 
@@ -396,7 +480,10 @@ understand the command "fiv" as something new.
 understand "fiv" as fiving.
 
 carry out fiving:
-	if cur-level is 5, say "Already there." instead;
+	if cur-level is 5:
+		say "Already there. Resetting.";
+		start-play;
+		the rule succeeds;
 	while cur-level < 5:
 		do-the-next;
 	the rule succeeds;
