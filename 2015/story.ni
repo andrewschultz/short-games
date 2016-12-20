@@ -50,25 +50,19 @@ to say sign-message:
 		now last-viewed is calc-message;
 	say "[if calc-message is 0]UGG[else if calc-message is 1]AHH[else if calc-message is 2]EEE[else if calc-message is 3]YIP[else]SORRY, BUG[end if]";
 
-to say sta:
-	say "[bold type]*[roman type]"
-
-to say pd: [I used to have periods here. I'm not sure if they work. I don't think they do.]
-	say " ";
-
 to say ful-disp:
-	say "[fixed letter spacing]";
+	say "[fixed letter spacing][bold type]";
 	if calc-message is 0:
-		say "[sta][pd][sta] [sta][sta][sta] [sta][sta][sta][line break][sta] [sta] [sta] [sta] [sta] [sta][line break][sta][pd][sta] [sta][sta][sta] [sta][sta][sta][line break][sta] [sta] [pd] [sta] [pd] [sta][line break][sta][sta][sta] [sta][sta][sta] [sta][sta][sta][line break]";
+		say "*.* *** ***[line break]* * * * * *[line break]*.* *** ***[line break]* * . * . *[line break]*** *** ***[line break]";
 	else if calc-message is 1:
-		say "[sta][sta][sta] [sta][pd][sta] [sta][pd][sta][line break][sta] [sta] [sta] [sta] [sta] [sta][line break][sta][sta][sta] [sta][sta][sta] [sta][sta][sta][line break][sta] [sta] [sta] [sta] [sta] [sta][line break][sta][pd][sta] [sta][pd][sta] [sta][pd][sta][line break]";
+		say "*** *.* *.*[line break]* * * * * *[line break]*** *** ***[line break]* * * * * *[line break]*.* *.* *.*[line break]";
 	else if calc-message is 2:
-		say "[sta][sta][sta] [sta][sta][sta] [sta][sta][sta][line break][sta] [pd] [sta] [pd] [sta] [pd][line break][sta][sta][sta] [sta][sta][sta] [sta][sta][sta][line break][sta] [pd] [sta] [pd] [sta] [pd][line break][sta][sta][sta] [sta][sta][sta] [sta][sta][sta][line break]";
+		say "*** *** ***[line break]* . * . * .[line break]*** *** ***[line break]* . * . * .[line break]*** *** ***[line break]";
 	else if calc-message is 3:
-		say "[sta][pd][sta] [pd][pd][sta] [sta][sta][sta][line break][sta] [sta] [pd] [sta] [sta] [sta][line break][sta][sta][sta] [pd][pd][sta] [sta][sta][sta][line break][pd] [sta] [pd] [sta] [sta] [pd][line break][sta][sta][sta] [pd][pd][sta] [sta][pd][pd][line break]";
+		say "*.* ..* ***[line break]* * . * * *[line break]*** ..* ***[line break]. * . * * .[line break]*** ..* *..[line break]";
 	else:
 		say "Sorry, bug.";
-	say "[variable letter spacing]";
+	say "[roman type][variable letter spacing]";
 
 last-direction is a direction that varies.
 
@@ -400,8 +394,9 @@ when play begins (this is the yes debug rule):
 
 the yes debug rule is listed first in the when play begins rulebook.
 
-test win with "s/s/e/n/w/s/e/n/w/s/e/n/w/boo"
+[test win with "s/s/e/n/w/s/e/n/w/s/e/n/w/boo"
 
 test lose with "s/s/e/n/w/s/e/n/w/s/e/n/w/z/z/z/z/z/z/z/z"
 
 test winfull with "s/n/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x nelson/s/n/x nelson/e/w/x nelson/n/s/x nelson/w/e/x full/x half/talk to full/talk to half/x joe/x taffy/boo"
+]
