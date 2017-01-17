@@ -2,9 +2,13 @@
 
 include basic screen effects by Emily Short.
 
+include trivial niceties by Andrew Schultz.
+
 [release along with cover art.]
 
 use no scoring.
+
+Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
 description of player is "You're a bit soaked but not enough to ruin Harley's floor, unfortunately."
 
@@ -15,6 +19,7 @@ the picture of Fran is in the wallet. description of the picture of Fran is "It'
 check dropping:
 	if noun is wallet or noun is Fran:
 		say "No. That's yours." instead;
+	say "No need to drop anything in this game." instead;
 
 Foyer is a room. "You're in the foyer. The bedroom is west, and the living room is north. You could go south if you wanted. A very accurate digital clock is on the wall.".
 
@@ -27,8 +32,8 @@ instead of doing something other than examining the clock:
 	say "Really, it's only there for looking at.";
 
 check going south in foyer:
-	say "Are you sure about leaving before you're done?";
-	if the player consents:
+	say "Are you sure about leaving before you've won all the arguments?";
+	if the player yes-consents:
 		say "You walk out[if number of carried things > 1], dumping Harley's stuff you took[end if], losing any argument over [list of neutral concepts] by default[if wthru is true] and not really caring. Harley snarks about how you couldn't even stand up for yourself if someone gave you the words[end if].[paragraph break]";
 		choose row 1 + number of not neutral concepts in table of endies;
 		do-the-end instead;
@@ -83,7 +88,7 @@ after examining sports:
 	else:
 		say "You gloss it, noting your team, the Ramen Golems, is leading the Lethal Division. Harley's team, the Delinquents, are doing ok, but the Golems beat them Sunday.";
 
-instead of waving:
+instead of waving hands:
 	say "[if ghost is visible]'Don't be a gay-ass.'[else]If you want to summon Harley, SNAP.[end if]";
 
 instead of singing:
@@ -111,8 +116,14 @@ understand "show [something visible] to [person]" as showxing it to.
 
 The can't show what you haven't got rule is not listed in the check showing it to rulebook.
 
+does the player mean showing to Harley's ghost: it is very likely.
+
 check showxing it to:
 	ignore the can't show what you haven't got rule;
+	if harley's is not in location of player:
+		say "You might want to SNAP for Harley to come back, first." instead;
+	if second noun is player:
+		say "You probably want to show stuff to Harley, not yourself." instead;
 	if noun is fran:
 		if girls is not neutral:
 			say "You've already talked with Harley about relationships. You've made your choice." instead;
@@ -243,7 +254,7 @@ check going nowhere:
 	
 when play begins:
 	now right hand status line is "[arg of girls][arg of money][arg of shape][arg of sport teams]";
-	say "You read it in the local suburban newspaper. Harley Drotz crashed his SUV. A fine young American who worked as some unwholesome cross of lawyer and salesman not possible before the Internet revolution.[paragraph break]Funeral November 2nd. Visitations, wake, etc. You don't care about that. You remember him as some guy who'd start an argument just to win it. The paper has his address--and you think back to long ago, when you and some friends walked by his parents['] house. Everyone pissed on the lawn, except you. It wasn't that you hadn't drunk enough Kool-Aid. You were just a bit scared to. Your friends punched you for that. And perhaps you're mean, or biased, but the family quotes seem to indicate--well, he's still a total jerk. (push any key)";
+	say "You read it in the local suburban newspaper. Harley Drotz crashed his SUV. A fine young American who worked as some unwholesome cross of lawyer and salesman not possible before the Internet revolution.[paragraph break]Funeral November 2nd. Visitations, wake, etc. You don't care about that. You remember him as some guy who'd start an argument just to win it. The paper has his address--and you think back to long ago, when you and some friends walked by his parents['] house. Everyone pissed on the lawn, except you. It wasn't that you hadn't drunk enough Kool-Aid. You were just a bit scared to. Your friends punched you for that. And perhaps you're mean, or biased, but the family quotes remind you of eulogies for corrupt politicians or unfunny comedians. (push any key)";
 	wait for any key;
 	say "[paragraph break]You googlestalk a bit first, see the notes on the message boards, how he plays the same tricks you remember from high school, a bit refined. You flip a coin. You flip it again when it doesn't fall as you like. And you walk over to his townhome. You remember it's Halloween, but it's well past trick-or-treat time, so you won't get an indecent exposure rap if you just finish business. The rain gets started as you do. Once done, you hide in the overhang by the front door--which swings open. The wind beats the rain against you. (push any key)";
 	say "[paragraph break]You hear a voice. 'Dammit! Who is it now?' You tell him.[paragraph break]'Milo McNeeble? Oh. Yeah. It's me. Harley Drotz. But you knew that. What you didn't know is, I've been kept here to help people like you--to help you do better in life. Apparently I'll need to help a bunch of you without you knowing. Like I did in life. They tell me I'll help you in ways I don't know. Whatever. I'll get my reward after. Remember how I tried to help you out? With girls, with sports teams, with ambition, with getting in shape? No? I was tough but fair, wasn't I? Well, now's the chance to show me--or thank me--or give up.[paragraph break]'Oh, one more thing. Snap if you need me. I'm sort of forced to drop by. But don't waste time. I'm saying this for your own good. I'm also taking it easy. So don't feel too good if you win. This is part of my community service or whatever.'";
@@ -279,7 +290,7 @@ to decide what indexed text is arg of (cc - a concept):
 	if cc is neutral:
 		decide on "?";
 
-girls is a concept. money is a concept. shape is a concept. sport teams is a concept.
+girls is a concept. money is a concept. body shape is a concept. sport teams is a concept.
 
 the Bowflex Machine is a fixed in place thing in Den. description is "It has a bar you can PULL, or you can SET the machine to a weight other than [setval of bowflex].". "A Bowflex machine, slightly disused, is here. It's currently set up for a lat-pull down. It has a bar you can pull down and is set to [setval of Bowflex]."
 
@@ -378,6 +389,8 @@ carry out logining:
 	if noun is not a person:
 		say "That doesn't work--log in as a person." instead;
 	if noun is player:
+		if location of player is not living room:
+			say "Nothing to log into, here." instead;
 		if computer is you-log:
 			say "You already are." instead;
 		say "[if computer is h-log]You log Harley out, then[else]You[end if] log yourself in.";
@@ -470,7 +483,7 @@ Rule for printing a parser error when the latest parser error is the I beg your 
 	say "[if harley's is visible]Harley sighs, exasperated[else]You think a minute while Harley is in another room[end if]."
 
 Rule for printing a parser error when the latest parser error is the didn't understand error:
-	say "Sorry, I didnt understand that. The main commands are to look, examine, SNAP for Harley, or SHOW him something[if player is in living room]. You can also LOGIN to the computer[end if][if player is in den]. You can also SET the bowflex to a number[end if]. If you're desperate, WALKTHROUGH."
+	say "Sorry, I didnt understand that. The main commands are to look, examine, SNAP for Harley, or SHOW him something. You can also [if player is in living room]LOGIN to the computer[else if player is in den]SET the bowflex to a number[else]use different commands for specific thing in other rooms[end if]. If you're desperate, WALKTHROUGH."
 
 Rule for printing a parser error when the latest parser error is the not a verb I recognise error:
 	say "Sorry, I didnt understand that. The main commands are to look, examine, SNAP for Harley, or SHOW him something[if player is in living room]. You can also LOGIN to the computer[end if][if player is in den]. You can also SET the bowflex to a number[end if]. If you're desperate, WALKTHROUGH."
@@ -511,6 +524,23 @@ understand "about" as abouting.
 carry out abouting:
 	say "This game was originally submitted to EctoComp 2013. It had no testers.[paragraph break]It's basically about one's own fears dealing with a jerk, and how much those fears matter, and how to deal with that.[paragraph break]ClubFloyd members DavidW, Genericgeekgirl, and others played this game and pointed out some bugs and missed implementations. I'm also grateful to fellow EctoComp contestants who provided feedback and ideas and encouragement. If you're interested in writing a brief text adventure, whether you've done so before or not, EctoComp is totally a great venue for that.";
 	the rule succeeds;
+
+chapter xyzzying
+
+xyzzying is an action out of world.
+
+understand the command "xyzzy" as something new.
+
+understand "xyzzy" as xyzzying.
+
+carry out xyzzying:
+	say "You remember Harley snickering about some in-joke while excoriating nerd trivia. You know how to work around that now, but MAN, that hurt back in the day.";
+	the rule succeeds;
+
+volume debug - not for release
+
+when play begins:
+	now debug-state is true;
 
 volume tests - not for release
 
