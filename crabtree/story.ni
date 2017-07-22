@@ -4,7 +4,9 @@ part headings
 
 [Release along with cover art.] [not available on playfic]
 
-the release number is 2.
+the release number is 3.
+
+[release 2 allowed you to define a state as its abbreviation. release 3 tweaked the source and linked VA and TN]
 
 the story creation year is 2012.
 
@@ -13,6 +15,8 @@ the story description is "Can you tour through the mainland US, touching each of
 the story genre is "Puzzle/Slice of Life"
 
 the story headline is "Be a Geography Whiz!"
+
+Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
 part definitions
 
@@ -31,11 +35,15 @@ chapter bordering
 
 Bordering relates us-states to each other. The verb to border (he borders, they border, it is bordered) implies the bordering relation.
 
-section borders
+section separate states
 
 Alaska is a us-state. Alaska is non-mainland.
 
 Hawaii is a us-state. Hawaii is non-mainland.
+
+section borders
+
+[these are listed alphabetically by state-bordered]
 
 Tennessee, Georgia, Florida, and Mississippi border Alabama.
 
@@ -47,35 +55,35 @@ Oregon and Nevada border California.
 
 Wyoming, Nebraska, Kansas, Oklahoma, New Mexico, and Utah border Colorado.
 
-Massachusetts, Rhode Island, New York border Connecticut.
+Massachusetts, Rhode Island, and New York border Connecticut.
 
-Pennsylvania, New Jersey, Maryland border Delaware.
+Pennsylvania, New Jersey, and Maryland border Delaware.
 
 Georgia borders Florida.
 
-Tennessee, North Carolina, South Carolina border Georgia.
+Tennessee, North Carolina, and South Carolina border Georgia.
 
-Montana, Wyoming, Utah, Nevada, Oregon, Washington border Idaho.
+Montana, Wyoming, Utah, Nevada, Oregon, and Washington border Idaho.
 
 Wisconsin, Indiana, Kentucky, Missouri and Iowa border Illinois.
 
-Kentucky, Ohio, Michigan border Indiana.
+Kentucky, Ohio, and Michigan border Indiana.
 
-Wisconsin, Minnesota, Missouri, Nebraska, South Dakota border Iowa.
+Wisconsin, Minnesota, Missouri, Nebraska, and South Dakota border Iowa.
 
-Nebraska, Missouri, Oklahoma border Kansas.
+Nebraska, Missouri, and Oklahoma border Kansas.
 
-Ohio, West Virginia, Virginia, Tennessee, Missouri, North Carolina border Kentucky.
+Ohio, West Virginia, Virginia, Tennessee, and Missouri border Kentucky.
 
-Mississippi, Texas border Louisiana.
+Mississippi and Texas border Louisiana.
 
 New Hampshire borders Maine.
 
-Pennsylvania, Virginia, West Virginia border Maryland.
+Pennsylvania, Virginia, and West Virginia border Maryland.
 
-Vermont, New Hampshire, Rhode Island, Connecticut, New York border Massachusetts.
+Vermont, New Hampshire, Rhode Island, Connecticut, and New York border Massachusetts.
 
-Minnesota, Wisconsin, Ohio border Michigan.
+Minnesota, Wisconsin, and Ohio border Michigan.
 
 Wisconsin, South Dakota and North Dakota border Minnesota.
 
@@ -83,23 +91,23 @@ Tennessee borders Mississippi.
 
 Tennessee, Arkansas, Oklahoma, Kansas, and Nebraska border Missouri.
 
-North Dakota, South Dakota, Wyoming border Montana.
+North Dakota, South Dakota, and Wyoming border Montana.
 
-South Dakota, Wyoming border Nebraska.
+South Dakota and Wyoming border Nebraska.
 
-Oregon, Utah border Nevada.
+Oregon and Utah border Nevada.
 
 Vermont borders New Hampshire.
 
 New York and Pennsylvania border New Jersey.
 
-Utah, Oklahoma, Texas border New Mexico.
+Utah, Oklahoma, and Texas border New Mexico.
 
 Pennsylvania, Vermont border New York.
 
 Virginia, South Carolina, Georgia, Tennessee border North Carolina.
 
-South Dakota border North Dakota.
+South Dakota borders North Dakota.
 
 Pennsylvania, West Virginia border Ohio.
 
@@ -107,17 +115,11 @@ Texas borders Oklahoma.
 
 Washington borders Oregon.
 
-West Virginia border Pennsylvania.
-
-understand "ri" as rhode island.
-
-understand "sc" as south carolina.
+West Virginia borders Pennsylvania.
 
 Wyoming borders South Dakota.
 
-understand "tn" as tennessee.
-
-understand "tx" as texas.
+Virginia borders Tennessee.
 
 West Virginia borders Virginia.
 
@@ -408,7 +410,7 @@ use no scoring.
 
 init-state is a us-state that varies.
 
-new york, connecticut, massachusetts, rhode island, vermont, new hampshire, georgia are undoable;
+New York, Connecticut, Massachusetts, Rhode island, Vermont, New hampshire, and Georgia are undoable.
 
 Mrs Crabtree is a person. "Mrs. Crabtree is sitting at her desk here, waiting for your next move."
 
@@ -447,20 +449,6 @@ when play begins:
 	[try showing-borders;]
 
 Chapter after-reading
-
-[this after-command parsing is disabled at playfic due to a release-only bug, it seems.]
-
-[after reading a command:
-	if the player's command exactly matches the text "south dakota":
-		change the text of the player's command to "sd";
-	if the player's command exactly matches the text "north dakota":
-		change the text of the player's command to "nd";
-	if the player's command exactly matches the text "south carolina":
-		change the text of the player's command to "sc";
-	if the player's command exactly matches the text "north carolina":
-		change the text of the player's command to "nc";
-	if the player's command exactly matches the text "west virginia":
-		change the text of the player's command to "wv";]
 
 carry out requesting the score:
 	say "You have visited [number of visited us-states] of 48 contiguous states. Do you wish to see which are left?";
