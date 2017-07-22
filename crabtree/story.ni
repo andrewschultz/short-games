@@ -22,7 +22,7 @@ part definitions
 
 chapter types
 
-a us-state is a kind of thing. a us-state is either visited or unvisited. a us-state is usually unvisited. a us-state is either mainland or non-mainland. a us-state is usually mainland. a us-state is either doable or undoable. a us-state is usually doable.
+a us-state is a kind of thing. a us-state is either visited or unvisited. a us-state is usually unvisited. a us-state is either mainland or non-mainland. a us-state is usually mainland. a us-state is doable, untricky, tricky or undoable. a us-state is usually doable.
 
 A us-state has some indexed text called the abbrev. Understand the abbrev property as describing the us-state.
 [ Understand "[abbrev of us-state]" as the us-state.]
@@ -239,12 +239,17 @@ carry out starting a thing (called the state):
 	now current-state is state;
 	now state is visited;
 	now init-state is current-state;
-	if the state is undoable:
-		say "The other kids around murmur and giggle. You swear you hear some duh-duh-duh noises. Maybe [state] is not the best choice. But you can start there if you want." instead;
 	if already-started is true:
-		say "You hear a sigh and glimpse an eye-roll as you change your starting state yet again.";
+		say "You hear a sigh and glimpse an eye-roll as you change your starting state yet again.[paragraph break]";
+	if the state is undoable:
+		say "The other kids around murmur and giggle. You swear you hear some duh-duh-duh noises. Maybe [state] is not the best choice. But you can start there if you want.";
+	else if the state is tricky:
+		say "You hear a quickly suppressed 'ooh.' Maybe [state] will be a bit tricky.";
+	else if the state is untricky:
+		say "You hear a quickly suppressed 'but...' Perhaps [state] is not fully challenging, but nobody can stop you. You're the star, here!";
+	else:
+		say "You are now starting in [current-state].";
 	now already-started is true;
-	say "You are starting in [current-state].";
 
 chapter maineing
 
@@ -412,6 +417,10 @@ init-state is a us-state that varies.
 
 New York, Connecticut, Massachusetts, Rhode island, Vermont, New hampshire, and Georgia are undoable.
 
+Maine is untricky.
+
+Alabama, New Jersey, North Carolina, and Pennsylvania are tricky.
+
 Mrs Crabtree is a person. "Mrs. Crabtree is sitting at her desk here, waiting for your next move."
 
 Mrs Crabtree is in Geography Class.
@@ -577,3 +586,15 @@ to say my-map:
 [line break]                                         +-+
 [paragraph break]";
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
+
+volume amusing
+
+table of final question options (continued)
+final question wording	only if victorious	topic	final response rule	final response activity
+"SEE which states are tricky/impossible and why"	true	"see"	show-tricky rule	--
+
+this is the show-tricky rule:
+	say "Georgia leaves Florida, South Carolina, and Maine as dead ends. With Alabama you can sneak to Florida first and wind up in Maine.";
+	say "Once you step on New York, you divide the map in two. So you had better have one side done before taking on the other. Starting anywhere northeast of New York, thus, means you'll need all those states covered. But if you do not start in Maine, Maine is a dead end.";
+	say "Alabama, Pennsylvania, North Carolina and New Jersey are a bit tricky because there are immediate losing moves.";
+	the rule succeeds;
