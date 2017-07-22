@@ -593,6 +593,12 @@ to say my-map:
 [paragraph break]";
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
+rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
+	say "That's not a state or abbreviation you recognize. The main commands are START (state/abbreviation) and (state/abbreviation)."
+
+rule for printing a parser error when the latest parser error is the i beg your pardon error:
+	say "You take a bit of time to pause. But not too much."
+
 volume amusing
 
 table of final question options (continued)

@@ -10,3 +10,4 @@ The numbered links go to IFDB (the Interactive Fiction Database) while the wordy
 * 2014 [IFDB Entry](http://ifdb.tads.org/viewcomp?id=e5dj3yvlrykixs1e) and [Candy Rush Saga, local project](2014)
 * 2015 [IFDB Entry](http://ifdb.tads.org/viewcomp?id=4efcfdg9wbx2cjk0) and [Heezy Park, local project](2015)
 * 2016 [IFDB Entry](http://ifdb.tads.org/viewcomp?id=8enhcyktio2iywzm) and [A Checkered Haunting, local project](2016)
+* as a bonus, Mrs. Crabtree's Geography Class, which isn't an EctoComp game but is sort of speed-if. [http://ifdb.tads.org/viewgame?id=k1y9t9tm02vl1s](IFDB link) / [http://playfic.com/games/AndrewS/mrs-crabtrees-geography-class](Playfic.com link)
