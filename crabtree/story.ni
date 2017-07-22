@@ -22,7 +22,9 @@ part definitions
 
 chapter types
 
-a us-state is a kind of thing. a us-state is either visited or unvisited. a us-state is usually unvisited. a us-state is either mainland or non-mainland. a us-state is usually mainland. a us-state is doable, untricky, tricky or undoable. a us-state is usually doable.
+a us-state is a kind of thing. a us-state is either visited or unvisited. a us-state is usually unvisited. a us-state is either mainland or non-mainland. a us-state is usually mainland.
+
+a us-state can be doable, untricky, tricky or undoable. a us-state is usually doable.
 
 A us-state has some indexed text called the abbrev. Understand the abbrev property as describing the us-state.
 [ Understand "[abbrev of us-state]" as the us-state.]
@@ -235,6 +237,10 @@ carry out starting a thing (called the state):
 		say "It's too late to change your starting state." instead;
 	if the state is not a us-state:
 		say "You need to specify a state or its abbreviation." instead;
+	if state is current-state:
+		say "You're already starting in [current-state]." instead;
+	if state is not mainland:
+		say "Not even the class cut-up would joke about starting in [state]. It is not part of the mainland. But it would be a nice place to visit someday!" instead;
 	now current-state is not visited;
 	now current-state is state;
 	now state is visited;
