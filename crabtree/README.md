@@ -1,5 +1,5 @@
 
-Mrs Crabtree's Geography Class has online play [http://playfic.com/games/AndrewS/mrs-crabtrees-geography-class](Playfic.com link), and it has an [http://ifdb.tads.org/viewgame?id=k1y9t9tm02vl1s]IFDB link.
+Mrs Crabtree's Geography Class has online play [Playfic.com link](http://playfic.com/games/AndrewS/mrs-crabtrees-geography-class), and it has an [IFDB link](http://ifdb.tads.org/viewgame?id=k1y9t9tm02vl1s).
 
 This version will be kept more up-to-date. When I wrote Crabtree back in 2012, Playfic.com had stringent rules on game memory, and some of the user-friendliness features were omitted.
 

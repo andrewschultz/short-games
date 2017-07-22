@@ -387,10 +387,12 @@ chapter statusing
 statusing is an action out of world;
 
 to say mainecheck:
-	if init-state is not maine:
-		say " She gives you an extra one for not starting in Maine!";
-	otherwise:
-		say " Maybe you will get a bonus if you do not start in Maine next time!"
+	if init-state is tricky:
+		say "You get an extra gold star for starting in a tricky state!";
+	else if init-state is doable:
+		say " You get a star and a smiley face sticker for not starting in Maine!";
+	else:
+		say " Maybe you will get an extra bonus if you do not start in Maine next time!"
 
 to try statusing:
 	if number of unvisited mainland us-states is 0:
@@ -405,7 +407,8 @@ to try statusing:
 		say "Oh no! Dead end! Mrs. Crabtree tut-tuts, and you walk back to your seat in awkward silence. At least you did not cost the class free ice cream bars.";
 		end the story;
 		rule succeeds;
-	say "You are in [current-state]. You have [number of unvisited mainland us-states] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit:";
+	let nu be number of unvisited mainland us-states;
+	say "You are in [current-state]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit:";
 	now comma-flag is false;
 	repeat with state1 running through us-states:
 		if current-state borders state1 AND state1 is unvisited:
@@ -425,7 +428,7 @@ New York, Connecticut, Massachusetts, Rhode island, Vermont, New hampshire, and 
 
 Maine is untricky.
 
-Alabama, New Jersey, North Carolina, and Pennsylvania are tricky.
+Alabama, Idaho, New Jersey, Oregon, North Carolina, and Pennsylvania are tricky.
 
 Mrs Crabtree is a person. "Mrs. Crabtree is sitting at her desk here, waiting for your next move."
 
@@ -594,7 +597,7 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	say "That's not a state or abbreviation you recognize. The main commands are START (state/abbreviation) and (state/abbreviation)."
+	say "That's not a state or abbreviation you recognize. The main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
@@ -606,7 +609,17 @@ final question wording	only if victorious	topic	final response rule	final respon
 "SEE which states are tricky/impossible and why"	true	"see"	show-tricky rule	--
 
 this is the show-tricky rule:
-	say "Georgia leaves Florida, South Carolina, and Maine as dead ends. With Alabama you can sneak to Florida first and wind up in Maine.";
-	say "Once you step on New York, you divide the map in two. So you had better have one side done before taking on the other. Starting anywhere northeast of New York, thus, means you'll need all those states covered. But if you do not start in Maine, Maine is a dead end.";
-	say "Alabama, Pennsylvania, North Carolina and New Jersey are a bit tricky because there are immediate losing moves.";
+	say "Starting in Georgia leaves Florida, South Carolina, and Maine as dead ends, but you can only have one dead end as you go forward.[paragraph break]";
+	say "Once you step on New York, you divide the map in two. So you had better have one side done before taking on the other. Starting anywhere northeast of New York, thus, means you'll need all those states covered. But if you do not start in Maine, Maine is a dead end. That makes starting in Maine easier, as once you cover the Northeast, you can go any which way.[paragraph break]";
+	say "Some states have immediately losing first moves: from Alabama, you must go to Florida. From Idaho or Oregon, Washington. From North Carolina, South Carolina. Also, moving from Pennsylvania to New Jersey or vice versa also splits the map in two.[paragraph break]";
+	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends."
 	the rule succeeds;
+
+volume tests
+
+[when play begins:
+	repeat with Q running through us-states:
+		let J be the number of us-states that border Q;
+		if J < 3 and J > 0:
+			say "[q] [j]."]
+
