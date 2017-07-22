@@ -293,7 +293,7 @@ Rule for printing a parser error when the latest parser error is the not a verb 
 
 Rule for printing a parser error when the latest parser error is the can't see any such thing error:
 	say "Sorry, that's not examinable, especially not in SpeedIF. I know I didn't implement the costumes or the kids['] candy bags (uh, less temptation,) but--they're eponymous enough, I hope you have an idea."
-	
+
 chapter dumb verbs
 
 instead of sleeping:
@@ -392,12 +392,12 @@ to say who of (r - a room):
 
 book not-talking
 
-Understand "talk to [someone]" as talking to. Understand "talk to [something]" as talking to. Talking to is an action applying to one thing. 
+Understand "talk to [someone]" as talking to. Understand "talk to [something]" as talking to. Talking to is an action applying to one thing.
 
-Instead of asking someone to try doing something: 
+Instead of asking someone to try doing something:
 	say "You can't talk. But you can blink.";
 
-Instead of answering someone that something: 
+Instead of answering someone that something:
 	say "You can't talk. But you can blink.";
 
 instead of talking to someone:

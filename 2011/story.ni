@@ -6,8 +6,8 @@ Include Basic Screen Effects by Emily Short.
 
 Use no scoring.
 
-Use American dialect.  
- 
+Use American dialect.
+
 The story description is "Nobody knows what's behind the big push for an all-Candy Corn Halloween in Vanillaville. It's probably too trivial for the super logical types.[paragraph break]That's where you, Dash Slapney, come in. You're not particularly good at sleuthing, but you're heinously underestimatable.".
 
 The story genre is "Fiction, Comedy".
@@ -44,7 +44,7 @@ The description of your favorite plastic wastebasket is "[one of]It's so favorit
 A thing can be examined or unexamined.
 
 Carry out examining something:
-	now the noun is examined. 
+	now the noun is examined.
 
 
 The description of a disturbingly corroded battery is "It's a bit rusty and apparently not quite at its expiration date yet[if battery is unexamined]. It can't be too dangerous, since it hasn't bored a hole in the wastebasket yet, but you still can't remember when you bought it[end if]."
@@ -206,7 +206,7 @@ carton of cigarettes is a thing.
 
 the broken parking meter is scenery in seedy street. "It's a semi-newfangled one with a digital timer blinking 88:88."
 
-The seedy youth is a man. He is in Seedy Street. 
+The seedy youth is a man. He is in Seedy Street.
 
 The description of the seedy youth is "He's wearing a t-shirt that says UP WITH VANDALISM."
 
@@ -243,7 +243,7 @@ carry out walkthruing:
 		say "get all.answer phone.w.n.fill bucket.get all.s.w.get all.e.s.sign.s[paragraph break]splash water on boy.s.enter car.drive to gas station.open glove compartment.get chocolate bar.get out.give bar to smitty.enter car.drive to seedy street.give shaving cream.give toothpaste tube.drive to golf course.switch loudspeaker.drive to hospital.put battery in brownie.get out.n.give box to boy.s.enter car.drive to pecklers.wear costume.get out.n.put carton in fireplace.d.open cabinet.get document.u.s.enter car[paragraph break]drive to corny's.get out.n.show document to corny.s.enter ford.drive to city hall.get out.n.show document to mayor.show invoice to mayor.show files to mayor.get out.n.u.sleep";
 	otherwise:
 		say "Back to playing it straight, Dash. Henrietta Peckler would approve, for sure."
-		
+
 instead of asking:
 	say "You have nothing interesting to say beyond utter trivialities. Well, you do, but an interesting conversation would get in the way of your job. And a boring one would just suck."
 
@@ -289,7 +289,7 @@ check giving chocolate bar to:
 	now chocolate bar is off-stage;
 	now gas station is not goable;
 	now player has the costume instead;
-	
+
 check giving costume to Smitty:
 	say "Did you see how eagerly he gave it to you? He doesn't want it back."
 
@@ -489,7 +489,7 @@ check splashing:
 	if noun is Henrietta Peckler:
 		say "She's got the police in her pocket in this town, somehow. Not money. Just guilt trips." instead;
 	say "You don't need to soak them.";
-			
+
 splashing is an action applying to two visible things.
 
 understand the command "splash [something] at/on [something]" as something new.
@@ -585,7 +585,7 @@ check giving a crit-doc to:
 
 chapter smoking
 
-smoking is an action applying to one thing. understand the command "smoke [something]" as something new. understand "smoke [something]" as smoking. 
+smoking is an action applying to one thing. understand the command "smoke [something]" as something new. understand "smoke [something]" as smoking.
 
 instead of smoking the carton of cigarettes:
 	say "You remember wanting to be a heavy smoker when you were a kid, but then you realized that meant actually inhaling lots of smoke. Screw that.[paragraph break]But if there was a way to piss certain people off with cigarette smoke without smoking, man, you'd do it.";
@@ -659,7 +659,7 @@ rule for printing a parser error:
 			say "Sorry, the author didn't have time to figure how to say KIDS. Just do something to the annoying boy. Or girl.";
 			reject the player's command;
 	continue the action;
-		
+
 
 Book tests - not for release
 

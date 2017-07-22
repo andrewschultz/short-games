@@ -56,7 +56,7 @@ check showing comics to ghost:
 
 check showing politics to ghost:
 	say "Oh no. Arguments about politics with Harley are a bad idea. He could hold his own with the debate team and throw kneejerk logic at you over both sides of current debates." instead;
-	
+
 check showing showbiz to ghost:
 	say "Ah yes,' says Harley, 'people who don't deserve to be as famous as I am. People who deserved to be in a car accident more than I did. People who--well, probably followed their dreams more than YOU did.'" instead;
 
@@ -93,10 +93,10 @@ instead of waving hands:
 
 instead of singing:
 	say "'God, your taste in music--you're nice and all but...' says Harley[unless ghost is visible] from another room[end if]."
-	
+
 instead of jumping:
 	say "Harley has you covered in the vertical leap department.";
-	
+
 instead of burning:
 	say "Harley's memory doesn't deserve arson. Nor do his neighbors. He was/is just a jerk."
 
@@ -128,30 +128,30 @@ check showxing it to:
 		if girls is not neutral:
 			say "You've already talked with Harley about relationships. You've made your choice." instead;
 		say "You show Harley the picture of Fran. Not that you care what he has to say, but just to show him you've found someone you're happy with. 'I always thought you might be...' you have the confidence to cut him off. 'Hey, I'm all for that sort of rights, only stupid people aren't...' You throw your hands up. Because it doesn't matter either way. It never did. You've said it to yourself, but you believe it more, now.";
-		now harley-bored is a random number between 7 and 7;
+		now harley-bored is a random number between 5 and 5;
 		now girls is nice instead;
 	if noun is Dear John letter:
 		if girls is not neutral:
 			say "You've already talked with Harley about relationships. You've made your choice." instead;
 		say "You show Harley the letter. It's rough stuff. But you realize he deserves this comeuppance from SOMEone. Why not you? You give him the smile and 'tcch' he used to give yo after winning an argument.";
-		now harley-bored is a random number between 7 and 7;
+		now harley-bored is a random number between 5 and 5;
 		now girls is mean instead;
 	if noun is diet pills:
 		if shape is not neutral:
 			say "You've already showed Harley you're in better shape than he is." instead;
 		say "It's a bit mean, but hey, you show Harley the pills then point to his robe. Is there a reason it is loose? Why yes, yes, there is. Harley screams with rage. You feel like you've taken a point off him.";
-		now harley-bored is a random number between 7 and 7;
+		now harley-bored is a random number between 5 and 5;
 		now shape is mean instead;
 	if noun is jersey:
 		if sport teams is not neutral:
 			say "You already discussed sports with Harley." instead;
 		say "You show Harley the Typer Twinkleteeth jersey. Harley knows about the scandal. It's about more than wins or losses. It's really embarrassing. Harley looks a good deal like Tyler.";
-		now harley-bored is a random number between 7 and 7;
+		now harley-bored is a random number between 5 and 5;
 		now sport teams is mean instead;
 	if sport teams is neutral:
 		if noun is sports section:
 			say "You point to what was undoubtedly a well played game between your Ramen Golems and Harley's Delinquents. Yes, you had the home field advantage, but there may be a return ma.... 'Dammit!' yells Harley. 'I can't take that crap.'";
-			now harley-bored is a random number between 7 and 7;
+			now harley-bored is a random number between 5 and 5;
 			now sport teams is nice instead;
 		if noun is newspaper or noun is part of newspaper:
 			say "Harley looks very, very bored with plain old news. You fail to make it interesting to him." instead;
@@ -165,11 +165,11 @@ check showxing it to:
 			say "Harley says, 'Snazzy, huh?'" instead;
 		if noun is you-log:
 			say "Harley looks soberly at your payments. You're doing rather well, he must admit. He squawks about how it's not the best return for your money, but you say you're happy. It's going further than you thought. You don't need all the things he said you didn't admit you wanted. 'No tax refund that way.' he says. You mention you do not need one. He growls.";
-			now harley-bored is a random number between 7 and 7;
+			now harley-bored is a random number between 5 and 5;
 			now money is nice instead;
 		if noun is h-log:
 			say "Harley almost yells with rage as you point out his refinancing and loans from 401k and so forth. This from someone whose parents were so rich! Who expected to make money! You don't feel as good about this as you should, but hey, neither does Harley. 'Ah-ha!' you say. 'That's why your place is so minimalist!'";
-			now harley-bored is a random number between 7 and 7;
+			now harley-bored is a random number between 5 and 5;
 			now money is mean instead;
 	if noun is wallet:
 		say "'Cheap wallet, dude.'";
@@ -204,7 +204,7 @@ the jersey is a wearable thing. description of jersey is "[one of]It's of Tyler 
 
 check wearing jersey:
 	say "No way. It's a horrible color, Twinkleteeth was a jerkwad before the 'incident,' you hate the team--and it's a size too large for you.[paragraph break]Besides, you have a Steamroller Mannheim jersey of your own. You totally bought it before he became the Ramen Golems['] best player.";
-	
+
 instead of kissing harley's ghost:
 	say "That would be trolling. Besides, you have Fran."
 
@@ -245,18 +245,20 @@ description of Harley's Ghost is "Even in the afterlife, he wears a popped colla
 
 check going up:
 	say "You can't fly." instead;
-	
+
 check going down:
 	say "You can't sink into the ground. And if you could, you wouldn't want to." instead;
-	
+
 check going nowhere:
 	say "Harley would laugh at you if you ran into a wall. Plus it would kind of hurt." instead;
-	
+
 when play begins:
 	now right hand status line is "[arg of girls][arg of money][arg of shape][arg of sport teams]";
-	say "You read it in the local suburban newspaper. Harley Drotz crashed his SUV. A fine young American who worked as some unwholesome cross of lawyer and salesman not possible before the Internet revolution.[paragraph break]Funeral November 2nd. Visitations, wake, etc. You don't care about that. You remember him as some guy who'd start an argument just to win it. The paper has his address--and you think back to long ago, when you and some friends walked by his parents['] house. Everyone pissed on the lawn, except you. It wasn't that you hadn't drunk enough Kool-Aid. You were just a bit scared to. Your friends punched you for that. And perhaps you're mean, or biased, but the family quotes remind you of eulogies for corrupt politicians or unfunny comedians. (push any key)";
+	say "You read it in the local suburban newspaper. Harley Drotz crashed his SUV. A fine young American who worked as some unwholesome cross of lawyer and salesman not possible before the Internet revolution. And perhaps you're mean, or biased, but the family quotes remind you of eulogies for corrupt politicians or unfunny comedians.";
 	wait for any key;
-	say "[paragraph break]You googlestalk a bit first, see the notes on the message boards, how he plays the same tricks you remember from high school, a bit refined. You flip a coin. You flip it again when it doesn't fall as you like. And you walk over to his townhome. You remember it's Halloween, but it's well past trick-or-treat time, so you won't get an indecent exposure rap if you just finish business. The rain gets started as you do. Once done, you hide in the overhang by the front door--which swings open. The wind beats the rain against you. (push any key)";
+	say "[line break]Funeral November 2nd. Visitations, wake, etc. You don't care about that. You remember him as some guy who'd start an argument just to win it. The paper has his address--and you think back to long ago, when you and some friends walked by his parents['] house. Everyone pissed on the lawn, except you. It wasn't that you hadn't drunk enough Kool-Aid. You were just a bit scared to. Your friends punched you for that. (push any key)";
+	wait for any key;
+	say "[paragraph break]You googlestalk a bit first, see the notes on the message boards, how he plays the same tricks you remember from high school, a bit more refined now. You flip a coin. You flip it again when it doesn't fall as you like. And you walk over to his townhome. You remember it's Halloween, but it's well past trick-or-treat time, so you won't get an indecent exposure rap if you just finish business. The rain gets started as you do. Once done, you hide in the overhang by the front door--which swings open. The wind beats the rain against you. (push any key)";
 	say "[paragraph break]You hear a voice. 'Dammit! Who is it now?' You tell him.[paragraph break]'Milo McNeeble? Oh. Yeah. It's me. Harley Drotz. But you knew that. What you didn't know is, I've been kept here to help people like you--to help you do better in life. Apparently I'll need to help a bunch of you without you knowing. Like I did in life. They tell me I'll help you in ways I don't know. Whatever. I'll get my reward after. Remember how I tried to help you out? With girls, with sports teams, with ambition, with getting in shape? No? I was tough but fair, wasn't I? Well, now's the chance to show me--or thank me--or give up.[paragraph break]'Oh, one more thing. Snap if you need me. I'm sort of forced to drop by. But don't waste time. I'm saying this for your own good. I'm also taking it easy. So don't feel too good if you win. This is part of my community service or whatever.'";
 	wait for any key;
 
@@ -276,6 +278,7 @@ carry out snaping:
 	else:
 		say "Harley's ghost appears[one of].[or]. 'You, again.'[or]. 'I hope there's a point to this.'[or]. 'Don't waste my time. Maybe you'll learn not to waste yours.'[cycling]";
 		move harley's to location of player;
+		now harley-bored is a random number between 5 and 5;
 	the rule succeeds;
 
 a concept is a kind of thing.
@@ -306,7 +309,7 @@ does the player mean pulling the bar: it is very likely.
 check pulling:
 	if noun is bowflex:
 		say "The Bowflex is too heavy, but you can pull the bar.";
-	
+
 instead of asking something about:
 	say "Harley deftly changes the subject into how you're lousy at small talk or serious talk, and really, you need to SHOW not tell.";
 
@@ -363,12 +366,12 @@ instead of attacking:
 	if noun is player:
 		say "And join Harley for eternity? Hell no." instead;
 	say "Vandalism.";
-		
+
 check requesting the score:
 	repeat with Z running through concepts:
 		say "On the subject of [Z], you [if Z is nice]were nice[else if z is neutral]proved nothing yet[else]were mean[end if] to Harley.";
 	the rule succeeds;
-	
+
 after going when ghost was visible:
 	say "'Can't win arguments by running.'";
 	continue the action;
@@ -416,7 +419,7 @@ instead of taking computer:
 every turn when number of neutral concepts is 0:
 	say "The wind begins to blow. Whoos and ahs prevail. 'It is judgement time for you, Mr. McNeeble! Leave, with the knowledge I was not really trying and that you are lucky you are not the one dead with me rifling through your stuff[if number of carried things > 1]! Speaking of which, give me back mine![end if][if wthru is true]! Oh, and I think you had to cheat to get here. I don't know how, but you did.[end if]'[paragraph break]";
 	do-the-end;
-	
+
 to do-the-end:
 	repeat through table of endies:
 		if goodies entry is number of nice concepts and meanies entry is number of mean concepts:

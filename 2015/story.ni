@@ -131,7 +131,7 @@ for writing a paragraph about a person (called nel) in NW Heezy:
 	now full nelson is mentioned;
 	now half nelson is mentioned;
 	say "Full Nelson and Half Nelson [one of]are arguing[or]continue to argue[stopping] here over who gets what.";
-	
+
 Full Nelson is a person. description is "Several inches taller than Half Nelson and a lot meaner, too. Needs no costume to be scary. He and Half Nelson seem to be arguing over Half Nelson's cut of the 'profits.'"
 
 instead of doing something with Full Nelson:

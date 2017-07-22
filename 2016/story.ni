@@ -1,3 +1,9 @@
+roamin back and forth
+
+set clock to 6:14
+
+Must be the same backwards and forwards
+
 "A Checkered Haunting" by Andrew Schultz
 
 the story headline is "A puzzling afterlife experience".
@@ -343,7 +349,7 @@ Include (-
   for(i = n: i > 1: i-- )
   {
 	j = random(i + 1);
- 
+
 	tmp = profs-->j;
 	profs-->j = profs-->i;
 	profs-->i = tmp;
@@ -440,7 +446,7 @@ definition: a room (called myrm) is clearblack:
 	if magnets are in myrm, decide no;
 	if myrm is blocked-room, decide no;
 	decide yes;
-	
+
 definition: a direction (called d) is okay:
 	if the room d of location of player is nowhere, decide no;
 	if the room d of location of player is visited, decide no;
