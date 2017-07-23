@@ -214,17 +214,18 @@ chapter visiting
 abouting is an action out of world. understand "about" as abouting.
 
 carry out abouting:
-	say "Mrs. Crabtree has chosen YOU to play the game where you travel to all 48 mainland states without touching any one twice. You may VISIT a state or its abbreviation, and you may also see ABBREV(S) or see which states REMAIN. You may also START a state or its abbreviation. You may also say MAINE to start in Maine.[paragraph break]See CREDITS for credits."
+	say "Mrs. Crabtree has chosen YOU to play the game where you travel to all 48 mainland states without touching any one twice. You may VISIT a state or its abbreviation, and you may also see ABBREV(S)/AB/A or see which states REMAIN. You may also START a state or its abbreviation. You may also say MAINE to start in Maine.[paragraph break]See HISTORY for credits and history and more technical stuff."
 
-chapter creditsing
+chapter historying
 
-creditsing is an action applying to nothing.
+historying is an action applying to nothing.
 
-understand the command "credits" as something new.
+understand the command "history" as something new.
 
-understand "credits" as creditsing.
+understand "history" as historying.
 
-carry out creditsing:
+carry out historying:
+	say "I originally thought up this game back in April 2012 to try testing Inform relations. I put it on PlayFic.com, too. I forgot about it as time went by, but Mike Spivey pointed out a small bug (two states should've been marked as touching, Virginia/Tennessee <-> Kentucky/North Carolina) and I came back to it and added some other features and tried other things, including Python scripts to prove you could get through, or to note if a first move was potentially losing.[paragraph break]The project should be at https://github.com/andrewschultz/ectocomp/tree/master/crabtree though ectocomp might change to speed-if in the future. It's been a useful exercise for me, and I hope the source code helps you, or encourages you to have fun learning a new language via your own puzzle you always wondered about.";
 	the rule succeeds;
 
 chapter starting
@@ -428,9 +429,9 @@ New York, Connecticut, Massachusetts, Rhode island, Vermont, New hampshire, and 
 
 Maine is untricky.
 
-Alabama, Idaho, New Jersey, Oregon, North Carolina, and Pennsylvania are tricky.
+Alabama, Delaware, Maryland, Idaho, New Jersey, Oregon, North Carolina, and Pennsylvania are tricky.
 
-Mrs Crabtree is a person. "Mrs. Crabtree is sitting at her desk here, waiting for your next move."
+Mrs Crabtree is a person. "Mrs. Crabtree is sitting at her desk here, waiting for you to pick the next state to visit."
 
 Mrs Crabtree is in Geography Class.
 
@@ -597,7 +598,7 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	say "That's not a state or abbreviation you recognize. The main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map."
+	say "That's not a state or abbreviation you recognize. The main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
@@ -611,8 +612,9 @@ final question wording	only if victorious	topic	final response rule	final respon
 this is the show-tricky rule:
 	say "Starting in Georgia leaves Florida, South Carolina, and Maine as dead ends, but you can only have one dead end as you go forward.[paragraph break]";
 	say "Once you step on New York, you divide the map in two. So you had better have one side done before taking on the other. Starting anywhere northeast of New York, thus, means you'll need all those states covered. But if you do not start in Maine, Maine is a dead end. That makes starting in Maine easier, as once you cover the Northeast, you can go any which way.[paragraph break]";
-	say "Some states have immediately losing first moves: from Alabama, you must go to Florida. From Idaho or Oregon, Washington. From North Carolina, South Carolina. Also, moving from Pennsylvania to New Jersey or vice versa also splits the map in two.[paragraph break]";
-	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends."
+	say "Similarly, Massachusetts, Rhode Island, Connecticut, Vermont and New Hampshire leave no path.";
+	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends--in other words, a place where you need to end your journey.";
+	say "Some states have immediately losing first moves: from Alabama, you must go to Florida. From Idaho or Oregon, Washington. From North Carolina, South Carolina. Also, moving from Pennsylvania to New Jersey or vice versa splits the map in two. Delaware and Maryland to Pennsylvania immediately also fails.[paragraph break]";
 	the rule succeeds;
 
 volume tests
