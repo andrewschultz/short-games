@@ -18,6 +18,17 @@ the story headline is "Be a Geography Whiz!"
 
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
+part zapping unnecessary verbs
+
+understand the command "sorry" as something new.
+understand the command "no" as something new.
+understand the command "yes" as something new.
+understand the command "wave" as something new.
+understand the command "kiss" as something new.
+understand the command "attack" as something new.
+understand the command "shit" and "damn" and "fuck" as something new.
+Understand the command "bother" and "curses" and "drat" and "darn" and "bother" as something new.
+
 part definitions
 
 chapter types
@@ -310,6 +321,8 @@ instead of going northeast: [Nebraska = NE]
 carry out visiting:
 	if the noun is not a us-state, say "You can only visit a state!" instead;
 	if the noun is non-mainland, say "You don't need to visit [noun], but you've heard if you study hard and get an interesting job, you may be able to work or vacation there one day." instead;
+	if noun is current-state:
+		say "That's where you are right now." instead;
 	if noun is visited:
 		say "'I'm sorry, dear, but you already visited [noun],' said Mrs. Crabtree. You furtively look around and think of another state to visit." instead;
 	if current-state borders noun:
@@ -330,7 +343,7 @@ carry out visiting:
 			say "'Hey! [noun] and [current-state] aren't even CLOSE!' someone yells. Mrs. Crabtree tut-tuts them, and you blush slightly." instead;
 
 to say lame-o:
-	say "[one of]dweebazoid[or]space cadet[or]cheater[or]dirty sneak[or]lazy bum[or]mega-[']tard[or]bubble brain[or]weako[or]jubenile deliquent[or]dumbskull[at random]"
+	say "[one of]dweebazoid[or]space cadet[or]cheater[or]flunkasaurus[or]dirty sneak[or]lazy bum[or]mega-dunce[or]bubble brain[or]weaksauce[or]flake[or]meathead[or]smarty[or]geeenius[or]jubenile deliquent[or]dumbskull[at random]"
 
 chapter erase-it
 
@@ -395,6 +408,14 @@ to say mainecheck:
 	else:
 		say " Maybe you will get an extra bonus if you do not start in Maine next time!"
 
+dead-end-yet is a truth state that varies.
+
+to decide which number is unvis-border of (st - a us-state):
+	let temp be 0;
+	repeat with state2 running through us-states:
+		if state2 borders st and state2 is unvisited, increment temp;
+	decide on temp.
+
 to try statusing:
 	if number of unvisited mainland us-states is 0:
 		say "You visited all the states! Mrs. Crabtree gives you a gold star![no line break][mainecheck]";
@@ -408,15 +429,22 @@ to try statusing:
 		say "Oh no! Dead end! Mrs. Crabtree tut-tuts, and you walk back to your seat in awkward silence. At least you did not cost the class free ice cream bars.";
 		end the story;
 		rule succeeds;
-	let nu be number of unvisited mainland us-states;
-	say "You are in [current-state][if nu is 47][tuff-stat of current-state][end if]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit";
-	now comma-flag is false;
 	let ts be 0;
-	repeat with state1 running through us-states:
-		if current-state borders state1 AND state1 is unvisited:
-			increment ts;
-	let cs be 0;
+	let nu be number of unvisited mainland us-states;
+	if dead-end-yet is false and nu < 47:
+		let dead-ends be 0;
+		repeat with state1 running through unvisited us-states:
+			let tb be unvis-border of state1;
+			if state1 does not border current-state and tb is 1, increment dead-ends;
+			say "Dead end [state1] [tb].";
+			if current-state borders state1 AND state1 is unvisited:
+				increment ts;
+		if dead-ends > 1:
+			now dead-end-yet is true;
+			say "You hear the Class Brain snicker. Uh-oh.[paragraph break]"; [you have left 2 dead ends]
+	say "You are in [current-state][if nu is 47][tuff-stat of current-state][end if]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit";
 	say "[if ts is 1] only[else]:[end if]";
+	let cs be 0;
 	repeat with state1 running through us-states:
 		if current-state borders state1 AND state1 is unvisited:
 			if cs > 0 and cs < ts - 1 and ts > 2, say ",";
@@ -607,7 +635,7 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	say "That's not a state or abbreviation you recognize. The main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
+	say "That's not a state or abbreviation you recognize, or something you can do in this game, which has a stripped-down parser.[paragraph break]The main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
