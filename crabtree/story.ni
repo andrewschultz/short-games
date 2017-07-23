@@ -20,6 +20,8 @@ Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
 part zapping unnecessary verbs
 
+[undoing a lot of what's in the standard rules. I'd rather restrict the player from doing anything crazy.]
+
 understand the command "sorry" as something new.
 understand the command "no" as something new.
 understand the command "yes" as something new.
@@ -28,6 +30,7 @@ understand the command "kiss" as something new.
 understand the command "attack" as something new.
 understand the command "shit" and "damn" and "fuck" as something new.
 Understand the command "bother" and "curses" and "drat" and "darn" and "bother" as something new.
+Understand the commands "break", "smash", "hit", "fight", "torture", "wreck", "crack", "destroy", "murder", "kill", "punch" and "thump" as something new.
 
 part definitions
 
@@ -409,6 +412,7 @@ to say mainecheck:
 		say " Maybe you will get an extra bonus if you do not start in Maine next time!"
 
 dead-end-yet is a truth state that varies.
+isolated-yet is a truth state that varies.
 
 to decide which number is unvis-border of (st - a us-state):
 	let temp be 0;
@@ -426,7 +430,7 @@ to try statusing:
 		if current-state borders state1 AND state1 is unvisited:
 			change can-travel to true;
 	if can-travel is false:
-		say "Oh no! Dead end! Mrs. Crabtree tut-tuts, and you walk back to your seat in awkward silence. At least you did not cost the class free ice cream bars.";
+		say "Oh no! Dead end! Mrs. Crabtree tut-tuts, and you walk back to your seat in awkward silence. You hope to do better at year's end, where if everyone gets it right, you all get an extra ice cream bar.";
 		end the story;
 		rule succeeds;
 	let ts be 0;
@@ -436,12 +440,16 @@ to try statusing:
 		repeat with state1 running through unvisited us-states:
 			let tb be unvis-border of state1;
 			if state1 does not border current-state and tb is 1, increment dead-ends;
-			say "Dead end [state1] [tb].";
 			if current-state borders state1 AND state1 is unvisited:
 				increment ts;
 		if dead-ends > 1:
 			now dead-end-yet is true;
-			say "You hear the Class Brain snicker. Uh-oh.[paragraph break]"; [you have left 2 dead ends]
+			say "[brain-snicker]"; [you have left 2 dead ends]
+	if isolated-yet is false and nu < 47 and nu > 1:
+		repeat with state1 running through unvisited us-states:
+			if unvis-border of state1 is 0 and state1 is mainland:
+				now isolated-yet is true;
+				say "[brain-snicker]";
 	say "You are in [current-state][if nu is 47][tuff-stat of current-state][end if]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit";
 	say "[if ts is 1] only[else]:[end if]";
 	let cs be 0;
@@ -452,6 +460,9 @@ to try statusing:
 			if ts > 1 and cs is ts, say " and";
 			say " [state1] ([abbrev of state1])";
 	say ".";
+
+to say brain-snicker:
+	say "You hear the Class Brain snicker[one of][or] again[stopping].[paragraph break]"
 
 to say tuff-stat of (st - a us-state):
 	say "[if st is untricky], an easy state[else if st is tricky], a tricky state[else if st is undoable], which may or may not even be doable[end if]"
