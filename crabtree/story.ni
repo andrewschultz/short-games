@@ -409,15 +409,24 @@ to try statusing:
 		end the story;
 		rule succeeds;
 	let nu be number of unvisited mainland us-states;
-	say "You are in [current-state]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit:";
+	say "You are in [current-state][if nu is 47][tuff-stat of current-state][end if]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit";
 	now comma-flag is false;
+	let ts be 0;
 	repeat with state1 running through us-states:
 		if current-state borders state1 AND state1 is unvisited:
-			if comma-flag is true, say ",";
+			increment ts;
+	let cs be 0;
+	say "[if ts is 1] only[else]:[end if]";
+	repeat with state1 running through us-states:
+		if current-state borders state1 AND state1 is unvisited:
+			if cs > 0 and cs < ts - 1 and ts > 2, say ",";
+			increment cs;
+			if ts > 1 and cs is ts, say " and";
 			say " [state1] ([abbrev of state1])";
-			now comma-flag is true;
 	say ".";
 
+to say tuff-stat of (st - a us-state):
+	say "[if st is untricky], an easy state[else if st is tricky], a tricky state[else if st is undoable], which may or may not even be doable[end if]"
 
 Chapter when play begins
 
