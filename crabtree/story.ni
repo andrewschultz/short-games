@@ -272,25 +272,7 @@ carry out starting a thing (called the state):
 		say "You are now starting in [current-state].";
 	now already-started is true;
 
-chapter maineing
-
-maineing is an action out of world. understand the command "start maine" as something new. understand "start maine" as maineing.
-
-carry out maineing:
-	if current-state is not init-state:
-		say "It's too late to change whether you started in Maine." instead;
-	if current-state is not maine:
-		now current-state is not visited;
-		now current-state is maine;
-		now init-state is maine;
-		now maine is visited;
-		say "You decide to start in Maine." instead;
-	if current-state is maine:
-		while current-state is maine:
-			now current-state is a random us-state that is mainland;
-		now current-state is visited;
-		now init-state is current-state;
-		now maine is unvisited;
+chapter miscellaneous
 
 instead of going nowhere:
 	say "You wouldn't think of ditching Mrs. Crabtree's class!"
@@ -305,6 +287,19 @@ instead of jumping or singing or waving:
 	say "Acting out? Especially when she's let YOU play the game?! For shame!"
 
 description of player is "It doesn't matter how cool your clothes are if you can win this game here!"
+
+chapter hinting
+
+hinting is an action out of world.
+
+understand the command "hint" and "help" as something new.
+
+understand "hint" as hinting.
+understand "help" as hinting.
+
+carry out hinting:
+	say "
+	the rule succeeds;
 
 chapter visiting
 
