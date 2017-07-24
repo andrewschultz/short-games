@@ -281,12 +281,12 @@ Rule for printing a parser error when the latest parser error is the I beg your 
 	try waiting instead;
 
 instead of waiting:
-	say "You hear a few exasperated sighs indicating you should come ON, already!"
+	say "[one of]You hear a few exasperated sighs indicating you should come ON, already[or]Don't take too long to pick the next state[stopping]!"
 
 instead of jumping or singing or waving:
 	say "Acting out? Especially when she's let YOU play the game?! For shame!"
 
-description of player is "It doesn't matter how cool your clothes are if you can win this game here!"
+description of player is "It doesn't matter how cool your clothes are if you can make it through all fifty states!"
 
 chapter hinting
 
@@ -298,7 +298,8 @@ understand "hint" as hinting.
 understand "help" as hinting.
 
 carry out hinting:
-	say "
+	say "It may help to have a map of the USA while playing this game. The text map may not be enough. You should note that since Maine only accesses one state, you either start or end in Maine. Also, be sure never to leave one state with no others you can visit, or it will be trapped.[paragraph break]";
+	say "[one of]Hinting another time will provide further spoilers[or]Florida and Rhode Island and Washington all touch exactly two other states. So you have a forced route through them, unless you start at one of them. Also, while Michigan's upper peninsula  borders Wisconsin, it's simpler to sandwich it between Indiana and Ohio. New York also blocks the rest of the states in the Northeast, so be careful when and iif you cross it. If you're having trouble, start with Maine, clear out the Northeast before New York, and then clear the East coast out, then the West. The Northeast may be particularly tricky for non-US residents because the states are a bit small.[paragraph break]In general, it's an adequate and sensible strategy to sweep from one side of the map to the other. There are a lot of unique solutions, but you can and should keep it simple for yourself[stopping].";
 	the rule succeeds;
 
 chapter visiting

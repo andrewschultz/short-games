@@ -68,6 +68,8 @@ states = {
 
 debug = False
 
+maine_first = False
+
 tries = 0
 foundAny = False
 lines = {}
@@ -87,6 +89,13 @@ def read_data(data_name):
     temp = ""
     data_file = open(data_name)
     for line in data_file:
+        if line.strip().lower() == 'inv':
+            print("Reversing the ignore dict")
+            for temp in lines.keys():
+                if temp in ignore.keys():
+                    ignore.pop(temp, None)
+                else:
+                    ignore[temp] = True
         if re.search("#", line):
             continue;
         if re.search("^X:", line):
@@ -153,6 +162,8 @@ def goThrough(my_lines, startState, allOrOne, pathString, visited):
         # print('REMAINING:', my_lines)
         if len(my_lines) is 1:
             print(pathString, 'is a way through.')
+            pathBackwards = '/'.join(reversed(pathString.split('/')))
+            print(pathBackwards, 'is its reverse.')
             foundAny = True
             return True
     ruhroh = 0
@@ -193,7 +204,8 @@ if findSingletons:
 for x in states.keys():
     state_rev[states[x]] = x
 
-goThrough(lines, 'Maine', False, 'ME', 0)
+if maine_first:
+    goThrough(lines, 'Maine', False, 'ME', 0)
 
 for x in sorted(lines.keys()):
     if x in ignore.keys():
