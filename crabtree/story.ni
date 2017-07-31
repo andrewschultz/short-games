@@ -37,6 +37,15 @@ Understand the command "feel" and "touch" as something new.
 Understand the commands "rub", "shine", "polish", "sweep", "clean", "dust", "wipe" and "scrub" as something new.
 Understand the commands "attach", "fasten", and "tie" as something new.
 understand the command "drink" and "eat" as something new.
+Understand the commands "take [things]" and "take off [something]" and "take [something] off" as something new.
+Understand the commands "take [things inside] from [something]" and "take [things inside] off [something]" as something new.
+Understand the commands "carry" and "hold" and "take" as something new.
+Understand the commands "get [things inside] from [something]" and "get in/on" and "get out/off/down/up" and "get [things]" and "get in/into/on/onto [something]" and "get off/down [something]" as something new.
+Understand the commands "pick up [things]" or "pick [things] up" as something new.
+Understand the commands "stand" and "stand up" and "stand on [something]" as something new.
+Understand the commands "remove [something preferably held]" and "remove [things inside] from [something]" and "shed [something preferably held]" as something new.
+Understand the commands "doff" and "disrobe" and "shed" and "don" and "wear" as something new.
+understand the command "put" as something new.
 
 part definitions
 
@@ -289,6 +298,12 @@ Rule for printing a parser error when the latest parser error is the I beg your 
 instead of waiting:
 	say "[one of]You hear a few exasperated sighs indicating you should come ON, already[or]Don't take too long to pick the next state[stopping]!"
 
+instead of taking inventory:
+	say "Don't futz with what's on your desk. Keep your mind on the states!" instead;
+
+instead of thinking:
+	say "Hmm.";
+
 instead of sleeping:
 	say "How rude! Mrs. Crabtree is a GOOD teacher, even when tyou're not playing the geography game." instead;
 
@@ -525,9 +540,10 @@ Chapter after-reading
 carry out requesting the score:
 	say "You have visited [number of visited us-states] of 48 contiguous states. Do you wish to see which are left?";
 	if the player consents:
-		say "[list of unvisited us-states]";
+		say "[list of unvisited us-states].";
 	else:
 		say "Ok.";
+	the rule succeeds;
 
 Rule for printing a parser error when the latest parser error is the only understood as far as error:
 	say "You may have tripped a state such as South Dakota. It may be more handy to use abbreviations." instead;
@@ -651,7 +667,7 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	say "That's not a state or abbreviation you recognize, or something you can do in this game, which has a stripped-down parser.[paragraph break]The main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
+	say "That's not something you can or need to do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]So the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
