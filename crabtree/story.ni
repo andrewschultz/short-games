@@ -28,9 +28,15 @@ understand the command "yes" as something new.
 understand the command "wave" as something new.
 understand the command "kiss" as something new.
 understand the command "attack" as something new.
+understand the command "burn" and "light" as something new.
+understand the command "cut" and "chop" and "slice" and "prune" as something new.
 understand the command "shit" and "damn" and "fuck" as something new.
 Understand the command "bother" and "curses" and "drat" and "darn" and "bother" as something new.
 Understand the commands "break", "smash", "hit", "fight", "torture", "wreck", "crack", "destroy", "murder", "kill", "punch" and "thump" as something new.
+Understand the command "feel" and "touch" as something new.
+Understand the commands "rub", "shine", "polish", "sweep", "clean", "dust", "wipe" and "scrub" as something new.
+Understand the commands "attach", "fasten", and "tie" as something new.
+understand the command "drink" and "eat" as something new.
 
 part definitions
 
@@ -239,7 +245,7 @@ understand the command "history" as something new.
 understand "history" as historying.
 
 carry out historying:
-	say "I originally thought up this game back in April 2012 to try testing Inform relations. I put it on PlayFic.com, too. I forgot about it as time went by, but Mike Spivey pointed out a small bug (two states should've been marked as touching, Virginia/Tennessee <-> Kentucky/North Carolina) and I came back to it and added some other features and tried other things, including Python scripts to prove you could get through, or to note if a first move was potentially losing.[paragraph break]The project should be at https://github.com/andrewschultz/ectocomp/tree/master/crabtree though ectocomp might change to speed-if in the future. It's been a useful exercise for me, and I hope the source code helps you, or encourages you to have fun learning a new language via your own puzzle you always wondered about.";
+	say "I originally thought up this game back in April 2012 to try testing Inform relations. I put it on PlayFic.com, too. I forgot about it as time went by, but Mike Spivey pointed out a small bug (two states should've been marked as touching, Virginia/Tennessee <-> Kentucky/North Carolina) and I came back to it and added some other features and tried other things, including Python scripts to prove you could get through, or to note if a first move was potentially losing.[paragraph break]The project should be at https://github.com/andrewschultz/ectocomp/tree/master/crabtree though ectocomp might change to speed-if in the future. It's been a useful exercise for me, and I hope the source code helps you, or encourages you to have fun learning a new language via your own puzzle you always wondered about.[paragraph break]The Inform version of this game should have a Trizbort file as well as a PDF and PNG, which can help you visualize the states as a graph. These are game maps and not drawn to scale.";
 	the rule succeeds;
 
 chapter starting
@@ -283,10 +289,13 @@ Rule for printing a parser error when the latest parser error is the I beg your 
 instead of waiting:
 	say "[one of]You hear a few exasperated sighs indicating you should come ON, already[or]Don't take too long to pick the next state[stopping]!"
 
-instead of jumping or singing or waving:
-	say "Acting out? Especially when she's let YOU play the game?! For shame!"
+instead of sleeping:
+	say "How rude! Mrs. Crabtree is a GOOD teacher, even when tyou're not playing the geography game." instead;
 
-description of player is "It doesn't matter how cool your clothes are if you can make it through all fifty states!"
+instead of jumping or singing or waving:
+	say "Acting out? During your big moment in the spotlight?! For shame!"
+
+description of player is "It doesn't matter how cool your clothes are if you can make it through all forty-eight mainland states!"
 
 chapter hinting
 
@@ -521,7 +530,7 @@ carry out requesting the score:
 		say "Ok.";
 
 Rule for printing a parser error when the latest parser error is the only understood as far as error:
-	say "If you're using a directional state, it's probably more convenient to use the abbreviation instead. Unfortunately, playfic's memory limitations and my own programming shortcomings disable the ability to parse, say, South Dakota." instead;
+	say "You may have tripped a state such as South Dakota. It may be more handy to use abbreviations." instead;
 
 Chapter rules
 
