@@ -166,23 +166,10 @@ section corners
 
 Utah corners New Mexico. Colorado corners Arizona.
 
-chapter almosting
-
-Almosting relates us-states to each other. The verb to almost (he almosts, they almost, it is almosted) implies the almosting relation.
-
-section almosts
-
-[this is very subjective but is inserted as an exercise.]
-
-Wisconsin almosts Indiana.
-
-South Carolina almosts Tennessee.
-
 chapter skipping
 
 to decide if (a - a us-state) skipborders (b - a us-state):
 	if a borders b, decide no;
-	if a almosts b, decide no;
 	if a corners b, decide no;
 	if a is b, decide no;
 	repeat with c running through us-states that border a:
@@ -344,15 +331,12 @@ instead of going northeast: [Nebraska = NE]
 to print-move-text (s1 - a us-state) and (s2 - a us-state):
 	repeat through table of special borders:
 		if (s1 is st1 entry and s2 is st2 entry) or (s2 is st1 entry and s1 is st2 entry):
-			say "[txt entry][line break]";
-			break;
+			if there is a txt entry:
+				say "[txt entry][line break]";
+				break;
 	say "You decide to move to [noun].[paragraph break]";
 
 to print-block-text (s1 - a us-state) and (s2 - a us-state):
-	repeat through table of almost borders:
-		if (s1 is st1 entry and s2 is st2 entry) or (s2 is st1 entry and s1 is st2 entry):
-			say "[txt entry][line break]";
-			break;
 	say "The kid next to you whispers, 'Hey! Look closer at the map, [lame-o]!' You do. Those states don't quite border.";
 
 
@@ -370,10 +354,12 @@ carry out visiting:
 		try statusing;
 	otherwise if current-state corners noun:
 		say "'I'm sorry, dear, but we agreed opposite states of the Four Corners don't actually border each other,' says Mrs. Crabtree." instead;
-	otherwise if current-state almosts noun:
-		print-block-text noun and current-state;
-		the rule succeeds;
 	otherwise:
+		repeat through table of almost borders:
+			if (noun is st1 entry and current-state is st2 entry) or (current-state is st1 entry and noun is st2 entry):
+				if there is a txt entry:
+					say "[txt entry][line break]";
+					the rule succeeds;
 		if noun skipborders current-state:
 			if throughborder of noun and current-state is hawaii:
 				say "You can't quite get there. In fact, you bite your lip as you realize you've been through every state between [current-state] to [noun]." instead;
@@ -696,7 +682,9 @@ chapter almost borders
 
 table of almost borders
 st1	st2	txt
-Kansas	Arkansas	"'I'm sorry, dear, Kansas and Arkansas have similar names. but Missouri and Oklahoma JUST box them out.'"
+Kansas	Arkansas	"'I'm sorry, dear. Kansas and Arkansas have similar names, but Missouri and Oklahoma JUST box them out.'"
+Wisconsin	Indiana	--
+South Carolina	Tennessee	--
 
 chapter special borders
 
