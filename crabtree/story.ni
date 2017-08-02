@@ -341,6 +341,21 @@ instead of going inside: [Indiana = IN]
 instead of going northeast: [Nebraska = NE]
 	try visiting nebraska instead.
 
+to print-move-text (s1 - a us-state) and (s2 - a us-state):
+	repeat through table of special borders:
+		if (s1 is st1 entry and s2 is st2 entry) or (s2 is st1 entry and s1 is st2 entry):
+			say "[txt entry][line break]";
+			break;
+	say "You decide to move to [noun].[paragraph break]";
+
+to print-block-text (s1 - a us-state) and (s2 - a us-state):
+	repeat through table of almost borders:
+		if (s1 is st1 entry and s2 is st2 entry) or (s2 is st1 entry and s1 is st2 entry):
+			say "[txt entry][line break]";
+			break;
+	say "The kid next to you whispers, 'Hey! Look closer at the map, [lame-o]!' You do. Those states don't quite border.";
+
+
 carry out visiting:
 	if the noun is not a us-state, say "You can only visit a state!" instead;
 	if the noun is non-mainland, say "You don't need to visit [noun], but you've heard if you study hard and get an interesting job, you may be able to work or vacation there one day." instead;
@@ -349,14 +364,15 @@ carry out visiting:
 	if noun is visited:
 		say "'I'm sorry, dear, but you already visited [noun],' said Mrs. Crabtree. You furtively look around and think of another state to visit." instead;
 	if current-state borders noun:
-		say "You decide to move to [noun].[paragraph break]";
+		print-move-text noun and current-state;
 		change current-state to noun;
 		now current-state is visited;
 		try statusing;
 	otherwise if current-state corners noun:
 		say "'I'm sorry, dear, but we agreed opposite states of the Four Corners don't actually border each other,' says Mrs. Crabtree." instead;
 	otherwise if current-state almosts noun:
-		say "The kid next to you whispers, 'Hey! Look closer at the map, [lame-o]!' You do. Those states don't quite border." instead;
+		print-block-text noun and current-state;
+		the rule succeeds;
 	otherwise:
 		if noun skipborders current-state:
 			if throughborder of noun and current-state is hawaii:
@@ -370,7 +386,11 @@ to say lame-o:
 
 chapter erase-it
 
-understand the command "[direction] [text]" as something new.
+understand the command "[direction]" as something new.
+understand the command "go [direction]" as something new.
+
+understand "[direction]" as going.
+understand "go [direction]" as going.
 
 chapter pondering
 
@@ -671,6 +691,18 @@ rule for printing a parser error when the latest parser error is the noun did no
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
+
+chapter almost borders
+
+table of almost borders
+st1	st2	txt
+Kansas	Arkansas	"'I'm sorry, dear, Kansas and Arkansas have similar names. but Missouri and Oklahoma JUST box them out.'"
+
+chapter special borders
+
+table of special borders
+st1	st2	txt
+Michigan	Wisconsin	"The class brain, who argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts him off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
 
 volume amusing
 
