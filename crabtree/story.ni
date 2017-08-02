@@ -339,7 +339,6 @@ to print-move-text (s1 - a us-state) and (s2 - a us-state):
 to print-block-text (s1 - a us-state) and (s2 - a us-state):
 	say "The kid next to you whispers, 'Hey! Look closer at the map, [lame-o]!' You do. Those states don't quite border.";
 
-
 carry out visiting:
 	if the noun is not a us-state, say "You can only visit a state!" instead;
 	if the noun is non-mainland, say "You don't need to visit [noun], but you've heard if you study hard and get an interesting job, you may be able to work or vacation there one day." instead;
@@ -369,14 +368,6 @@ carry out visiting:
 
 to say lame-o:
 	say "[one of]dweebazoid[or]space cadet[or]cheater[or]flunkasaurus[or]dirty sneak[or]lazy bum[or]mega-dunce[or]bubble brain[or]weaksauce[or]flake[or]meathead[or]smarty[or]geeenius[or]jubenile deliquent[or]dumbskull[at random]"
-
-chapter erase-it
-
-understand the command "[direction]" as something new.
-understand the command "go [direction]" as something new.
-
-understand "[direction]" as going.
-understand "go [direction]" as going.
 
 chapter pondering
 
@@ -541,7 +532,7 @@ when play begins:
 	change right hand status line to "[number of visited us-states]/[number of mainland us-states]"
 	[try showing-borders;]
 
-Chapter after-reading
+Chapter score and parser errors
 
 carry out requesting the score:
 	say "You have visited [number of visited us-states] of 48 contiguous states. Do you wish to see which are left?";
@@ -551,8 +542,21 @@ carry out requesting the score:
 		say "Ok.";
 	the rule succeeds;
 
+table of dirabbrev
+st-abbrev (topic)	st-full
+"n/north carolina"	north carolina
+"s/south carolina"	south carolina
+"n/north dakota"	north dakota
+"s/south dakota"	south dakota
+"w/west virginia"	west virginia
+
 Rule for printing a parser error when the latest parser error is the only understood as far as error:
-	say "You may have tripped a state such as South Dakota. It may be more handy to use abbreviations." instead;
+	repeat through table of dirabbrev:
+		if the player's command matches st-abbrev entry:
+			try visiting st-full entry;
+			say "(NOTE: you can abbreviate directional states.)[line break]";
+			the rule succeeds;
+	say "The verb was okay, and you didn't need to include anything else." instead;
 
 Chapter rules
 
