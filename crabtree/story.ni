@@ -677,8 +677,9 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	if the number of characters in the player's command is 2, say "That's not a state abbreviation." instead;
-	say "That's not something you can or need to do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]The the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
+	if the number of characters in the player's command is 2:
+		say "That's not a state abbreviation." instead;
+	say "That's not something you can, or need to, do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]The the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
@@ -706,6 +707,16 @@ st1	st2	txt
 Michigan	Wisconsin	"The class brain, who has argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts him off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
 Michigan	Minnesota	"You remember Michigan and Minnesota have a water border."
 New York	Rhode Island	"You remember New York and Rhode Island have a water border."
+
+volume not states
+
+understand "pr" as a mistake ("Puerto Rico is not a state, at least not yet. And it's not on the mainland.").
+
+understand "dc" as a mistake ("The District of Columbia is not a state, but there's debate over whether it should be.").
+
+understand "as" and "gu" and "mp" and "vi" and "um" as a mistake ("Fortunately, you don't need to worry about any outlying islands, here.").
+
+understand "fm" and "mh" and "pw" and "pz" and "ph" and "pc" as a mistake ("Now's not the time to show off your knowledge of obscure US territories.").
 
 volume amusing
 
