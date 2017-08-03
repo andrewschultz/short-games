@@ -26,8 +26,9 @@ understand the command "sorry" as something new.
 understand the command "no" as something new.
 understand the command "yes" as something new.
 understand the command "wave" as something new.
-understand the command "kiss" as something new.
+understand the command "kiss", "embrace" and "hug" as something new.
 understand the command "attack" as something new.
+understand the command "scale" and "climb" as something new.
 understand the command "burn" and "light" as something new.
 understand the command "cut" and "chop" and "slice" and "prune" as something new.
 understand the command "shit" and "damn" and "fuck" as something new.
@@ -36,7 +37,7 @@ Understand the commands "break", "smash", "hit", "fight", "torture", "wreck", "c
 Understand the command "feel" and "touch" as something new.
 Understand the commands "rub", "shine", "polish", "sweep", "clean", "dust", "wipe" and "scrub" as something new.
 Understand the commands "attach", "fasten", and "tie" as something new.
-understand the command "drink" and "eat" as something new.
+understand the commands "taste" and "drink" and "eat" as something new.
 Understand the commands "take [things]" and "take off [something]" and "take [something] off" as something new.
 Understand the commands "take [things inside] from [something]" and "take [things inside] off [something]" as something new.
 Understand the commands "carry" and "hold" and "take" as something new.
@@ -46,6 +47,21 @@ Understand the commands "stand" and "stand up" and "stand on [something]" as som
 Understand the commands "remove [something preferably held]" and "remove [things inside] from [something]" and "shed [something preferably held]" as something new.
 Understand the commands "doff" and "disrobe" and "shed" and "don" and "wear" as something new.
 understand the command "put" as something new.
+Understand the commands "pay" and "offer" and "feed" and "give" as something new.
+Understand the commands "present" and "display" and "show" as something new.
+Understand the commands "walk" and "run" as something new.
+Understand the commands "inv" and "inventory" as something new.
+Understand the command "look inside/in/into/through/under/up [something]" as something new.
+understand the commands "close/open/consult/enter/sit/exit" as something new.
+understand the commands "watch", "describe" and "check" as something new.
+understand the commands "adjust", "set", "pull", and "push" as something new.
+Understand the commands "switch", "lock", and "unlock" as something new.
+Understand the commands "rotate", "twist", "unscrew" and "screw" and "turn" as something new.
+Understand the commands "say", "shout" and "speak" and "answer" and "tell" and "ask" as something new.
+Understand the commands "attach" and "fasten" and "tie" as something new.
+Understand the commands "awake" and "awaken" and "wake" as something new.
+Understand the commands "light" and "burn" as something new.
+Understand the commands "swallow" and "sip" and "drink" as something new.
 
 part definitions
 
