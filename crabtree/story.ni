@@ -367,7 +367,7 @@ carry out visiting:
 					the rule succeeds;
 		if noun skipborders current-state:
 			if throughborder of noun and current-state is hawaii:
-				say "You can't quite get there. In fact, you bite your lip as you realize you've been through every state between [current-state] to [noun]." instead;
+				say "You can't quite get there. In fact, you bite your lip as you realize you've been through every state bordering both [current-state] to [noun]." instead;
 			say "You can't move from [current-state] directly to [noun], but [throughborder of noun and current-state] is a possibility." instead;
 		otherwise:
 			say "'Hey! [noun] and [current-state] aren't even CLOSE!' someone yells. Mrs. Crabtree tut-tuts them, and you blush slightly." instead;
@@ -482,7 +482,7 @@ to try statusing:
 			increment cs;
 			if ts > 1 and cs is ts, say " and";
 			say " [state1] ([abbrev of state1])";
-	say ".[if in-parse-error is true][run paragraph on]";
+	say "."
 
 to say brain-snicker:
 	say "You hear the Class Brain snicker[one of][or] again[stopping].[paragraph break]"
@@ -561,16 +561,27 @@ ever-warn-dir is a truth state that varies.
 Rule for printing a parser error when the latest parser error is the only understood as far as error:
 	repeat through table of dirabbrev:
 		if the player's command matches st-abbrev entry:
-			now in-parse-error is true;
 			if ever-warn-dir is false:
 				say "(NOTE: you can abbreviate directional states.)[paragraph break]";
 				now ever-warn-dir is true;
 			try visiting st-full entry;
-			now in-parse-error is false;
 			the rule succeeds;
 	say "The verb was okay, and you didn't need to include anything else." instead;
 
-in-parse-error is a truth state that varies.
+section get rid of that line break
+
+[thanks to Mike Ciul]
+
+Converting parser error to action is a truth state that varies.
+
+Before printing a parser error (this is the not yet converting parser error to action rule):
+	Now converting parser error to action is false.
+
+After printing a parser error when converting parser error to action is true (this is the prevent extra line breaks when converting parser error to action rule):
+	say run paragraph on.
+
+Before doing anything when the printing a parser error activity is going on (this is the now converting parser error to action rule):
+	Now converting parser error to action is true.
 
 Chapter rules
 
@@ -677,12 +688,28 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	if the number of characters in the player's command is 2:
-		say "That's not a state abbreviation." instead;
+	if the number of characters in the player's command is 2 and the number of words in the player's command is 1:
+		repeat through table of Coast Guard abbreviations:
+			if the player's command matches the text "[cg entry]", case insensitively:
+				say "You use the Coast Guard abbreviation for [cg-state entry], intentionally or not.";
+				try visiting cg-state entry instead;
+		say "That's not a state abbreviation--you can check them with ABBREV." instead;
 	say "That's not something you can, or need to, do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]The the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
+
+table of Coast Guard abbreviations [note MS=Massachusetts MI=Mississippi but these are covered]
+cg	cg-state
+"CF"	California
+"CL" 	Colorado
+"DL"	Delaware
+"HA"	Hawaii
+"KA"	Kansas
+"MC"	Michigan
+"NB"	Nebraska
+"WN"	Washington
+"WS"	Wisconsin
 
 chapter almost borders
 
