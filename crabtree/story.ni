@@ -158,19 +158,10 @@ Wyoming borders Utah.
 
 [done with borders]
 
-chapter cornering
-
-Cornering relates us-states to each other. The verb to corner (he corners, they corner, it is cornered) implies the cornering relation.
-
-section corners
-
-Utah corners New Mexico. Colorado corners Arizona.
-
 chapter skipping
 
 to decide if (a - a us-state) skipborders (b - a us-state):
 	if a borders b, decide no;
-	if a corners b, decide no;
 	if a is b, decide no;
 	repeat with c running through us-states that border a:
 		if c borders b and c borders a:
@@ -219,11 +210,12 @@ carry out abbreving:
 	let count be 0;
 	say "Abbreviations of states left:[line break]";
 	repeat through the table of abbrevs:
-		if state entry is visited:
-			say "[state entry] =~ [abbr entry in upper case]. [run paragraph on]";
+		if state entry is unvisited and state entry is mainland:
+			say "[state entry] ~ [abbr entry in upper case]. [run paragraph on]";
 			increment count;
 			if remainder after dividing count by 5 is 0:
 				say "[line break]";
+	if remainder after dividing count by 5 is not 0, say "[line break]";
 
 chapter visiting
 
@@ -351,8 +343,6 @@ carry out visiting:
 		change current-state to noun;
 		now current-state is visited;
 		try statusing;
-	otherwise if current-state corners noun:
-		say "'I'm sorry, dear, but we agreed opposite states of the Four Corners don't actually border each other,' says Mrs. Crabtree." instead;
 	otherwise:
 		repeat through table of almost borders:
 			if (noun is st1 entry and current-state is st2 entry) or (current-state is st1 entry and noun is st2 entry):
@@ -490,7 +480,7 @@ use no scoring.
 
 init-state is a us-state that varies.
 
-New York, Connecticut, Massachusetts, Rhode island, Vermont, New hampshire, and Georgia are undoable.
+New York, Connecticut, Massachusetts, Rhode island, Vermont, New Hampshire, and Georgia are undoable.
 
 Maine is untricky.
 
@@ -671,7 +661,8 @@ to say my-map:
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
 rule for printing a parser error when the latest parser error is the noun did not make sense in that context error:
-	say "That's not something you can or need to do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]So the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
+	if the number of characters in the player's command is 2, say "That's not a state abbreviation." instead;
+	say "That's not something you can or need to do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]The the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
 	say "You take a bit of time to pause. But not too much."
@@ -684,12 +675,19 @@ Kansas	Arkansas	"'I'm sorry, dear. Kansas and Arkansas have similar names, but M
 Wisconsin	Indiana	"'Wisconsin and Indiana both border Lake Michigan, dear, but they don't touch.'"
 Michigan	Illinois	"'Michigan and Illinois both border Lake Michigan, dear, but they don't touch.'"
 South Carolina	Tennessee	"'Tennessee borders a lot of states, dear, but it doesn't quite touch South Carolina.'"
+New York	Ohio	"'New York and Ohio both border Lake Erie, dear, but Pennsylvania is in the way.'"
+Utah	New Mexico	"[no-4-c]."
+Colorado	Arizona	"[no-4-c]."
+New Jersey	Connecticut	"'I'm sorry, dear. New Jersey and Conneticut would border each other if Long Island didn't cut them off.'"
+
+to say no-4-c:
+	say "'I'm sorry, dear, but we agreed opposite states of the Four Corners don't actually border each other,' says Mrs. Crabtree"
 
 chapter special borders
 
 table of special borders
 st1	st2	txt
-Michigan	Wisconsin	"The class brain, who argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts him off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
+Michigan	Wisconsin	"The class brain, who has argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts him off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
 Michigan	Minnesota	"You remember Michigan and Minnesota have a water border."
 New York	Rhode Island	"You remember New York and Rhode Island have a water border."
 
