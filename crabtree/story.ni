@@ -680,18 +680,17 @@ to say my-map:
 [line break]|   |   | ++---++      |    | [illinois evaluated] +--+  + /[virginia evaluated] \/
 [line break]|   |[nevada evaluated] |[utah evaluated]| [colorado evaluated] +------+ [missouri evaluated] |   /  [kentucky evaluated]  >+----+
 [line break]| [California evaluated]|   |  |    | [kansas evaluated]   |     \ +------+   [north carolina evaluated] |
-[line break]|   |   +--+----+------+ /--+-+  [tennessee evaluated]  / /---\/
-[line break] \   \ ++  |    +--+ [oklahoma evaluated]+-[arkansas evaluated] +--+---++-+ [south carolina evaluated] /
-[line break]  \   \| [arizona evaluated]| [new mexico evaluated] |  +---+   /   |   |   \  /
-[line break]   \   |   |    |      +--+  [mississippi evaluated]|[alabama evaluated] | [georgia evaluated] \/
-[line break]    +--+---+---++      |  +-+  |   |    |
-[line break]                \      | [louisiana evaluated] |  | +-+----+
-[line break]                 \ [texas evaluated]  +----+--+-+   [florida evaluated]  \
-[line break]                  \   /          +----+   \
-[line break]  +--+             \ /                 \   |
-[line break]  |HI|              +                   \  |
-[line break]  +--+                                   | |
-[line break]                                         +-+
+[line break]|   |   +--+---++------+ /--+-+  [tennessee evaluated]  / /---\/
+[line break] \   \ ++  |   +---+ [oklahoma evaluated]+-[arkansas evaluated] +--+---++-+ [south carolina evaluated] /
+[line break]  \   \| [arizona evaluated]| [new mexico evaluated]|   +---+   /   |   |   \  /
+[line break]   \   |   |   |       +--+  [mississippi evaluated]|[alabama evaluated] | [georgia evaluated] \/
+[line break]    +--+---+--++       |  +-+  |   |    |
+[line break]               \       | [louisiana evaluated] |  | +-+----+
+[line break]                \  [texas evaluated]  +----+--+-+   [florida evaluated]  \
+[line break]                 \    /          +-----+  \
+[line break]  +--+            \  /                  \  |
+[line break]  |HI|             \/                    | |
+[line break]  +--+                                   +-+
 [paragraph break]";
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
 
@@ -718,6 +717,17 @@ cg	cg-state
 "NB"	Nebraska
 "WN"	Washington
 "WS"	Wisconsin
+
+section xmaping
+
+xmaping is an action applying to nothing.
+
+understand the command "xmap" as something new.
+
+understand "xmap" as xmaping.
+
+carry out xmaping:
+	try examining blackboard instead;
 
 chapter almost borders
 
@@ -765,28 +775,21 @@ this is the show-tricky rule:
 	say "Similarly, Massachusetts, Rhode Island, Connecticut, Vermont and New Hampshire leave no path.[paragraph break]";
 	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends--in other words, a place where you need to end your journey.[paragraph break]";
 	say "Some states have immediately losing first moves: from Alabama, you must go to Florida. From Idaho or Oregon, Washington. From North Carolina, South Carolina. Also, moving from Pennsylvania to New Jersey or vice versa splits the map in two. Delaware and Maryland to Pennsylvania immediately also fails.[paragraph break]";
-	say "Incidentally, if Washington, D.C. were added, then Virginia would become trickier. You'd have to go to West Virginia from Maryland if you started in Virginia, or you'd run into the problem of New York splitting the map. Starting in Maryland, you could still just go to Virginia and go clockwise around the coast and border."
+	say "Incidentally, if Washington, D.C. were added, then Virginia would become trickier. You'd have to go to West Virginia from Maryland if you started in Virginia, or you'd run into the problem of New York splitting the map. Starting in Maryland, you could still just go to DC then Virginia and go clockwise around the coast and border.";
 	the rule succeeds;
 
 volume tests
 
 chapter features
 
-test lose with "visit new hampshire/visit vermont/visit massachusetts/visit connecticut/visit rhode island"
-
-test oops with "visit illinois/visit alaska/visit hawaii/visit saskatchewan"
-
-test dirs with "start ohio/west virginia/va/north carolina/south carolina/ga/tn/mo/ia/south dakota/north dakota"
-
-test water with "start mn/mi/wi/il/in/oh/pa/ny/ri"
-
-test almost with "start ak/ks/tn/sc/ky/in/wi/mi/il"
-
-test bord1 with "start or/wa/ca"
-
-test bord2 with "start wi/ia/mn/il"
-
-test bord3 with "start ne/ks/ok/mo/co"
+test lose with "visit new hampshire/visit vermont/visit massachusetts/visit connecticut/visit rhode island".
+test oops with "visit illinois/visit alaska/visit hawaii/visit saskatchewan".
+test dirs with "start ohio/west virginia/va/north carolina/south carolina/ga/tn/mo/ia/south dakota/north dakota".
+test water with "start mn/mi/wi/il/in/oh/pa/ny/ri".
+test almost with "start ak/ks/tn/sc/ky/in/wi/mi/il".
+test bord1 with "start or/wa/ca".
+test bord2 with "start wi/ia/mn/il".
+test bord3 with "start ne/ks/ok/mo/co".
 
 chapter wins
 
