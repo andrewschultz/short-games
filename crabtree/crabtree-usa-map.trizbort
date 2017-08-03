@@ -288,7 +288,7 @@ Alaska and Hawaii are, of course, not part of the tour.</description>
 			<dock index="0" id="76" port="nw" />
 			<dock index="1" id="53" port="se" />
 		</line>
-		<room id="36" name="IN" subtitle="" x="-544" y="32" w="64" h="64" region="Midwest/Plains" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Indiana" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
+		<room id="36" name="IN" subtitle="" x="-544" y="64" w="64" h="64" region="Midwest/Plains" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Indiana" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
 		<line id="37" name="" description="">
 			<dock index="0" id="36" port="e" />
 			<dock index="1" id="26" port="w" />
@@ -302,7 +302,7 @@ Alaska and Hawaii are, of course, not part of the tour.</description>
 			<dock index="1" id="33" port="n" />
 		</line>
 		<line id="42" name="" description="">
-			<dock index="0" id="36" port="ne" />
+			<dock index="0" id="36" port="nne" />
 			<dock index="1" id="41" port="ssw" />
 		</line>
 		<room id="46" name="OK" subtitle="" x="-832" y="352" w="64" h="64" region="South" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Oklahoma" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
@@ -483,6 +483,10 @@ Alaska and Hawaii are, of course, not part of the tour.</description>
 		<line id="156" name="" description="">
 			<dock index="0" id="6" port="e" />
 			<dock index="1" id="8" port="nw" />
+		</line>
+		<line id="157" name="" description="" style="dashed">
+			<dock index="0" id="39" port="ne" />
+			<dock index="1" id="41" port="wsw" />
 		</line>
 	</map>
 	<settings>

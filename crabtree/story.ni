@@ -725,7 +725,6 @@ table of almost borders
 st1	st2	txt
 Kansas	Arkansas	"'I'm sorry, dear. Kansas and Arkansas have similar names, but Missouri and Oklahoma JUST box them out.'"
 Wisconsin	Indiana	"'Wisconsin and Indiana both border Lake Michigan, dear, but they don't touch.'"
-Michigan	Illinois	"'Michigan and Illinois both border Lake Michigan, dear, but they don't touch.'"
 South Carolina	Tennessee	"'Tennessee borders a lot of states, dear, but it doesn't quite touch South Carolina.'"
 New York	Ohio	"'New York and Ohio both border Lake Erie, dear, but Pennsylvania is in the way.'"
 Utah	New Mexico	"[no-4-c]."
@@ -742,6 +741,7 @@ st1	st2	txt
 Michigan	Wisconsin	"The class brain, who has argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts him off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
 Michigan	Minnesota	"You remember Michigan and Minnesota have a water border."
 New York	Rhode Island	"You remember New York and Rhode Island have a water border."
+Michigan	Illinois	"You remember Michigan and Illinois have a water border."
 
 volume not states
 
@@ -762,9 +762,10 @@ final question wording	only if victorious	topic	final response rule	final respon
 this is the show-tricky rule:
 	say "Starting in Georgia leaves Florida, South Carolina, and Maine as dead ends, but you can only have one dead end as you go forward.[paragraph break]";
 	say "Once you step on New York, you divide the map in two. So you had better have one side done before taking on the other. Starting anywhere northeast of New York, thus, means you'll need all those states covered. But if you do not start in Maine, Maine is a dead end. That makes starting in Maine easier, as once you cover the Northeast, you can go any which way.[paragraph break]";
-	say "Similarly, Massachusetts, Rhode Island, Connecticut, Vermont and New Hampshire leave no path.";
-	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends--in other words, a place where you need to end your journey.";
+	say "Similarly, Massachusetts, Rhode Island, Connecticut, Vermont and New Hampshire leave no path.[paragraph break]";
+	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends--in other words, a place where you need to end your journey.[paragraph break]";
 	say "Some states have immediately losing first moves: from Alabama, you must go to Florida. From Idaho or Oregon, Washington. From North Carolina, South Carolina. Also, moving from Pennsylvania to New Jersey or vice versa splits the map in two. Delaware and Maryland to Pennsylvania immediately also fails.[paragraph break]";
+	say "Incidentally, if Washington, D.C. were added, then Virginia would become trickier. You'd have to go to West Virginia from Maryland if you started in Virginia, or you'd run into the problem of New York splitting the map. Starting in Maryland, you could still just go to Virginia and go clockwise around the coast and border."
 	the rule succeeds;
 
 volume tests
