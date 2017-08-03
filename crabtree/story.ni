@@ -332,7 +332,7 @@ to print-move-text (s1 - a us-state) and (s2 - a us-state):
 	repeat through table of special borders:
 		if (s1 is st1 entry and s2 is st2 entry) or (s2 is st1 entry and s1 is st2 entry):
 			if there is a txt entry:
-				say "[txt entry][line break]";
+				say "[txt entry][paragraph break]";
 				break;
 	say "You decide to move to [noun].[paragraph break]";
 
@@ -428,7 +428,7 @@ to say mainecheck:
 	else:
 		say " Maybe you will get an extra bonus if you do not start in Maine next time!"
 
-dead-end-yet is a truth state that varies.
+dead-end-yet is a truth state that varies. dead-end-yet is false.
 isolated-yet is a truth state that varies.
 
 to decide which number is unvis-border of (st - a us-state):
@@ -450,15 +450,12 @@ to try statusing:
 		say "Oh no! Dead end! Mrs. Crabtree tut-tuts, and you walk back to your seat in awkward silence. You hope to do better at year's end, where if everyone gets it right, you all get an extra ice cream bar.";
 		end the story;
 		rule succeeds;
-	let ts be 0;
 	let nu be number of unvisited mainland us-states;
 	if dead-end-yet is false and nu < 47:
 		let dead-ends be 0;
 		repeat with state1 running through unvisited us-states:
 			let tb be unvis-border of state1;
 			if state1 does not border current-state and tb is 1, increment dead-ends;
-			if current-state borders state1 AND state1 is unvisited:
-				increment ts;
 		if dead-ends > 1:
 			now dead-end-yet is true;
 			say "[brain-snicker]"; [you have left 2 dead ends]
@@ -467,16 +464,19 @@ to try statusing:
 			if unvis-border of state1 is 0 and state1 is mainland:
 				now isolated-yet is true;
 				say "[brain-snicker]";
+	let ts be 0;
+	repeat with state1 running through unvisited us-states:
+		if state1 borders current-state, increment ts;
 	say "You are in [current-state][if nu is 47][tuff-stat of current-state][end if]. You have [nu] state[if nu > 1]s[end if] still to visit before Mrs. Crabtree will give you a coveted gold star for working your way around the USA.[paragraph break]From here you can visit";
 	say "[if ts is 1] only[else]:[end if]";
 	let cs be 0;
 	repeat with state1 running through us-states:
-		if current-state borders state1 AND state1 is unvisited:
+		if current-state borders state1 and state1 is unvisited:
 			if cs > 0 and cs < ts - 1 and ts > 2, say ",";
 			increment cs;
 			if ts > 1 and cs is ts, say " and";
 			say " [state1] ([abbrev of state1])";
-	say ".";
+	say ".[if in-parse-error is true][run paragraph on]";
 
 to say brain-snicker:
 	say "You hear the Class Brain snicker[one of][or] again[stopping].[paragraph break]"
@@ -550,31 +550,25 @@ st-abbrev (topic)	st-full
 "s/south dakota"	south dakota
 "w/west virginia"	west virginia
 
+ever-warn-dir is a truth state that varies.
+
 Rule for printing a parser error when the latest parser error is the only understood as far as error:
 	repeat through table of dirabbrev:
 		if the player's command matches st-abbrev entry:
+			now in-parse-error is true;
+			if ever-warn-dir is false:
+				say "(NOTE: you can abbreviate directional states.)[paragraph break]";
+				now ever-warn-dir is true;
 			try visiting st-full entry;
-			say "(NOTE: you can abbreviate directional states.)[line break]";
+			now in-parse-error is false;
 			the rule succeeds;
 	say "The verb was okay, and you didn't need to include anything else." instead;
+
+in-parse-error is a truth state that varies.
 
 Chapter rules
 
 Does the player mean visiting Virginia: it is likely.
-
-Chapter testing
-
-test virg with "visit new hampshire/visit vermont/visit massachusetts/visit rhode island/visit connecticut/visit new york/visit new jersey/visit pennsylvania/visit delaware/visit maryland/visit west virginia/visit virginia"
-
-test lose with "visit new hampshire/visit vermont/visit massachusetts/visit connecticut/visit rhode island"
-
-test oops with "visit illinois/visit alaska/visit hawaii/visit saskatchewan"
-
-test w with "visit nh/visit vt/visit ma/visit ri/visit ct/visit ny/visit nj/visit pa/visit de/visit md/visit wv/visit va/visit nc/visit sc/visit ga/visit fl/visit al/visit tn/visit ky/visit oh/visit mi/visit in/visit il/visit wi/visit mn/visit io/visit mo/visit ar/visit ms/visit la/visit tx/visit ok/visit ks/visit ne/visit sd/visit nd/visit mt/visit wy/visit co/visit nm/visit az/visit ut/visit id/visit wa/visit or/visit nv/visit ca"
-
-test win with "visit new hampshire/visit vermont/visit massachusetts/visit rhode island/visit connecticut/visit new york/visit new jersey/visit pennsylvania/visit delaware/visit maryland/visit west virginia/visit virginia/visit north carolina/visit south carolina/visit georgia/visit florida/visit alabama/visit tennessee/visit kentucky/visit ohio/visit michigan/visit indiana/visit illinois/visit wisconsin/visit minnesota/visit iowa/visit missouri/visit arkansas/visit mississippi/visit louisiana/visit texas/visit oklahoma/visit kansas/visit nebraska/visit south dakota/visit north dakota/visit montana/visit wyoming/visit colorado/visit new mexico/visit arizona/visit utah/visit idaho/visit washington/visit oregon/visit nevada/visit california"
-
-[end stuff]
 
 chapter tables
 
@@ -647,9 +641,9 @@ to say my-map:
 [line break]                                                          +--+
 [line break]                                                         /   |
 [line break]                                                  +-----+ [Maine evaluated]/
-[line break]                                                  |[Vermont evaluated]/[New Hampshire evaluated]|--/
-[line break]                                                +-+  |  |
-[line break]                                               /  +-----++
+[line break]  +--+                                            |[Vermont evaluated]/[New Hampshire evaluated]|--/
+[line break]  |AK|                                          +-+  |  |
+[line break]  +--+                                         /  +-----++
 [line break]                                              /   |  [massachusetts evaluated]  |
 [line break]+----+-+-------+-------+----+-\-+   +-+    +-/    +-----+|
 [line break]| [washington evaluated] | \   [montana evaluated]  |  [north dakota evaluated]   | [minnesota evaluated]/   \ | /  ++  /   [new york evaluated]  |[connecticut evaluated]|[rhode island evaluated]++
@@ -669,9 +663,9 @@ to say my-map:
 [line break]                \      | [louisiana evaluated] |  | +-+----+
 [line break]                 \ [texas evaluated]  +----+--+-+   [florida evaluated]  \
 [line break]                  \   /          +----+   \
-[line break]                   \ /                 \   |
-[line break]                    +                   \  |
-[line break]                                         | |
+[line break]  +--+             \ /                 \   |
+[line break]  |HI|              +                   \  |
+[line break]  +--+                                   | |
 [line break]                                         +-+
 [paragraph break]";
 	say "[variable letter spacing](Note: the Northeast is not to scale because it is crowded. Delaware is the group of three asterisks. )";
@@ -687,8 +681,9 @@ chapter almost borders
 table of almost borders
 st1	st2	txt
 Kansas	Arkansas	"'I'm sorry, dear. Kansas and Arkansas have similar names, but Missouri and Oklahoma JUST box them out.'"
-Wisconsin	Indiana	--
-South Carolina	Tennessee	--
+Wisconsin	Indiana	"'Wisconsin and Indiana both border Lake Michigan, dear, but they don't touch.'"
+Michigan	Illinois	"'Michigan and Illinois both border Lake Michigan, dear, but they don't touch.'"
+South Carolina	Tennessee	"'Tennessee borders a lot of states, dear, but it doesn't quite touch South Carolina.'"
 
 chapter special borders
 
@@ -714,47 +709,63 @@ this is the show-tricky rule:
 
 volume tests
 
-test AL with "AL/FL/GA/SC/NC/VA/MD/WV/KY/TN/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test AR with "AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test AZ with "AZ/CA/OR/WA/ID/NV/UT/NM/TX/OK/KS/CO/NE/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test CA with "CA/AZ/NM/CO/WY/UT/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test CO with "CO/KS/NE/SD/ND/MT/WY/ID/WA/OR/CA/NV/AZ/UT/NM/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test DE with "DE/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/WV/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test FL with "FL/AL/GA/SC/NC/VA/MD/WV/KY/TN/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test IA with "IA/MN/WI/MI/IN/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test ID with "ID/WA/OR/CA/NV/AZ/UT/NM/TX/OK/KS/CO/NE/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test IL with "IL/WI/IA/MN/MI/IN/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test IN with "IN/MI/MN/WI/IA/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test KS with "KS/NE/SD/WY/CO/OK/TX/NM/AZ/UT/NV/CA/OR/WA/ID/MT/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test KY with "KY/IN/IL/WI/MI/MN/IA/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/MD/WV/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test LA with "LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test MD with "MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/WV/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test ME with "ME/NH/VT/MA/RI/CT/NY/NJ/DE/PA/MD/WV/OH/IN/MI/MN/WI/IA/IL/KY/VA/NC/SC/GA/FL/AL/TN/MO/AR/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK".
-test MI with "MI/MN/WI/IA/IL/IN/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test MN with "MN/IA/WI/MI/IN/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test MO with "MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/MD/WV/KY/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test MS with "MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IA/MN/WI/IL/IN/MI/OH/KY/TN/AL/FL/GA/SC/NC/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test MT with "MT/ID/WA/OR/NV/CA/AZ/NM/TX/OK/CO/UT/WY/KS/NE/SD/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test NC with "NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test ND with "ND/MT/WY/SD/NE/KS/OK/CO/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test NE with "NE/KS/OK/TX/NM/CO/WY/UT/AZ/CA/NV/OR/WA/ID/MT/SD/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test NJ with "NJ/DE/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/WV/PA/NY/CT/RI/MA/VT/NH/ME".
-test NM with "NM/CO/WY/UT/AZ/CA/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test NV with "NV/UT/WY/CO/NM/AZ/CA/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test OH with "OH/IN/MI/MN/WI/IA/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test OK with "OK/TX/NM/AZ/CA/OR/WA/ID/NV/UT/CO/KS/NE/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test OR with "OR/WA/ID/NV/CA/AZ/NM/CO/UT/WY/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test PA with "PA/OH/IN/MI/MN/WI/IA/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/WV/VA/MD/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test SC with "SC/NC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test SD with "SD/NE/KS/OK/TX/NM/CO/WY/UT/AZ/CA/NV/OR/WA/ID/MT/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test TN with "TN/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/VA/MD/WV/KY/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test TX with "TX/OK/KS/NE/CO/NM/AZ/CA/OR/WA/ID/NV/UT/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test UT with "UT/AZ/CA/NV/OR/WA/ID/MT/ND/SD/WY/NE/KS/CO/OK/NM/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test VA with "VA/MD/WV/KY/TN/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test WA with "WA/OR/CA/AZ/NM/CO/WY/UT/NV/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test WI with "WI/MN/IA/IL/IN/MI/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
-test WV with "WV/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/KY/IN/MI/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test WY with "WY/CO/NM/AZ/UT/CA/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+chapter features
+
+test lose with "visit new hampshire/visit vermont/visit massachusetts/visit connecticut/visit rhode island"
+
+test oops with "visit illinois/visit alaska/visit hawaii/visit saskatchewan"
+
+test dirs with "start ohio/west virginia/va/north carolina/south carolina/ga/tn/mo/ia/south dakota/north dakota"
+
+test water with "start mn/mi/wi/il/in/oh/pa/ny/ri"
+
+test almost with "start ak/ks/tn/sc/ky/in/wi/mi/il"
+
+chapter wins
+
+test AL with "start AL/FL/GA/SC/NC/VA/MD/WV/KY/TN/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test AR with "start AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test AZ with "start AZ/CA/OR/WA/ID/NV/UT/NM/TX/OK/KS/CO/NE/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test CA with "start CA/AZ/NM/CO/WY/UT/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test CO with "start CO/KS/NE/SD/ND/MT/WY/ID/WA/OR/CA/NV/AZ/UT/NM/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test DE with "start DE/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/WV/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test FL with "start FL/AL/GA/SC/NC/VA/MD/WV/KY/TN/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test IA with "start IA/MN/WI/MI/IN/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test ID with "start ID/WA/OR/CA/NV/AZ/UT/NM/TX/OK/KS/CO/NE/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test IL with "start IL/WI/IA/MN/MI/IN/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test IN with "start IN/MI/MN/WI/IA/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test KS with "start KS/NE/SD/WY/CO/OK/TX/NM/AZ/UT/NV/CA/OR/WA/ID/MT/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test KY with "start KY/IN/IL/WI/MI/MN/IA/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/MD/WV/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test LA with "start LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test MD with "start MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/WV/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test ME with "start ME/NH/VT/MA/RI/CT/NY/NJ/DE/PA/MD/WV/OH/IN/MI/MN/WI/IA/IL/KY/VA/NC/SC/GA/FL/AL/TN/MO/AR/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK".
+test MI with "start MI/MN/WI/IA/IL/IN/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test MN with "start MN/IA/WI/MI/IN/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test MO with "start MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/MD/WV/KY/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test MS with "start MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IA/MN/WI/IL/IN/MI/OH/KY/TN/AL/FL/GA/SC/NC/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test MT with "start MT/ID/WA/OR/NV/CA/AZ/NM/TX/OK/CO/UT/WY/KS/NE/SD/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test NC with "start NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test ND with "start ND/MT/WY/SD/NE/KS/OK/CO/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test NE with "start NE/KS/OK/TX/NM/CO/WY/UT/AZ/CA/NV/OR/WA/ID/MT/SD/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test NJ with "start NJ/DE/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/WV/PA/NY/CT/RI/MA/VT/NH/ME".
+test NM with "start NM/CO/WY/UT/AZ/CA/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test NV with "start NV/UT/WY/CO/NM/AZ/CA/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test OH with "start OH/IN/MI/MN/WI/IA/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test OK with "start OK/TX/NM/AZ/CA/OR/WA/ID/NV/UT/CO/KS/NE/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test OR with "start OR/WA/ID/NV/CA/AZ/NM/CO/UT/WY/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test PA with "start PA/OH/IN/MI/MN/WI/IA/IL/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/KY/WV/VA/MD/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test SC with "start SC/NC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test SD with "start SD/NE/KS/OK/TX/NM/CO/WY/UT/AZ/CA/NV/OR/WA/ID/MT/ND/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test TN with "start TN/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/VA/MD/WV/KY/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test TX with "start TX/OK/KS/NE/CO/NM/AZ/CA/OR/WA/ID/NV/UT/WY/MT/ND/SD/MN/IA/WI/MI/IN/IL/MO/AR/LA/MS/AL/FL/GA/SC/NC/TN/KY/OH/WV/VA/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test UT with "start UT/AZ/CA/NV/OR/WA/ID/MT/ND/SD/WY/NE/KS/CO/OK/NM/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test VA with "start VA/MD/WV/KY/TN/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/MO/IL/IA/WI/MN/MI/IN/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test WA with "start WA/OR/CA/AZ/NM/CO/WY/UT/NV/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test WI with "start WI/MN/IA/IL/IN/MI/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test WV with "start WV/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/KY/IN/MI/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
+test WY with "start WY/CO/NM/AZ/UT/CA/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+
+volume former testing code
 
 [when play begins:
 	repeat with Q running through us-states:

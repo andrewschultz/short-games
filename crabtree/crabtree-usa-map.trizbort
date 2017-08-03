@@ -23,31 +23,19 @@ Alaska and Hawaii are, of course, not part of the tour.</description>
 		</line>
 		<room id="6" name="NY" subtitle="" x="-224" y="-64" w="64" h="64" region="Northeast" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="New York" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
 		<line id="7" name="" description="">
-			<dock index="0" id="4" port="w" />
-			<dock index="1" id="6" port="e" />
+			<dock index="0" id="4" port="wnw" />
+			<dock index="1" id="6" port="ene" />
 		</line>
 		<room id="8" name="MA" subtitle="" x="-128" y="32" w="64" h="64" region="Northeast" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Massachusetts" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
-		<room id="9" name="CT" subtitle="" x="-128" y="160" w="64" h="64" region="Northeast" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Connecticut" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
-		<room id="10" name="RI" subtitle="" x="-32" y="160" w="64" h="64" region="Northeast" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Rhode Island" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
+		<room id="9" name="CT" subtitle="" x="-128" y="224" w="64" h="64" region="Northeast" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Connecticut" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
+		<room id="10" name="RI" subtitle="" x="-128" y="128" w="64" h="64" region="Northeast" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Rhode Island" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
 		<line id="11" name="" description="">
-			<dock index="0" id="9" port="e" />
-			<dock index="1" id="10" port="w" />
-		</line>
-		<line id="12" name="" description="">
-			<dock index="0" id="10" port="n" />
-			<dock index="1" id="8" port="sse" />
-		</line>
-		<line id="13" name="" description="">
 			<dock index="0" id="9" port="n" />
-			<dock index="1" id="8" port="ssw" />
+			<dock index="1" id="10" port="s" />
 		</line>
 		<line id="14" name="" description="">
 			<dock index="0" id="9" port="nw" />
 			<dock index="1" id="6" port="se" />
-		</line>
-		<line id="15" name="" description="">
-			<dock index="0" id="4" port="s" />
-			<dock index="1" id="8" port="n" />
 		</line>
 		<line id="16" name="" description="">
 			<dock index="0" id="2" port="w" />
@@ -474,8 +462,28 @@ Alaska and Hawaii are, of course, not part of the tour.</description>
 			<dock index="0" id="48" port="sw" />
 			<dock index="1" id="59" port="ne" />
 		</line>
-		<room id="153" name="AK" subtitle="" x="-128" y="256" w="64" h="64" region="Non-Mainland" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Alaska" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
-		<room id="154" name="HI" subtitle="" x="-32" y="256" w="64" h="64" region="Non-Mainland" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Hawaii" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
+		<room id="153" name="AK" subtitle="" x="-224" y="352" w="64" h="64" region="Non-Mainland" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Alaska" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
+		<room id="154" name="HI" subtitle="" x="-224" y="256" w="64" h="64" region="Non-Mainland" handDrawn="yes" allcornersequal="yes" ellipse="no" roundedCorners="no" octagonal="no" cornerTopLeft="15" cornerTopRight="15" cornerBottomLeft="15" cornerBottomRight="15" borderstyle="Solid" description="Hawaii" roomFill="" secondFill="" secondFillLocation="Bottom" roomBorder="" roomLargeText="" roomSmallText="" />
+		<line id="155" name="" description="" style="dashed">
+			<dock index="0" id="48" port="ne" />
+			<dock index="1" id="41" port="nw" />
+		</line>
+		<line id="12" name="" description="" style="dashed">
+			<dock index="0" id="6" port="ese" />
+			<dock index="1" id="10" port="nw" />
+		</line>
+		<line id="13" name="" description="">
+			<dock index="0" id="4" port="s" />
+			<dock index="1" id="8" port="n" />
+		</line>
+		<line id="15" name="" description="">
+			<dock index="0" id="8" port="s" />
+			<dock index="1" id="10" port="n" />
+		</line>
+		<line id="156" name="" description="">
+			<dock index="0" id="6" port="e" />
+			<dock index="1" id="8" port="nw" />
+		</line>
 	</map>
 	<settings>
 		<colors>
