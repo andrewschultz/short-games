@@ -191,6 +191,13 @@ to decide which us-state is the throughborder of (a - a us-state) and (b - a us-
 				decide on c;
 	decide on hawaii.
 
+to decide which number is poss-border of (a - a us-state) and (b - a us-state):
+	let temp be 0;
+	repeat with c running through us-states that border a:
+		if c borders b, increment temp;
+	decide on temp.
+
+
 part World
 
 chapter geography class
@@ -367,7 +374,8 @@ carry out visiting:
 					the rule succeeds;
 		if noun skipborders current-state:
 			if throughborder of noun and current-state is hawaii:
-				say "You can't quite get there. In fact, you bite your lip as you realize you've been through every state bordering both [current-state] to [noun]." instead;
+				let Q be poss-border of current-state and noun;
+				say "You can't quite get there. In fact, you bite your lip as you realize you've been through [if Q is 1]the only[else if Q is 2]each[else]every[end if] state bordering both [current-state] and [noun]." instead;
 			say "You can't move from [current-state] directly to [noun], but [throughborder of noun and current-state] is a possibility." instead;
 		otherwise:
 			say "'Hey! [noun] and [current-state] aren't even CLOSE!' someone yells. Mrs. Crabtree tut-tuts them, and you blush slightly." instead;
@@ -772,6 +780,12 @@ test dirs with "start ohio/west virginia/va/north carolina/south carolina/ga/tn/
 test water with "start mn/mi/wi/il/in/oh/pa/ny/ri"
 
 test almost with "start ak/ks/tn/sc/ky/in/wi/mi/il"
+
+test bord1 with "start or/wa/ca"
+
+test bord2 with "start wi/ia/mn/il"
+
+test bord3 with "start ne/ks/ok/mo/co"
 
 chapter wins
 
