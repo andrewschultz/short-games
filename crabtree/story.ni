@@ -212,6 +212,8 @@ the blackboard is scenery in geography class. understand "map" and "display" and
 
 description of blackboard is "[my-map]"
 
+class-brain-m is a truth state that varies.
+
 part Verbs
 
 chapter looking
@@ -454,6 +456,9 @@ to decide which number is unvis-border of (st - a us-state):
 to try statusing:
 	if number of unvisited mainland us-states is 0:
 		say "You visited all the states! Mrs. Crabtree gives you a gold star![no line break][mainecheck]";
+		choose row with final response rule of can-i-hint rule in table of final question options;
+		blank out the final question wording entry;
+		blank out the final response rule entry;
 		end the story;
 		rule succeeds;
 	change can-travel to false;
@@ -531,6 +536,8 @@ instead of kissing Mrs Crabtree:
 	say "Stop that!"
 
 when play begins:
+	if a random chance of 1 in 2 succeeds:
+		now class-brain-m is true;
 	repeat through the Table of Abbrevs:
 		now the abbrev of state entry is abbr entry;
 		[say "[abbrev entry] is [state entry][line break]";]
@@ -729,6 +736,22 @@ understand "xmap" as xmaping.
 carry out xmaping:
 	try examining blackboard instead;
 
+chapter dcing
+
+dcing is an action applying to nothing.
+
+understand the command "dc" as something new.
+
+understand "dc" as dcing.
+
+carry out dcing:
+	if current-state is Virginia or current-state is Maryland:
+		say "'Maybe Washington D.C. should be a state, dear, but we agreed it isn't, for now.'" instead;
+	if current-state is Oregon or current-state is Idaho:
+		say "'[current-state] borders Washington State, dear, not Washington D. C.'" instead;
+	say "Wait a minute. [current-state] is not close to Washington D.C., which isn't a state, anyway." instead;
+	the rule succeeds;
+
 chapter almost borders
 
 table of almost borders
@@ -740,15 +763,23 @@ New York	Ohio	"'New York and Ohio both border Lake Erie, dear, but Pennsylvania 
 Utah	New Mexico	"[no-4-c]."
 Colorado	Arizona	"[no-4-c]."
 New Jersey	Connecticut	"'I'm sorry, dear. New Jersey and Conneticut would border each other if Long Island didn't cut them off.'"
+Washington	Virginia	"'[w-st of Virginia].'"
+Washington	Maryland	"'[w-st of Maryland].'"
+
+to say w-st of (u - a us-state):
+	say "[u] borders Washington D.C., dear, not Washington state"
 
 to say no-4-c:
 	say "'I'm sorry, dear, but we agreed opposite states of the Four Corners don't actually border each other,' says Mrs. Crabtree"
 
 chapter special borders
 
+to say brain-g:
+	say "[if class-brain-m is true]him[else]her[end if]"
+
 table of special borders
 st1	st2	txt
-Michigan	Wisconsin	"The class brain, who has argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts him off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
+Michigan	Wisconsin	"The class brain, who has argued you shouldn't go from Michigan to Wisconsin or back, sighs.[paragraph break]Mrs. Crabtree cuts [brain-g] off. 'Yes, we agreed that the Northern Michigan peninsula counts as bordering Wisconsin.'"
 Michigan	Minnesota	"You remember Michigan and Minnesota have a water border."
 New York	Rhode Island	"You remember New York and Rhode Island have a water border."
 Michigan	Illinois	"You remember Michigan and Illinois have a water border."
@@ -756,8 +787,6 @@ Michigan	Illinois	"You remember Michigan and Illinois have a water border."
 volume not states
 
 understand "pr" as a mistake ("Puerto Rico is not a state, at least not yet. And it's not on the mainland.").
-
-understand "dc" as a mistake ("The District of Columbia is not a state, but there's debate over whether it should be.").
 
 understand "as" and "gu" and "mp" and "vi" and "um" as a mistake ("Fortunately, you don't need to worry about any outlying islands, here.").
 
@@ -767,6 +796,7 @@ volume amusing
 
 table of final question options (continued)
 final question wording	only if victorious	topic	final response rule	final response activity
+"HINT what you could've done better"	false	"hint"	can-i-hint rule	--
 "SEE which states are tricky/impossible and why"	true	"see"	show-tricky rule	--
 
 this is the show-tricky rule:
@@ -778,15 +808,43 @@ this is the show-tricky rule:
 	say "Incidentally, if Washington, D.C. were added, then Virginia would become trickier. You'd have to go to West Virginia from Maryland if you started in Virginia, or you'd run into the problem of New York splitting the map. Starting in Maryland, you could still just go to DC then Virginia and go clockwise around the coast and border.";
 	the rule succeeds;
 
-volume tests
+this is the can-i-hint rule:
+	if number of visited us-states is 48:
+		the rule succeeds;
+	if current-state is maine:
+		say "Maine is a good state to end with, or to start with. But you need to take out a lot of the US before going to the northeast.";
+	else if init-state is maine:
+		say "If you visit everything in the Northeast, you may not need to do much special elsewhere.";
+	else:
+		say "Random hint: [one of]New York blocks off the rest of the Northeast, so you need everything done before getting there[or]You can't go straight west to east, zigzagging north and south, but you can get close to it[or]Note that Washington and Florida both have only two states bordering them. This cuts down a few possibilities[or]Maine is the easiest starting state. START ME to get there[or]A coastal state may be easier to start with than a non-coastal state[or]Concentrate on clearing the West first[in random order].";
+	the rule succeeds;
+
+volume tests - not for release
+
+chapter wining
+
+wining is an action applying to nothing.
+
+understand the command "win" as something new.
+
+understand "win" as wining.
+
+carry out wining:
+	now all mainland us-states are visited;
+	now maine is not visited;
+	now current-state is New Hampshire;
+	try visiting Maine;
+	the rule succeeds;
 
 chapter features
 
-test lose with "visit new hampshire/visit vermont/visit massachusetts/visit connecticut/visit rhode island".
+test lose with "start maine/visit new hampshire/visit vermont/visit massachusetts/visit connecticut/visit rhode island".
+test lose2 with "start id/or/wa".
 test oops with "visit illinois/visit alaska/visit hawaii/visit saskatchewan".
 test dirs with "start ohio/west virginia/va/north carolina/south carolina/ga/tn/mo/ia/south dakota/north dakota".
 test water with "start mn/mi/wi/il/in/oh/pa/ny/ri".
 test almost with "start ak/ks/tn/sc/ky/in/wi/mi/il".
+test dc with "start nc/dc/va/dc/md/dc".
 test bord1 with "start or/wa/ca".
 test bord2 with "start wi/ia/mn/il".
 test bord3 with "start ne/ks/ok/mo/co".
@@ -833,7 +891,7 @@ test VA with "start VA/MD/WV/KY/TN/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/
 test WA with "start WA/OR/CA/AZ/NM/CO/WY/UT/NV/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
 test WI with "start WI/MN/IA/IL/IN/MI/OH/KY/MO/AR/OK/CO/KS/NE/SD/ND/MT/WY/UT/ID/WA/OR/NV/CA/AZ/NM/TX/LA/MS/AL/FL/GA/SC/NC/TN/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
 test WV with "start WV/MD/VA/NC/SC/GA/FL/AL/MS/LA/TX/NM/AZ/CA/NV/OR/WA/ID/UT/WY/MT/ND/SD/NE/KS/CO/OK/AR/TN/MO/IA/MN/WI/IL/KY/IN/MI/OH/PA/DE/NJ/NY/CT/RI/MA/VT/NH/ME".
-test WY with "start WY/CO/NM/AZ/UT/CA/NV/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
+test WY with "start WY/CO/NM/AZ/UT/NV/CA/OR/WA/ID/MT/ND/SD/NE/KS/OK/TX/LA/AR/MS/AL/FL/GA/SC/NC/TN/MO/IA/MN/WI/IL/IN/MI/OH/KY/VA/WV/MD/DE/PA/NJ/NY/CT/RI/MA/VT/NH/ME".
 
 volume former testing code
 
