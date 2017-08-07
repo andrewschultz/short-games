@@ -23,8 +23,8 @@ part zapping unnecessary verbs
 [undoing a lot of what's in the standard rules. I'd rather restrict the player from doing anything crazy.]
 
 understand the command "sorry" as something new.
-understand the command "no" as something new.
-understand the command "yes" as something new.
+understand the command "no" and "n" as something new.
+understand the command "yes" and "y" as something new.
 understand the command "wave" as something new.
 understand the command "kiss", "embrace" and "hug" as something new.
 understand the command "attack" as something new.
@@ -78,6 +78,8 @@ current-state is a us-state that varies.
 
 can-travel is a truth-state that varies. can-travel is usually true.
 
+debug-state is a truth state that varies.
+
 chapter bordering
 
 Bordering relates us-states to each other. The verb to border (he borders, they border, it is bordered) implies the bordering relation.
@@ -112,7 +114,7 @@ Tennessee, North Carolina, and South Carolina border Georgia.
 
 Montana, Wyoming, Utah, Nevada, Oregon, and Washington border Idaho.
 
-Wisconsin, Indiana, Kentucky, Missouri and Iowa border Illinois.
+Wisconsin, Indiana, Kentucky, Missouri, Michigan and Iowa border Illinois.
 
 Kentucky, Ohio, and Michigan border Indiana.
 
@@ -440,9 +442,9 @@ to say mainecheck:
 	if init-state is tricky:
 		say "You get an extra gold star for starting in a tricky state!";
 	else if init-state is doable:
-		say " You get a star and a smiley face sticker for not starting in Maine!";
+		say "You get a star and a smiley face sticker for not starting in Maine!";
 	else:
-		say " Maybe you will get an extra bonus if you do not start in Maine next time!"
+		say "Maybe you will get an extra bonus if you do not start in Maine next time!"
 
 dead-end-yet is a truth state that varies. dead-end-yet is false.
 isolated-yet is a truth state that varies.
@@ -455,11 +457,11 @@ to decide which number is unvis-border of (st - a us-state):
 
 to try statusing:
 	if number of unvisited mainland us-states is 0:
-		say "You visited all the states! Mrs. Crabtree gives you a gold star![no line break][mainecheck]";
+		say "You visited all the states! Mrs. Crabtree gives you a gold star! [mainecheck]";
 		choose row with final response rule of can-i-hint rule in table of final question options;
 		blank out the final question wording entry;
-		blank out the final response rule entry;
-		end the story;
+[		blank out the final response rule entry;]
+		end the story finally saying "Geography Champ";
 		rule succeeds;
 	change can-travel to false;
 	repeat with state1 running through us-states:
@@ -708,6 +710,7 @@ rule for printing a parser error when the latest parser error is the noun did no
 				say "You use the Coast Guard abbreviation for [cg-state entry], intentionally or not.";
 				try visiting cg-state entry instead;
 		say "That's not a state abbreviation--you can check them with ABBREV." instead;
+	if debug-state is true, say "[the player's command].";
 	say "That's not something you can, or need to, do. Mrs. Crabtree has taken precautions to keep things simple.[paragraph break]The the main commands are START (state/abbreviation) and (state/abbreviation). X MAP shows the map. ABOUT discusses the game."
 
 rule for printing a parser error when the latest parser error is the i beg your pardon error:
@@ -730,8 +733,10 @@ section xmaping
 xmaping is an action applying to nothing.
 
 understand the command "xmap" as something new.
+understand the command "map" as something new.
 
 understand "xmap" as xmaping.
+understand "map" as xmaping.
 
 carry out xmaping:
 	try examining blackboard instead;
@@ -784,6 +789,16 @@ Michigan	Minnesota	"You remember Michigan and Minnesota have a water border."
 New York	Rhode Island	"You remember New York and Rhode Island have a water border."
 Michigan	Illinois	"You remember Michigan and Illinois have a water border."
 
+volume after reading
+
+after reading a command:
+	if the player's command matches the regular expression "\.":
+		let X be indexed text;
+		let X be the the player's command;
+		replace the regular expression "\..*" in X with "";
+		say "Mrs. Crabtree has a rule against speaking too fast in class, which has nothing to do with me being unable to work around an odd parser bug in the version of Inform I prefer. So, one move at a time, please.";
+		reject the player's command;
+
 volume not states
 
 understand "pr" as a mistake ("Puerto Rico is not a state, at least not yet. And it's not on the mainland.").
@@ -806,10 +821,11 @@ this is the show-tricky rule:
 	say "Georgia is a bit trickier to prove. No matter which way you go, two of South Carolina, Florida and Maine will be dead ends--in other words, a place where you need to end your journey.[paragraph break]";
 	say "Some states have immediately losing first moves: from Alabama, you must go to Florida. From Idaho or Oregon, Washington. From North Carolina, South Carolina. Also, moving from Pennsylvania to New Jersey or vice versa splits the map in two. Delaware and Maryland to Pennsylvania immediately also fails.[paragraph break]";
 	say "Incidentally, if Washington, D.C. were added, then Virginia would become trickier. You'd have to go to West Virginia from Maryland if you started in Virginia, or you'd run into the problem of New York splitting the map. Starting in Maryland, you could still just go to DC then Virginia and go clockwise around the coast and border.";
-	the rule succeeds;
+	the rule fails;
 
 this is the can-i-hint rule:
 	if number of visited us-states is 48:
+		say "You don't need a hint, since you won. Go, you!";
 		the rule succeeds;
 	if current-state is maine:
 		say "Maine is a good state to end with, or to start with. But you need to take out a lot of the US before going to the northeast.";
@@ -820,6 +836,8 @@ this is the can-i-hint rule:
 	the rule succeeds;
 
 volume tests - not for release
+
+debug-state is true.
 
 chapter wining
 
