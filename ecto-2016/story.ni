@@ -215,6 +215,42 @@ carry out runing:
 	say "[description of location of player][paragraph break]";
 	check-trapped;
 
+section eastruning
+
+eastruning is an action applying to nothing.
+
+carry out eastruning:
+	try runing east instead;
+
+understand "ee" as eastruning.
+
+section westruning
+
+westruning is an action applying to nothing.
+
+carry out westruning:
+	try runing west instead;
+
+understand "ww" as westruning.
+
+section northruning
+
+northruning is an action applying to nothing.
+
+carry out northruning:
+	try runing north instead;
+
+understand "nn" as northruning.
+
+section southruning
+
+southruning is an action applying to nothing.
+
+carry out southruning:
+	try runing south instead;
+
+understand "ss" as southruning.
+
 chapter parser
 
 rule for printing a parser error (this is the simplify parser errors rule):
@@ -287,7 +323,7 @@ to shuf-law:
 
 cur-level is a number that varies. cur-level is 1.
 
-blocked-room is a room that varies.
+blocked-room is a room that varies. [?? d=1 *-11 u=14 x=19 m=21]
 
 definition: a room (called myr) is curlev:
 	if blocklevel of myr is cur-level, yes;
@@ -455,7 +491,7 @@ to say move-board:
 	now chex is false;
 
 to do-the-next:
-	say "[one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ct of 4] next.[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
+	say "You hear ethereal applause once you step on the final intersection. [one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ct of 4] next.[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
 	start-play;
 
