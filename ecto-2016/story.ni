@@ -136,7 +136,7 @@ the print standard inventory rule is not listed in any rulebook.
 
 check taking inventory:
 	if number of things carried by player is 0, say "You're carrying nothing." instead;
-	if number of things carried by player is 1, say "You're carrying [list of things carried by player]." instead;
+	if number of things carried by player is 1, say "You're carrying [list of things carried by player], or rather, they're floating near you." instead;
 	say "Somehow, a few corporeal things stuck to you: [list of things carried by player]." instead;
 
 chapter abouting
@@ -144,11 +144,13 @@ chapter abouting
 abouting is an action out of world.
 
 understand the command "about" as something new.
+understand the command "credits" as something new.
 
 understand "about" as abouting.
+understand "credits" as abouting.
 
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which lead to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]";
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]";
 
 chapter mapiting
 
@@ -165,6 +167,7 @@ understand "ma" as mapiting.
 understand "m" as mapiting.
 
 carry out mapiting:
+	say "[bold type]Map of [ct of cur-level]ville[roman type][paragraph break]";
 	say "+ = visited, . = unvisited, * = church.";
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
 	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
@@ -173,7 +176,13 @@ carry out mapiting:
 	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44] [line break][variable letter spacing]";
 
 to say sta of (rm - a room):
-	if rm is location of player:
+	if debug-state is true and rm is location of checkerboard:
+		say "X";
+	else if debug-state is true and rm is location of magnets:
+		say "M";
+	else if debug-state is true and rm is location of dominoes:
+		say "D";
+	else if rm is location of player:
 		say "U";
 	else if rm is visited:
 		say "+";
@@ -182,13 +191,6 @@ to say sta of (rm - a room):
 	else:
 		say "-"
 
-[	if debug-state is true and rm is location of checkerboard:
-		say "X";
-	else if debug-state is true and rm is location of magnets:
-		say "M";
-	else if debug-state is true and rm is location of dominoes:
-		say "D";
-	else ]
 
 chapter runing
 
@@ -216,7 +218,7 @@ carry out runing:
 chapter parser
 
 rule for printing a parser error (this is the simplify parser errors rule):
-	say "You can't do much here except go in directions (RUN/R a direction goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game.";
+	say "You can't do much here except go in directions (RUN/R a direction, or typing it double, goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game.";
 	reject the player's command;
 
 volume main game
@@ -302,6 +304,7 @@ to start-play:
 	else:
 		now blocked-room is a random curlev room;
 	now blocked-room is blockedoff;
+	now left hand status line is "([cur-level]) [location of player]";
 	now right hand status line is "X=[xing of blocked-room]";
 [	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";]
@@ -315,10 +318,17 @@ to start-play:
 			move dominoes to random clearblack room;
 		if cheat-prog > 1:
 			move magnets to random clearblack room;
+			let xdelt be (remainder after dividing rval of location of magnets by 5) - (remainder after dividing rval of location of player by 5);
+			let ydelt be (rval of location of magnets / 5) - (rval of location of player / 5);
+			say "You feel a pull to the [if ydelt < 0]north[else if ydelt > 0]south[end if][if xdelt < 0]west[else if xdelt > 0]east[end if].";
 		if debug-state is true:
-			say "[location of checkerboard] [location of dominoes] [location of magnets].";
+			if magnets are not off-stage, say "MAGNETS: [location of magnets].";
+			if checkerboard is not off-stage, say "CHECKERBOARD: [location of checkerboard].";
+			if dominoes are not off-stage, say "DOMINOES: [location of dominoes].";
 
 a winnable is a kind of thing.
+
+check taking a winnable: if noun is not magnets, say "The [noun] jump[if noun is checkerboard]s[end if] away from you. You can still look at [if noun is checkerboard]it[else]them[end if], though." instead;
 
 instead of doing something with winnable:
 	if current action is examining or current action is taking, continue the action;
@@ -326,17 +336,20 @@ instead of doing something with winnable:
 
 the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, if you could just find the word[end if]."
 
-the magnets are a plural-named winnable. "They seem to be pulling themselves to you."
+the magnets are a plural-named winnable. description is "They seem to be pulling themselves to you."
 
-the dominoes are a plural-named winnable.
+the dominoes are a plural-named winnable. description is "They are two squares glued together. Squares about the same size you saw on the checkerboard."
 
 every turn when cur-level is 5:
 	if player does not have magnets and magnets are in location of player:
-		say "The magnets jump up and hover near you. You're obviously attracting them, somehow.";
+		say "The magnets jump up and hover near you. You obviously attracted them, somehow.";
 		now player has magnets;
 	else if player has magnets:
 		if location of player is location of dominoes and player does not have dominoes:
-			say "The magnets latch on to the dominoes.";
+			say "The dominoes latch on to the magnets.";
+			now player has dominoes;
+		if location of player is location of checkerboard and player does not have checkerboard:
+			say "Your magnets attract the chessboard!";
 			now player has dominoes;
 		else if player has dominoes:
 			if location of player is location of checkerboard:
@@ -383,12 +396,12 @@ understand the command "disprove" as something new.
 
 understand "parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove" as gamewinning when cur-level is 5.
 
-[gwting is an action applying to one topic.
+gwting is an action applying to one topic.
 
 understand "parity [text]" and "color [text]" and "colors [text]" and "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
 
 carry out gwting:
-	try gamewinning instead;]
+	try gamewinning instead;
 
 carry out gamewinning:
 	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesing than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
@@ -409,12 +422,26 @@ to check-trapped:
 		if cur-level < 5:
 			say "Oh no! You are trapped! You manage to hide out from being spotted.[paragraph break]'Oh, come on,' you hear a voice say. 'Surely you can do better than that?' You're given another chance.";
 		else:
-			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[if player has checkerboard].[paragraph break]Still, that checkerboard was a nice clue. Maybe it'll be a bit different next time through[end if][or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
+			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[analysis][or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[if player has checkerboard].[paragraph break]Still, that checkerboard was a nice clue. Maybe it'll be a bit different next time through[end if][or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
 		now all rooms are unvisited;
 		if cur-level is 1:
 			move player to random unblocked room, without printing a room description;
 		else:
 			start-play;
+
+to say analysis:
+	if location of checkerboard is unvisited:
+		say ". Maybe you didn't search thoroughly enough";
+	else if chex is false:
+		say ". Maybe you could've looked at the checkerboard";
+	else if dominoes are not off-stage and location of dominoes is not visited:
+		say ". You maybe didn't search everwhere this time";
+	else if magnets are not off-stage and location of magnets is not visited:
+		say ". You maybe didn't search everwhere this time";
+	else if player has dominoes and player does not have checkerboard:
+		say ". Too bad you don't have something to put the dominoes on. Maybe you could've done something";
+	else if player has checkerboard and player does not have dominoes:
+		say ". Too bad you don't have something to put on the checkerboard. Maybe you could've done something";
 
 esmall is a truth state that varies.
 
@@ -425,9 +452,10 @@ to say move-board:
 			increment cheat-prog;
 		else:
 			now esmall is true;
+	now chex is false;
 
 to do-the-next:
-	say "[one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'You're not the first person to start quickly.'[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
+	say "[one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ct of 4] next.[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
 	start-play;
 
@@ -440,6 +468,7 @@ to decide whether walled-in:
 
 definition: a room (called myrm) is clearblack:
 	if the remainder after dividing rval of myrm by 2 is 0, decide no;
+	if player is in myrm, decide no;
 	if checkerboard is in myrm, decide no;
 	if dominoes are in myrm, decide no;
 	if magnets are in myrm, decide no;
@@ -471,7 +500,7 @@ before going:
 	if noun is not linear:
 		say "No cutting through buildings." instead;
 	let q be the room noun of location of player;
-	if q is nowhere, say "You're at the [noun] edge." instead;
+	if q is nowhere, say "You're at the [noun] edge of [ct of cur-level]." instead;
 	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
 	if q is visited, say "You feel a magnetic force push you away. Yes, you remember now, you've been [noun] already." instead;
 
@@ -488,7 +517,7 @@ definition: a direction (called d) is linear:
 to say xing of (r - a room):
 	let y be rval of r / 5; [magic numbers a bit here to save memory]
 	let x be remainder after dividing rval of r by 5;
-	say "[x + 1][if x is 0]st[else if x is 1]nd[else]th[end if] and ";
+	say "[x + 1][if x is 0]st[else if x is 1]nd[else if x is 2]rd[else]th[end if] and ";
 	say "[if y is 0]Lake[else if y is 1]Maple[else if y is 2]North[else if y is 3]Oak[else]Pine[end if]"
 
 section meta
@@ -502,6 +531,12 @@ to bug-nag:
 
 check restarting the game:
 	bug-nag;
+
+volume standard verb tweaks
+
+check dropping:
+	if player does not have noun, say "You don't have that." instead;
+	say "That kind of jumped up at you, so it's hard to put down." instead;
 
 volume debug - not for release
 
@@ -543,7 +578,7 @@ carry out fiving:
 		say "Reset.";
 		start-play;
 		the rule succeeds;
-	while cur-level < 5:
+	while cur-level <= 4:
 		do-the-next;
 	the rule succeeds;
 
