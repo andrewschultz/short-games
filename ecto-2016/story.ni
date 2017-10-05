@@ -1,9 +1,3 @@
-roamin back and forth
-
-set clock to 6:14
-
-Must be the same backwards and forwards
-
 "A Checkered Haunting" by Andrew Schultz
 
 the story headline is "A puzzling afterlife experience".
@@ -139,6 +133,11 @@ the can't push what's fixed in place rule is not listed in any rulebook.
 
 the print empty inventory rule is not listed in any rulebook.
 the print standard inventory rule is not listed in any rulebook.
+
+check taking inventory:
+	if number of things carried by player is 0, say "You're carrying nothing." instead;
+	if number of things carried by player is 1, say "You're carrying [list of things carried by player]." instead;
+	say "Somehow, a few corporeal things stuck to you: [list of things carried by player]." instead;
 
 chapter abouting
 
@@ -322,12 +321,12 @@ to start-play:
 a winnable is a kind of thing.
 
 instead of doing something with winnable:
-	if current action is examining, continue the action;
+	if current action is examining or current action is taking, continue the action;
 	say "You're incorporeal, so you can't do much other than EXAMINE the [noun].";
 
 the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, if you could just find the word[end if]."
 
-the magnets are a plural-named winnable.
+the magnets are a plural-named winnable. "They seem to be pulling themselves to you."
 
 the dominoes are a plural-named winnable.
 
@@ -384,12 +383,12 @@ understand the command "disprove" as something new.
 
 understand "parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove" as gamewinning when cur-level is 5.
 
-gwting is an action applying to one topic.
+[gwting is an action applying to one topic.
 
 understand "parity [text]" and "color [text]" and "colors [text]" and "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
 
 carry out gwting:
-	try gamewinning instead;
+	try gamewinning instead;]
 
 carry out gamewinning:
 	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesing than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
@@ -410,7 +409,7 @@ to check-trapped:
 		if cur-level < 5:
 			say "Oh no! You are trapped! You manage to hide out from being spotted.[paragraph break]'Oh, come on,' you hear a voice say. 'Surely you can do better than that?' You're given another chance.";
 		else:
-			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
+			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[if player has checkerboard].[paragraph break]Still, that checkerboard was a nice clue. Maybe it'll be a bit different next time through[end if][or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
 		now all rooms are unvisited;
 		if cur-level is 1:
 			move player to random unblocked room, without printing a room description;
@@ -505,6 +504,20 @@ check restarting the game:
 	bug-nag;
 
 volume debug - not for release
+
+chapter esping
+
+esping is an action out of world.
+
+understand the command "esp" as something new.
+
+understand "esp" as esping.
+
+carry out esping:
+	say "magnets: [location of magnets].";
+	say "checkerboard: [location of checkerboard].";
+	say "dominoes: [location of dominoes].";
+	the rule succeeds;
 
 chapter set debugging
 
