@@ -297,6 +297,24 @@ blocklevel of r22 is 4.
 to wfak:
 	if debug-state is false, wait for any key;
 
+chapter edginess
+
+a room can be edgy or inny. a room is usually edgy.
+
+r11 is inny. r12 is inny. r13 is inny. r21 is inny. r22 is inny. r23 is inny. r31 is inny. r32 is inny. r33 is inny.
+
+chapter clockval
+
+a room has a number called clockval. clockval of a room is usually 0.
+
+clockval of r00 is 0. clockval of r01 is 1. clockval of r02 is 2. clockval of r03 is 3. clockval of r04 is 4.
+
+clockval of r14 is 5. clockval of r24 is 6. clockval of r34 is 7.
+
+clockval of r44 is 8. clockval of r43 is 9. clockval of r42 is 10. clockval of r41 is 11. clockval of r40 is 12.
+
+clockval of r30 is 13. clockval of r20 is 14. clockval of r10 is 15.
+
 volume initialization
 
 lshuf is a list of number variables. lshuf is { 1, 2, 3, 4 }
@@ -346,21 +364,53 @@ to start-play:
 		say "DEBUG: [blocked-room] is unavailable.";]
 	move player to random unblocked room, without printing a room description;
 	if cur-level is 5:
-		now checkerboard is off-stage;
-		now dominoes are off-stage;
-		now magnets are off-stage;
-		move checkerboard to random clearblack room;
-		if cheat-prog > 0:
-			move dominoes to random clearblack room;
-		if cheat-prog > 1:
-			move magnets to random clearblack room;
-			let xdelt be (remainder after dividing rval of location of magnets by 5) - (remainder after dividing rval of location of player by 5);
-			let ydelt be (rval of location of magnets / 5) - (rval of location of player / 5);
-			say "You feel a pull to the [if ydelt < 0]north[else if ydelt > 0]south[end if][if xdelt < 0]west[else if xdelt > 0]east[end if].";
-		if debug-state is true:
-			if magnets are not off-stage, say "MAGNETS: [location of magnets].";
-			if checkerboard is not off-stage, say "CHECKERBOARD: [location of checkerboard].";
-			if dominoes are not off-stage, say "DOMINOES: [location of dominoes].";
+		let valid-config be false;
+		while valid-config is false:
+			now valid-config is true;
+			now checkerboard is off-stage;
+			now dominoes are off-stage;
+			now magnets are off-stage;
+			move checkerboard to random clearblack room;
+			if cheat-prog > 0:
+				move dominoes to random clearblack room;
+			if cheat-prog > 1:
+				move magnets to random clearblack room;
+				if location of magnets is edgy and location of dominoes is edgy and location of checkerboard is edgy and location of player is edgy:
+					let realmag be clockval of location of magnets;
+					let realdom be clockval of location of dominoes;
+					let realche be clockval of location of checkerboard;
+					let realpla be clockval of location of player;
+					if realmag < realpla, now realmag is realmag + 16;
+					if realche < realpla, now realmag is realche + 16;
+					if realdom < realpla, now realmag is realdom + 16;
+					if realpla < realpla, now realmag is realpla + 16;
+					if realmag > realche and realmag < realdom, now valid-config is false;
+					if realmag < realche and realmag > realdom, now valid-config is false;
+					if debug-state is true and valid-config is false, say "DEBUG: failed on ordering.";
+					if valid-config is false, next;
+					if alt-check of r11 or alt-check of r13 or alt-check of r31 or alt-check of r33:
+						if debug-state is true, say "DEBUG: failed on cornering.";
+						now valid-config is false;
+						next;
+				let xdelt be (remainder after dividing rval of location of magnets by 5) - (remainder after dividing rval of location of player by 5);
+				let ydelt be (rval of location of magnets / 5) - (rval of location of player / 5);
+				say "You feel a pull to the [if ydelt < 0]north[else if ydelt > 0]south[end if][if xdelt < 0]west[else if xdelt > 0]east[end if].";
+			if debug-state is true:
+				if magnets are not off-stage, say "MAGNETS: [location of magnets].";
+				if checkerboard is not off-stage, say "CHECKERBOARD: [location of checkerboard].";
+				if dominoes are not off-stage, say "DOMINOES: [location of dominoes].";
+
+to decide whether alt-check of (rn - a room):
+	unless rn is blocked-room, no;
+	if rn is r11:
+		if location of player is r00 and r10 is blockedoff and r01 is blockedoff and magnets are not in r01 and magnets are not in r10, yes;
+	if rn is r13:
+		if location of player is r04 and r14 is blockedoff and r03 is blockedoff and magnets are not in r14 and magnets are not in r03, yes;
+	if rn is r31:
+		if location of player is r40 and r41 is blockedoff and r30 is blockedoff and magnets are not in r41 and magnets are not in r30, yes;
+	if rn is r33:
+		if location of player is r44 and r43 is blockedoff and r34 is blockedoff and magnets are not in r34 and magnets are not in r43, yes;
+	no;
 
 a winnable is a kind of thing.
 
@@ -385,8 +435,8 @@ every turn when cur-level is 5:
 			say "The dominoes latch on to the magnets.";
 			now player has dominoes;
 		if location of player is location of checkerboard and player does not have checkerboard:
-			say "Your magnets attract the chessboard!";
-			now player has dominoes;
+			say "Your magnets attract the checkerboard!";
+			now player has checkerboard;
 		else if player has dominoes:
 			if location of player is location of checkerboard:
 				say "You win!";
@@ -411,7 +461,7 @@ Array profs --> 5 "Lawyer" "Doctor" "Agent" "Finance" "Programmer";
 to say ct of (n - a number):
 	(- print (string)profs-->{n}, "ville"; -)
 
-understand "checker/board" and "checker board" as checkerboard.
+understand "checker/chess/board" and "checker/chess board" as checkerboard.
 
 after examining checkerboard: now chex is true.
 
