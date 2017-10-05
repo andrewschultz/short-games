@@ -1,6 +1,6 @@
-Here is a walkthrough for A Checkered Haunting.
+Here is a walkthrough for the re-release of A Checkered Haunting.
 
-First four ways through are these or a mirror image/rotation:
+First four ways through are these or a mirror image/rotation. Regardless of where you start, you can follow the conveyor belt.
 
 X>>>v
 >^v<v
@@ -28,14 +28,6 @@ X>>>v
 
 Last one is not solvable because of a mathematical trick. If you label the map like a checkerboard there are 13 "black" squares and 11 "red" but you alternate between black and red.
 
-To solve you sort of need to guess the verb.
+But what happens is, there's a checkerboard to examine. It goes from 8x8 to 6x6 to 4x4. Also, some dominoes appear. They and the checkerboard push you away.
 
->parity
->color
->colors
->corners
->corner
->count
->prove
->disprove
-
+Then you'll note that there's also a magnet, and you're pulled to it. The magnet can pick up the checkerboard and dominoes. If you get the magnet first, and you get the checkerboard and dominoes later, you can then X the checkerboard until you want to SOLVE it. You're strictly on your honor for this, but the more you examine, the more hints/perspective you get. Eventually examining it just leads to solving it, anyway.

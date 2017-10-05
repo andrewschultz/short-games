@@ -365,7 +365,9 @@ to start-play:
 	move player to random unblocked room, without printing a room description;
 	if cur-level is 5:
 		let valid-config be false;
-		while valid-config is false:
+		let count be 0;
+		while valid-config is false or count < 10:
+			increment count;
 			now valid-config is true;
 			now checkerboard is off-stage;
 			now dominoes are off-stage;
@@ -386,10 +388,10 @@ to start-play:
 					if realpla < realpla, now realmag is realpla + 16;
 					if realmag > realche and realmag < realdom, now valid-config is false;
 					if realmag < realche and realmag > realdom, now valid-config is false;
-					if debug-state is true and valid-config is false, say "DEBUG: failed on ordering.";
+					if debug-state is true and valid-config is false, say "ORDERING FAIL: [oopsy].";
 					if valid-config is false, next;
 					if alt-check of r11 or alt-check of r13 or alt-check of r31 or alt-check of r33:
-						if debug-state is true, say "DEBUG: failed on cornering.";
+						if debug-state is true, say "CORNERING FAIL: [oopsy].";
 						now valid-config is false;
 						next;
 				let xdelt be (remainder after dividing rval of location of magnets by 5) - (remainder after dividing rval of location of player by 5);
@@ -399,6 +401,9 @@ to start-play:
 				if magnets are not off-stage, say "MAGNETS: [location of magnets].";
 				if checkerboard is not off-stage, say "CHECKERBOARD: [location of checkerboard].";
 				if dominoes are not off-stage, say "DOMINOES: [location of dominoes].";
+
+to say oopsy:
+	say "magnets [location of magnets] checkerboard [location of checkerboard] dominoes [location of dominoes] player [location of player]";
 
 to decide whether alt-check of (rn - a room):
 	unless rn is blocked-room, no;
