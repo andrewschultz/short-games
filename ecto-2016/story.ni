@@ -139,6 +139,14 @@ check taking inventory:
 	if number of things carried by player is 1, say "You're carrying [list of things carried by player], or rather, they're floating near you." instead;
 	say "Somehow, a few corporeal things stuck to you: [list of things carried by player]." instead;
 
+chapter waitin
+
+instead of waiting, say "You have all the time in the world. Nobody upbraids you for your laziness."
+
+instead of thinking:
+	say "You contemplate where you are and where you've been.[paragraph break]";
+	try mapiting;
+
 chapter abouting
 
 abouting is an action out of world.
@@ -263,6 +271,8 @@ a room has a number called blocklevel. blocklevel of a room is usually 5.
 
 a room can be unblocked or blockedoff. a room is usually unblocked.
 
+a room can be touched. a room is usually not touched.
+
 a room has a number called rval.
 
 a room is usually privately-named.
@@ -347,6 +357,8 @@ definition: a room (called myr) is curlev:
 	if blocklevel of myr is cur-level, yes;
 	no;
 
+past-start is a truth state that varies.
+
 to start-play:
 	now all rooms are unvisited;
 	now blocked-room is not blockedoff;
@@ -360,9 +372,13 @@ to start-play:
 	now blocked-room is blockedoff;
 	now left hand status line is "([cur-level]) [location of player]";
 	now right hand status line is "X=[xing of blocked-room]";
-[	if debug-state is true:
-		say "DEBUG: [blocked-room] is unavailable.";]
-	move player to random unblocked room, without printing a room description;
+	if debug-state is true:
+		say "DEBUG: [blocked-room] is unavailable.";
+	if past-start is false:
+		move player to random unblocked room, without printing a room description;
+		now past-start is true;
+	else:
+		move player to random unblocked room;
 	if cur-level is 5:
 		let valid-config be false;
 		let count be 0;
@@ -511,14 +527,11 @@ to check-trapped:
 			say "[list of unvisited rooms].";
 			repeat with Q running through unvisited rooms: say "[Q].";]
 		if cur-level < 5:
-			say "Oh no! You are trapped! You manage to hide out from being spotted.[paragraph break]'Oh, come on,' you hear a voice say. 'Surely you can do better than that?' You're given another chance.";
+			say "Oh no! You are trapped! You hear a distant hum.[paragraph break]'Oh, come on,' you hear an authoritative voice say. 'Surely you can do better than that? If we didn't have all the time in the world, we'd get rid of you for wasting ours.'[paragraph break]You're sent back. [ct of cur-level] looks slightly different now.";
 		else:
 			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[analysis][or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[if player has checkerboard].[paragraph break]Still, that checkerboard was a nice clue. Maybe it'll be a bit different next time through[end if][or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
 		now all rooms are unvisited;
-		if cur-level is 1:
-			move player to random unblocked room, without printing a room description;
-		else:
-			start-play;
+		start-play;
 
 to say analysis:
 	if location of checkerboard is unvisited:
@@ -622,6 +635,49 @@ to bug-nag:
 
 check restarting the game:
 	bug-nag;
+
+volume cheating - not for release
+
+skip-ask-this-time is a truth state that varies.
+
+mypath is a list of rooms variable.
+
+after looking when skip-ask-this-time is false:
+	let cur be location of player;
+	let myx be only-exit of cur;
+	now all rooms are not touched;
+	let uv be number of unvisited rooms;
+	if uv <= 2, continue the action; [it's just annoying if the person is 1 square away. Also, this probably isn't relevant, and you've probably been asked anyway.]
+	now mypath is {};
+	while myx is not up:
+		now cur is touched;
+		now cur is room myx of cur;
+		now myx is only-exit of cur;
+		add myx to mypath;
+	if number of unvisited rooms is 1 + number of touched rooms:
+		say "You consider where you are and where you've been. You're pretty sure there's only one way through town. Take it?";
+		if the player consents:
+			let temp be 0;
+			repeat with myp running through mypath:
+				if temp > 0, say ", ";
+				say "[xing of myp]";
+				increment temp;
+			do-the-next;
+		else:
+			say "OK. I won't ask again.";
+			now skip-ask-this-time is true;
+	the rule succeeds;
+
+to decide which direction is only-exit of (rm - a room):
+	let dir be up;
+	let X be {north, south, east, west};
+	repeat with X2 running through X:
+		let X3 be the room X2 of rm;
+		if X3 is nothing, next;
+		if X3 is visited or X3 is blockedoff or X3 is touched, next;
+		if dir is not up, decide on up;
+		now dir is X2;
+	decide on dir;
 
 volume standard verb tweaks
 
