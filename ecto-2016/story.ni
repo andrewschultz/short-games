@@ -460,6 +460,24 @@ instead of doing something with winnable:
 the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words][if board-width is not 5], with opposite corners cut off[try-thru][else], and it's easy to trace a way through. Sort of like the current map, only there's not a hole where the church is[end if]."
 
 check examining checkerboard:
+	if player has magnets and player has dominoes:
+		say "You shuffle the dominoes around. Of course they can't cover the whole checkerboard. But you try to cover everything except--well, what would be where the church is. First time you try, a black square is still visible. You shuffle the dominoes some more. Each time, a black square comes up. You have as much time as you want, and you realize you might be in a no-win situation anyway this time, so you give yourself an hour.";
+		wfak;
+		say "Black square left again. And again. Always a black square. You start trying to leave a white square.";
+		wfak;
+		say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squaers. The areas before [ct of 5] all took out...a black square. [ct of 5] took out a white square. That would leave two extra black squares...";
+		wfak;
+		say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
+		wfak;
+		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and odds line (73/-13 meant 30) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
+		wfak;
+		say "Sitting in [ct of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interersting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
+		wfak;
+		say "You realize you've been sitting around waiting for a way to enjoy the afterlife, wondering where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff, and you forgot Serious Thoughts About Your Future for a while.";
+		wfak;
+		say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Lots more than you think would've given up...'";
+		wfak;
+		say "You spend an hour kicking yourself over all the stuff you meant to learn when alive but didn't. You won't be able to learn it directly, but with plenty of time to haunt libraries and classes and laboratories (nobody'll see you) you'll get to see and do enough.";
 		end the story saying "YOU LEARNED SOMETHING COOL";
 		the rule succeeds;
 
