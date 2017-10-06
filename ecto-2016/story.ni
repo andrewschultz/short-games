@@ -136,8 +136,12 @@ the print standard inventory rule is not listed in any rulebook.
 
 check taking inventory:
 	if number of things carried by player is 0, say "You're carrying nothing." instead;
-	if number of things carried by player is 1, say "You're carrying [list of things carried by player], or rather, they're floating near you." instead;
-	say "Somehow, a few corporeal things stuck to you: [list of things carried by player]." instead;
+	if number of things carried by player is 1, say "That blob of Evil-B-Gone is floating around you." instead;
+	say "Somehow, a few corporeal things stuck to you in addition to the blob of Evil-B-Gone you're carrying around: [list of things carried by player]." instead;
+
+does the player mean examining something not carried: it is very likely.
+
+description of player is "As incorporeal as ever."
 
 chapter waiting
 
@@ -220,7 +224,7 @@ carry out runing:
 		say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
-	say "[description of location of player][paragraph break]";
+	try looking;
 	check-trapped;
 
 section eastruning
@@ -369,7 +373,11 @@ past-start is a truth state that varies.
 
 to start-play:
 	now all rooms are unvisited;
-	now blocked-room is not blockedoff;
+	now blocked-room is not blockedoff; [cheat yourself into a certain position here, or in cur-level is 5 below]
+[	now blocked-room is r42;
+	move player to r40;
+	now blocked-room is blockedoff;
+	continue the action;]
 	if cur-level is 5:
 		if number of fivevalid rooms is 0:
 			now all fivedone rooms are fivevalid;
@@ -390,16 +398,16 @@ to start-play:
 	if cur-level is 5:
 		let valid-config be false;
 		let count be 0;
-		while valid-config is false or count < 10:
+		while valid-config is false and count < 10:
 			increment count;
 			now valid-config is true;
 			now checkerboard is off-stage;
 			now dominoes are off-stage;
 			now magnets are off-stage;
 			move checkerboard to random clearblack room;
-			if cheat-prog > 0:
-				move dominoes to random clearblack room;
 			if cheat-prog > 1:
+				move dominoes to random clearblack room;
+			if cheat-prog > 2:
 				move magnets to random clearblack room;
 				if location of magnets is edgy and location of dominoes is edgy and location of checkerboard is edgy and location of player is edgy:
 					let realmag be clockval of location of magnets;
@@ -449,11 +457,21 @@ instead of doing something with winnable:
 	if current action is examining or current action is taking, continue the action;
 	say "You're incorporeal, so you can't do much other than EXAMINE the [noun].";
 
-the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words], with opposite corners cut off. You spend a bit of time tracing a way through, and [if board-width is 8]you fail[else if board-width is 6]you seem to figure that it can't be done, but you don't know how to express it[else]you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, if you could just find the word[end if]."
+the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words][if board-width is not 5], with opposite corners cut off[try-thru][else], and it's easy to trace a way through. Sort of like the current map, only there's not a hole where the church is[end if]."
 
-the magnets are a plural-named winnable. description is "They seem to be pulling themselves to you."
+check examining checkerboard:
+		end the story saying "YOU LEARNED SOMETHING COOL";
+		the rule succeeds;
 
-the dominoes are a plural-named winnable. description is "They are two squares glued together. Squares about the same size you saw on the checkerboard."
+to say try-thru:
+	say ". You try several times to trace a way through, [if board-width is 8]but you fail[else if board-width is 6]and you seem to figure that it can't be done, but you don't know how to express it[else]and you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, but you don't know how to PROVE it[end if]"
+
+the magnets are a plural-named winnable. description is "[if player has checkerboard and player has magnets]They're attracting both the dominoes and checkerboard, so if you want to play with the checkerboard, try X CHECKERBOARD[else if player has checkerboard]They're stuck to the checkerboard[else if player has dominoes]They're stuck inside the dominoes[else]You aren't actually carrying them--they're more magnetically attracted to you[end if]."
+
+check going when number of carried things is 4:
+	say "No. With your new set of toys, you may just want to X CHECKERBOARD. There's ... something there." instead;
+
+the dominoes are a plural-named winnable. description is "They are two squares glued together. Squares about the same size you saw on the checkerboard[if player has magnets]. The magnets are embedded in them[end if]."
 
 every turn when cur-level is 5:
 	if player does not have magnets and magnets are in location of player:
@@ -461,14 +479,11 @@ every turn when cur-level is 5:
 		now player has magnets;
 	else if player has magnets:
 		if location of player is location of dominoes and player does not have dominoes:
-			say "The dominoes latch on to the magnets.";
+			say "The dominoes latch on to the magnets[if player has checkerboard]. They're stuck to the checkerboard, so you can probably EXAMINE it agaiin to figure things out more[end if].";
 			now player has dominoes;
 		if location of player is location of checkerboard and player does not have checkerboard:
-			say "Your magnets attract the checkerboard!";
+			say "Your magnets attract the checkerboard[if player has dominoes]! You may want to X CHECKERBOARD to play around with things.[else]![end if]";
 			now player has checkerboard;
-		else if player has dominoes:
-			if location of player is location of checkerboard:
-				say "You win!";
 
 Include (-
 
@@ -526,6 +541,10 @@ carry out gamewinning:
 after printing the locale description:
 	check-trapped;
 
+all-but is a number that varies.
+
+fewer is a number that varies.
+
 to check-trapped:
 	now location of player is visited;
 	if number of unvisited rooms is 1:
@@ -536,17 +555,31 @@ to check-trapped:
 			say "[list of unvisited rooms].";
 			repeat with Q running through unvisited rooms: say "[Q].";]
 		if cur-level < 5:
-			say "Oh no! You are trapped! You hear a distant hum.[paragraph break]'Oh, come on,' you hear an authoritative voice say. 'Surely you can do better than that? If we didn't have all the time in the world, we'd get rid of you for wasting ours.'[paragraph break]You're sent back. [ct of cur-level] looks slightly different now.";
+			say "Oh no! You are trapped! You hear a hum from the blob, then a crackle.[paragraph break]'Oh, come on,' you hear an authoritative voice say. 'Surely you can do better than that? If we didn't have all the time in the world, we'd get rid of you for wasting ours.'[paragraph break]You're sent back. [ct of cur-level] looks slightly different now.";
 		else:
-			say "[move-board]'INCOMPETENTS!' you hear someone yell. 'WHAT ARE THEY DOING? IT'S JUST THE SAME AS THE PREVIOUS!' [one of]You guess so. You feel like you probably made a mis-step[analysis][or]You tried again, and it seemed like you got stuck. There are only so many sensible ways through, and you noticed a few dead-ends you avoided. But no partial credit[if player has checkerboard].[paragraph break]Still, that checkerboard was a nice clue. Maybe it'll be a bit different next time through[end if][or]You wonder if, in fact, there is a way through. You aren't sure how to express it, though[or]Now it's getting silly. Surely there must be a way to show you're on a wild goose chase[stopping].";
+			say "The blob crackles. 'HAVEN'T FIGURED IT OUT, HAVE YOU?' ";
+			if number of visited rooms is 23:
+				say "[one of]But you almost got everywhere! That should mean something, but it doesn't.[or]Again, you almost completed the loop, and you're not sure why you didn't[or]This is getting frustrating, and you are sure you're doing your best, but you can't recognize why[or]Something's going on here, or it totally isn't, and you're not sure what[stopping]";
+			else:
+				say "You felt like you could've covered more ground, so you look back on what you did";
+			say "[analysis].";
+			move-board;
+			say "[line break]There's a swirling, and you're back in [ct of cur-level], but everything feels a bit different, now.";
 		now all rooms are unvisited;
 		start-play;
 
 to say analysis:
 	if location of checkerboard is unvisited:
-		say ". Maybe you didn't search thoroughly enough";
+		if board-width < 6:
+			say ". You didn't even run across that old checkerboard, this time";
+		else:
+			say ". Maybe you didn't search thoroughly enough";
 	else if chex is false:
 		say ". Maybe you could've looked at the checkerboard";
+	else if chex is true and board-width is not 5:
+		say ". That checkerboard, though. You keep thinking about it";
+	else if player has magnets:
+		say ". Maybe something [if player has checkerboard or player has dominoes]more [end if]could have gone with the magnets";
 	else if dominoes are not off-stage and location of dominoes is not visited:
 		say ". You maybe didn't search everwhere this time";
 	else if magnets are not off-stage and location of magnets is not visited:
@@ -558,10 +591,13 @@ to say analysis:
 
 esmall is a truth state that varies.
 
-to say move-board:
+to move-board:
 	if chex is true:
-		if board-width > 4:
+		if board-width > 5:
 			decrease board-width by 2;
+			increment cheat-prog;
+		else if board-width is 4:
+			increment board-width;
 			increment cheat-prog;
 		else:
 			now esmall is true;
@@ -615,7 +651,7 @@ before going:
 	let q be the room noun of location of player;
 	if q is nowhere, say "You're at the [noun] edge of [ct of cur-level]." instead;
 	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
-	if q is visited, say "You feel a magnetic force push you away. Yes, you remember now, you've been [noun] already." instead;
+	if q is visited, say "Wait, no, you've already been [noun] to [description of room noun of location of player] already." instead;
 
 definition: a direction (called d) is viable:
 	let r be location of player;
@@ -652,17 +688,23 @@ skip-ask-this-time is a truth state that varies.
 mypath is a list of rooms variable.
 
 after looking when skip-ask-this-time is false:
+	consider the win-jump rule;
+	continue the action;
+
+this is the win-jump rule:
+	if skip-ask-this-time is true, continue the action;
 	let cur be location of player;
 	let myx be only-exit of cur;
 	now all rooms are not touched;
 	let uv be number of unvisited rooms;
 	if uv <= 2, continue the action; [it's just annoying if the person is 1 square away. Also, this probably isn't relevant, and you've probably been asked anyway.]
 	now mypath is {};
-	while myx is not up:
+	while myx is not up and myx is not down:
 		now cur is touched;
 		now cur is room myx of cur;
 		now myx is only-exit of cur;
-		add myx to mypath;
+		add cur to mypath;
+	if debug-state is true, say "DEBUG: [number of unvisited rooms] unvisited, [number of touched rooms] untouched.";
 	if number of unvisited rooms is 1 + number of touched rooms:
 		say "You consider where you are and where you've been. You're pretty sure there's only one way through town. Take it?";
 		if the player consents:
@@ -675,6 +717,8 @@ after looking when skip-ask-this-time is false:
 		else:
 			say "OK. I won't ask again.";
 			now skip-ask-this-time is true;
+	else if number of touched rooms > 0 and mydir is up: [this is pretty hacky. up = 0 ways out, down = 2 ways out]
+		say "You feel a sense of worry, but it passes.";
 	the rule succeeds;
 
 to decide which direction is only-exit of (rm - a room):
@@ -684,9 +728,21 @@ to decide which direction is only-exit of (rm - a room):
 		let X3 be the room X2 of rm;
 		if X3 is nothing, next;
 		if X3 is visited or X3 is blockedoff or X3 is touched, next;
-		if dir is not up, decide on up;
+		if dir is not up, decide on down;
 		now dir is X2;
 	decide on dir;
+
+chapter cheating
+
+cheating is an action applying to nothing.
+
+understand the command "cheat" as something new.
+
+understand "cheat" as cheating.
+
+carry out cheating:
+	say "Invoking cheat.";
+	consider the win-jump rule;
 
 volume standard verb tweaks
 
