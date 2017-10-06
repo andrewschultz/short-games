@@ -6,6 +6,8 @@ volume includes
 
 include Basic Screen Effects by Emily Short.
 
+include conditional undo by Jesse McGrew.
+
 debug-state is a truth state that varies.
 
 use no scoring.
@@ -449,6 +451,8 @@ to decide whether alt-check of (rn - a room):
 		if location of player is r44 and r43 is blockedoff and r34 is blockedoff and magnets are not in r34 and magnets are not in r43, yes;
 	no;
 
+volume things
+
 a winnable is a kind of thing.
 
 check taking a winnable: if noun is not magnets, say "The [noun] jump[if noun is checkerboard]s[end if] away from you. You can still look at [if noun is checkerboard]it[else]them[end if], though." instead;
@@ -469,11 +473,11 @@ check examining checkerboard:
 		wfak;
 		say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
 		wfak;
-		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and odds line (73/-13 meant 30) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
+		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread (73/-13 meant a score of 43-30. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
 		wfak;
 		say "Sitting in [ct of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interersting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
 		wfak;
-		say "You realize you've been sitting around waiting for a way to enjoy the afterlife, wondering where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff, and you forgot Serious Thoughts About Your Future for a while.";
+		say "You realize just how much time you've spent navel-gazing about where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff you can look into. It got you out of the doldrums for a while.";
 		wfak;
 		say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Lots more than you think would've given up...'";
 		wfak;
@@ -699,7 +703,17 @@ to bug-nag:
 check restarting the game:
 	bug-nag;
 
-volume cheating - not for release
+volume undoing stuff
+
+Rule for deciding whether to allow undo:
+	if cur-level is 5:
+		say "Don't worry. Even if you mess up, you'll get as many times to try again as you want. All kinds of time in the afterlife.";
+		deny undo;
+	else:
+		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.";
+
+
+volume skip-and-jump
 
 skip-ask-this-time is a truth state that varies.
 
@@ -735,8 +749,8 @@ this is the win-jump rule:
 		else:
 			say "OK. I won't ask again.";
 			now skip-ask-this-time is true;
-	else if number of touched rooms > 0 and mydir is up: [this is pretty hacky. up = 0 ways out, down = 2 ways out]
-		say "You feel a sense of worry, but it passes.";
+	else if number of touched rooms > 0 and myx is up: [this is pretty hacky. up = 0 ways out, down = 2 ways out]
+		say "You feel a sense of worry. You're not sure why, but you do.";
 	the rule succeeds;
 
 to decide which direction is only-exit of (rm - a room):
@@ -750,7 +764,7 @@ to decide which direction is only-exit of (rm - a room):
 		now dir is X2;
 	decide on dir;
 
-chapter cheating
+chapter cheating - not for release
 
 cheating is an action applying to nothing.
 
