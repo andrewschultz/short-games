@@ -455,7 +455,13 @@ volume things
 
 a winnable is a kind of thing.
 
-check taking a winnable: if noun is not magnets, say "The [noun] jump[if noun is checkerboard]s[end if] away from you. You can still look at [if noun is checkerboard]it[else]them[end if], though." instead;
+ever-mag-coll is a truth state that varies.
+ever-mag is a truth state that varies.
+
+check taking a winnable: if noun is not magnets, say "The [noun] jump[if noun is checkerboard]s[end if] away from you[if ever-mag-coll is true]. Too bad you didn't get the magnets first this time[else if ever-mag is true]. It doesn't stick to you like the magnets did[else]. Maybe you need something to attract [it-them of noun][end if]. You can still look at [it-them of noun], though." instead;
+
+to say it-them of (x - a thing):
+	say "[if x is plural-named]them[else]it[end if]"
 
 instead of doing something with winnable:
 	if current action is examining or current action is taking, continue the action;
@@ -499,12 +505,15 @@ every turn when cur-level is 5:
 	if player does not have magnets and magnets are in location of player:
 		say "The magnets jump up and hover near you. You obviously attracted them, somehow.";
 		now player has magnets;
+		now ever-mag is true;
 	else if player has magnets:
 		if location of player is location of dominoes and player does not have dominoes:
 			say "The dominoes latch on to the magnets[if player has checkerboard]. They're stuck to the checkerboard, so you can probably EXAMINE it agaiin to figure things out more[end if].";
+			now ever-mag-coll is true;
 			now player has dominoes;
 		if location of player is location of checkerboard and player does not have checkerboard:
 			say "Your magnets attract the checkerboard[if player has dominoes]! You may want to X CHECKERBOARD to play around with things.[else]![end if]";
+			now ever-mag-coll is true;
 			now player has checkerboard;
 
 Include (-
