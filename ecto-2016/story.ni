@@ -139,9 +139,9 @@ check taking inventory:
 	if number of things carried by player is 1, say "You're carrying [list of things carried by player], or rather, they're floating near you." instead;
 	say "Somehow, a few corporeal things stuck to you: [list of things carried by player]." instead;
 
-chapter waitin
+chapter waiting
 
-instead of waiting, say "You have all the time in the world. Nobody upbraids you for your laziness."
+instead of waiting, say "[one of]You have all the time in the world. Nobody upbraids you for your laziness, but the blob sort of pulses as if to say, get on with it, more important spirits are watching you[or]The blob pulses passive-aggressively (you think) some more[stopping]."
 
 instead of thinking:
 	say "You contemplate where you are and where you've been.[paragraph break]";
@@ -329,8 +329,13 @@ volume initialization
 
 lshuf is a list of number variables. lshuf is { 1, 2, 3, 4 }
 
+the player carries the blob of Evil-B-Gone. description of blob is "It pulses as you look at it."
+
+instead of doing something with the blob:
+	say "You can really only examine it. It will emit protective gases or whatever as you move."
+
 when play begins:
-	shuf-law;
+	shuf-rand;
 	sort lshuf in random order;
 	repeat with G running through rooms:
 		if blocklevel of G is 5:
@@ -338,16 +343,19 @@ when play begins:
 		else:
 			now blocklevel of G is entry (blocklevel of G) in lshuf;
 	start-play;
-	say "Limbo isn't so bad, really. There's not a whole lot to do, even if you wind up reflecting more on what you never got around to doing. It got better when you learned not to haunt earth when it just made you jealous of people who you spied getting more stuff done. But wait...what's that?";
+	say "Limbo isn't so bad, really. There's not a whole lot to do, even if you wind up reflecting more on what you never got around to doing. There was so much you were interested in, but time just slipped away. Almost too late in life, you found you were just interested in ... stuff ... and all those high powered professions you thought you couldn't be, that you lashed out at--well, they had bad apples, but they also might've been you.[paragraph break]You weren't enough of a jerk for hell, but you didn't do nearly enough in life to escape limbo. You heard of opportunities to move up, to learn a bit more, even if the afterlife, but you never really pursued them. Judgment day HAD to be a few billion years away.";
 	wfak;
-	say "'They'll do,' says a voice. 'Give [']em a chance to get out. You do want to get out, don't you? Move up in the Otherworld? Before Judgement Day?'[paragraph break]That's weird. The afterlife doesn't have many opportunities. The voice continues.[paragraph break]'You've spent enough time as a ghost, and we've been watching you. Maybe you're the one to haunt all the places...not very big suburbs, either.";
+	say "But it's a bit boring. Then one day you hear a voice boom 'They'll do,' The them is you![paragraph break]'You've spent enough time as a ghost, and we've been watching you. You up for some remedial devil proofing?";
 	wfak;
-	say "'All you gotta do is haunt five suburbs. Suburbs full of people richer than they deserve to be. They deserve it, right? But you need to haunt them efficiently. No crossing back over where you've gone before. They might see you. Just five blocks by five blocks. The only catch? There's a church you can't run past. The people who go aren't very churchy, but hey, them's the rules. You up for it?";
+	say "[line break]'Before you can ask about details, you're handed a weird blob. They explain it'll spray enough that if you cover all the intersections in a suburb, the worst evil can't enter. The blob will emit its spray whenever you move. You just need to be efficient. No crossing back where you've been. No retracing where you've gone before. It's like crossing the wires in Ghostbusters. And no getting too near the church. Again, weird science.";
 	wfak;
-	say "Well, you have nothing better to do. And you're still a bit resentful of people who did better than you in the pre-life, even if they're going to do worse in the afterlife. So you decide, why not give it a shot?";
+	say "[line break]'You missed a lot of films you wanted to see, but you DID see that one, at least? Good. Anyway. Too long to explain. if you'd paid more attention to science while living, maybe we could, but you didn't, so we can't. Anyway, you up for it?";
+	wfak;
+	say "Well, you have nothing better to do. The areas are only five by five blocks. How hard can it be? You read the list of place names: jobs you never had the initiative to get and assumed you weren't good enough for, and sometimes you even lashed out against elitists and eggheads who GOT those jobs, but you never even tried.";
+	wfak;
 
-to shuf-law:
-	(- shuffle(5); -);
+to shuf-rand:
+	(- shuffle(4); -);
 
 cur-level is a number that varies. cur-level is 1.
 
@@ -475,7 +483,7 @@ Include (-
   }
 ];
 
-Array profs --> 5 "Lawyer" "Doctor" "Agent" "Finance" "Programmer";
+Array profs --> 5 "Lawyer" "Doctor" "Professor" "Investor" "Programmer";
 
 -)
 
@@ -511,6 +519,7 @@ carry out gwting:
 	try gamewinning instead;
 
 carry out gamewinning:
+	say "You suddenly, and those jobs aren't necessarily good or evil by themselves, and you feel briefly ashamed you didn't try harder.";
 	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesing than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
 	end the story finally;
 
