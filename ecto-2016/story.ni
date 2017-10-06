@@ -222,7 +222,7 @@ eastruning is an action applying to nothing.
 carry out eastruning:
 	try runing east instead;
 
-understand "ee" as eastruning.
+understand "ee" and "re" and "er" as eastruning.
 
 section westruning
 
@@ -231,7 +231,7 @@ westruning is an action applying to nothing.
 carry out westruning:
 	try runing west instead;
 
-understand "ww" as westruning.
+understand "ww" and "rw" and "wr" as westruning.
 
 section northruning
 
@@ -240,7 +240,7 @@ northruning is an action applying to nothing.
 carry out northruning:
 	try runing north instead;
 
-understand "nn" as northruning.
+understand "nn" and "rn" and "nr" as northruning.
 
 section southruning
 
@@ -249,7 +249,7 @@ southruning is an action applying to nothing.
 carry out southruning:
 	try runing south instead;
 
-understand "ss" as southruning.
+understand "ss" and "rs" and "sr" as southruning.
 
 chapter parser
 
@@ -581,7 +581,7 @@ after printing the locale description:
 
 the printed name of a room is "[ct of cur-level], [xing of the item described]".
 
-the description of a room is "You can go [list of viable directions]. The blocked intersection is [xing of blocked-room]."
+the description of a room is "You can go [list of viable directions]. The church is at [xing of blocked-room]."
 
 before going:
 	if noun is up:
