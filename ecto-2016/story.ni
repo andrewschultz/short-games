@@ -223,7 +223,7 @@ carry out runing:
 	if noun is not okay, say "[if q is nowhere]You can't go further[else if q is blockedoff]The church is[else]You've already been[end if] [noun]." instead;
 	while noun is okay:
 		move player to q, without printing a room description;
-		say "[bold type][q][roman type][paragraph break]";
+		if noun is okay, say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
 	try looking;
@@ -656,9 +656,10 @@ definition: a room (called myrm) is clearblack:
 	decide yes;
 
 definition: a direction (called d) is okay:
-	if the room d of location of player is nowhere, decide no;
-	if the room d of location of player is visited, decide no;
-	if the room d of location of player is blocked-room, decide no;
+	let r be location of player;
+	if the room d of r is nowhere, decide no;
+	if the room d of r is visited, decide no;
+	if the room d of r is blocked-room, decide no;
 	decide yes;
 
 map-help is a truth state that varies.
@@ -670,7 +671,11 @@ after printing the locale description:
 
 the printed name of a room is "[ct of cur-level], [xing of the item described]".
 
-the description of a room is "You can go [list of viable directions]. The church is at [xing of blocked-room]."
+the description of a room is "You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room]."
+
+to say alreadies:
+	if number of alreadied directions is 0, continue the action;
+	say ", but you've already been [list of alreadied directions]";
 
 before going:
 	if noun is up:
@@ -684,11 +689,10 @@ before going:
 	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
 	if q is visited, say "Wait, no, you've already been [noun] to [description of room noun of location of player] already." instead;
 
-definition: a direction (called d) is viable:
+definition: a direction (called d) is alreadied:
 	let r be location of player;
-	if the room d of r is blocked-room, decide no;
-	if the room d of r is nowhere, decide no;
-	decide yes;
+	if the room d of r is visited, decide yes;
+	decide no;
 
 definition: a direction (called d) is linear:
 	if d is north or d is south or d is east or d is west, decide yes;
@@ -750,10 +754,12 @@ this is the win-jump rule:
 		say "You consider where you are and where you've been. You're pretty sure there's only one way through town. Take it?";
 		if the player consents:
 			let temp be 0;
+			say "You rush through: ";
 			repeat with myp running through mypath:
 				if temp > 0, say ", ";
 				say "[xing of myp]";
 				increment temp;
+			say ".[paragraph break]";
 			do-the-next;
 		else:
 			say "OK. I won't ask again.";
