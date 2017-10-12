@@ -14,6 +14,29 @@ use no scoring.
 
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
+volume silly i6 change
+
+five-failed is a number that varies.
+
+include (-
+
+[ QUIT_THE_GAME_R; if (actor ~= player) rfalse;
+	GL__M(##Quit,2);
+	if (YesOrNo()~=0)
+	{
+	quit;
+	}
+	else
+	{
+	if ((+ five-failed +) > 2)
+	{
+	print "You change your mind. Maybe there's some secret to unlock, here.^";
+	}
+	}
+];
+
+-) instead of "Quit The Game Rule" in "ZMachine.i6t".
+
 volume verb and parser tweaks
 
 chapter long form of verbs
@@ -271,6 +294,14 @@ rule for printing a parser error (this is the simplify parser errors rule):
 	say "You can't do much here except go in directions (RUN/R a direction, or typing it double, goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game.";
 	reject the player's command;
 
+chapter core meta stuff
+
+check restarting the game:
+	say "Somewhere, you hear an officious adult boom 'There's no restarting in life!' Or the afterlife, you guess.[paragraph break]NOTE: there is no way to get the game in an unwinnable position or to lose progress, though you may be trapped in a certain area for a bit. And you don't get points deducted for taking too many runs through.";
+
+check quitting the game:
+	say "You don't need some silly fetch assignment. It takes away from...general meditative lingering you'd rather be doing, you guess[if five-failed > 1]. You wonder if someone is pulling your chain, or maybe they're trying to help you realize something weird and interesting[end if].";
+
 volume main game
 
 a room has a number called blocklevel. blocklevel of a room is usually 5.
@@ -374,12 +405,18 @@ definition: a room (called myr) is curlev:
 past-start is a truth state that varies.
 
 to start-play:
+	now blocked-this-time is false;
 	now all rooms are unvisited;
 	now blocked-room is not blockedoff; [cheat yourself into a certain position here, or in cur-level is 5 below]
 [	now blocked-room is r42;
 	move player to r40;
 	now blocked-room is blockedoff;
 	continue the action;]
+	if cur-level is 1:
+		now blocked-room is r22;
+		now blocked-room is blockedoff;
+		move player to r33;
+		continue the action;
 	if cur-level is 5:
 		if number of fivevalid rooms is 0:
 			now all fivedone rooms are fivevalid;
@@ -588,6 +625,7 @@ to check-trapped:
 		if cur-level < 5:
 			say "Oh no! You are trapped! You hear a hum from the blob, then a crackle.[paragraph break]'Oh, come on,' you hear an authoritative voice say. 'Surely you can do better than that? If we didn't have all the time in the world, we'd get rid of you for wasting ours.'[paragraph break]You're sent back. [ct of cur-level] looks slightly different now.";
 		else:
+			increment five-failed;
 			say "The blob crackles. 'HAVEN'T FIGURED IT OUT, HAVE YOU?' ";
 			if number of visited rooms is 23:
 				say "[one of]But you almost got everywhere! That should mean something, but it doesn't.[or]Again, you almost completed the loop, and you're not sure why you didn't[or]This is getting frustrating, and you are sure you're doing your best, but you can't recognize why[or]Something's going on here, or it totally isn't, and you're not sure what[stopping]";
@@ -644,6 +682,13 @@ to decide whether walled-in:
 	if south is okay, decide no;
 	if east is okay, decide no;
 	if west is okay, decide no;
+	decide yes;
+
+definition: a room (called myrm) is available:
+	if player is in myrm, decide no;
+	if myrm is visited, decide no;
+	if myrm is blocked-room, decide no;
+	if myrm is touched, decide no;
 	decide yes;
 
 definition: a room (called myrm) is clearblack:
@@ -736,7 +781,11 @@ after looking when skip-ask-this-time is false:
 	consider the win-jump rule;
 	continue the action;
 
+blocked-this-time is a truth state that varies.
+
 this is the win-jump rule:
+	if blocked-this-time is true:
+		continue the action;
 	if skip-ask-this-time is true, continue the action;
 	let cur be location of player;
 	let myx be only-exit of cur;
@@ -744,6 +793,13 @@ this is the win-jump rule:
 	let uv be number of unvisited rooms;
 	if uv <= 2, continue the action; [it's just annoying if the person is 1 square away. Also, this probably isn't relevant, and you've probably been asked anyway.]
 	now mypath is {};
+	let rr be a random available room;
+	spread-out rr;
+	if number of available rooms > 0:
+		say "You feel a sense of worry.";
+		now blocked-this-time is true;
+		continue the action;
+	now all rooms are not touched;
 	while myx is not up and myx is not down:
 		now cur is touched;
 		now cur is room myx of cur;
@@ -765,8 +821,16 @@ this is the win-jump rule:
 			say "OK. I won't ask again.";
 			now skip-ask-this-time is true;
 	else if number of touched rooms > 0 and myx is up: [this is pretty hacky. up = 0 ways out, down = 2 ways out]
-		say "You feel a sense of worry. You're not sure why, but you do.";
+		say "You feel very uneasy indeed.";
 	the rule succeeds;
+
+to spread-out (rr - a room):
+	if rr is not available, continue the action;
+	now rr is touched;
+	if the room north of rr is available, spread-out the room north of rr;
+	if the room south of rr is available, spread-out the room south of rr;
+	if the room east of rr is available, spread-out the room east of rr;
+	if the room west of rr is available, spread-out the room west of rr;
 
 to decide which direction is only-exit of (rm - a room):
 	let dir be up;
