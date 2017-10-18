@@ -199,7 +199,6 @@ to decide which number is poss-border of (a - a us-state) and (b - a us-state):
 		if c borders b, increment temp;
 	decide on temp.
 
-
 part World
 
 chapter geography class
@@ -385,7 +384,7 @@ carry out visiting:
 			say "'Hey! [noun] and [current-state] aren't even CLOSE!' someone yells. Mrs. Crabtree tut-tuts them, and you blush slightly." instead;
 
 to say lame-o:
-	say "[one of]dweebazoid[or]space cadet[or]cheater[or]flunkasaurus[or]dirty sneak[or]lazy bum[or]mega-dunce[or]bubble brain[or]weaksauce[or]flake[or]meathead[or]smarty[or]geeenius[or]jubenile deliquent[or]dumbskull[at random]"
+	say "[one of]dweebazoid[or]space cadet[or]cheater[or]flunkasaurus[or]dirty sneak[or]lazy bum[or]mega-dunce[or]bubble brain[or]weaksauce[or]flake[or]meathead[or]smarty[or]geeenius[or]dufus[or]crumbum[or]jumbo-dumbo[or]ketchup brain[or]lame-o[or]stinkatron[or]dolt-o-rama[or]zonkazoid[or]jubenile deliquent[or]dumbskull[at random]"
 
 chapter pondering
 
@@ -535,7 +534,7 @@ The greying bun is part of Mrs Crabtree. understand "hair" as greying bun.
 description of greying bun is "You can only see the tip of it, but you know it well."
 
 instead of kissing Mrs Crabtree:
-	say "Stop that!"
+	say "[one of]Everyone loves Mrs. Crabtree, but you're in third grade, and she's married[or]Mind on the game[stopping]."
 
 when play begins:
 	if a random chance of 1 in 2 succeeds:

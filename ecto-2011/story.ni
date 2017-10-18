@@ -46,7 +46,6 @@ A thing can be examined or unexamined.
 Carry out examining something:
 	now the noun is examined.
 
-
 The description of a disturbingly corroded battery is "It's a bit rusty and apparently not quite at its expiration date yet[if battery is unexamined]. It can't be too dangerous, since it hasn't bored a hole in the wastebasket yet, but you still can't remember when you bought it[end if]."
 
 After taking the disturbingly corroded battery for the first time:
@@ -212,7 +211,6 @@ The description of the seedy youth is "He's wearing a t-shirt that says UP WITH 
 
 instead of exiting when ford escort is in Seedy Street:
 	say "No way, man. Rough neighborhood."
-
 
 vandalism-objects is a number that varies. vandalism-objects is usually 0.
 
@@ -659,7 +657,6 @@ rule for printing a parser error:
 			say "Sorry, the author didn't have time to figure how to say KIDS. Just do something to the annoying boy. Or girl.";
 			reject the player's command;
 	continue the action;
-
 
 Book tests - not for release
 

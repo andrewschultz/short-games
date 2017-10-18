@@ -403,7 +403,6 @@ Instead of answering someone that something:
 instead of talking to someone:
 	say "You can't talk. But you can blink.";
 
-
 book tests
 
 test qw with "bf e/bf n/bf w/bf s/bf s/bf w/bf n/bf n/bf e/bf s/bf s/bf e/bf n/bf n/bf w/bf s/bf s/bf w/bf n/bf e"

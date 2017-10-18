@@ -187,7 +187,7 @@ understand "about" as abouting.
 understand "credits" as abouting.
 
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]";
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level withough getting through it.";
 
 chapter mapiting
 
