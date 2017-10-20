@@ -228,7 +228,6 @@ to say sta of (rm - a room):
 	else:
 		say "-"
 
-
 chapter runing
 
 runing is an action applying to one visible thing.
@@ -769,7 +768,6 @@ Rule for deciding whether to allow undo:
 		deny undo;
 	else:
 		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.";
-
 
 volume skip-and-jump
 
