@@ -176,6 +176,24 @@ instead of thinking:
 	say "You contemplate where you are and where you've been.[paragraph break]";
 	try mapiting;
 
+chapter mapview toggle
+
+mving is an action applying to nothing.
+
+understand the command "mv" as something new.
+
+understand "mv" as mving.
+
+carry out mving:
+	now map-view is whether or not map-view is false;
+	say "Map view is now [on-off of map-view].";
+	the rule succeeds;
+
+map-view is a truth state that varies.
+
+to say on-off of (ts - a truth state):
+	say "[if ts is true]on[else]off[end if]"
+
 chapter abouting
 
 abouting is an action out of world.
@@ -187,7 +205,7 @@ understand "about" as abouting.
 understand "credits" as abouting.
 
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level withough getting through it.";
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.";
 
 chapter mapiting
 
@@ -204,6 +222,10 @@ understand "ma" as mapiting.
 understand "m" as mapiting.
 
 carry out mapiting:
+	if map-view is true, say "You shouldn't need to, with map view on, but here it is anyway.[paragraph break]";
+	say "[my-map]";
+
+to say my-map:
 	say "[bold type]Map of [ct of cur-level]ville[roman type][paragraph break]";
 	say "+ = visited, . = unvisited, * = church.";
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
@@ -227,6 +249,27 @@ to say sta of (rm - a room):
 		say "*";
 	else:
 		say "-"
+
+chapter verbing
+
+to say my-verbs:
+	say "You can't do much here except go in the four basic directions, or try to take or examine things. [bold type]RUN/R[roman type] (direction) or, for instance, EE, lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description[paragraph break][bold type]ABOUT[roman type] displays information about the game"
+
+chapter verbsing
+
+verbsing is an action applying to nothing.
+
+understand the command "verbs" as something new.
+understand the command "verb" as something new.
+understand the command "v" as something new.
+
+understand "verbs" as verbsing.
+understand "verb" as verbsing.
+understand "v" as verbsing.
+
+carry out verbsing:
+	say "[my-verbs].";
+	the rule succeeds;
 
 chapter runing
 
@@ -290,7 +333,7 @@ understand "ss" and "rs" and "sr" as southruning.
 chapter parser
 
 rule for printing a parser error (this is the simplify parser errors rule):
-	say "You can't do much here except go in directions (RUN/R a direction, or typing it double, goes as far as possible that way), or MAPIT/MAP/M to see a map[if board-width < 8 or chex is true]. Though you can guess a verb to win[end if].[paragraph break]ABOUT displays information about the game.";
+	say "[my-verbs].";
 	reject the player's command;
 
 chapter core meta stuff
@@ -361,7 +404,7 @@ clockval of r44 is 8. clockval of r43 is 9. clockval of r42 is 10. clockval of r
 
 clockval of r30 is 13. clockval of r20 is 14. clockval of r10 is 15.
 
-volume initialization
+volume other initialization
 
 lshuf is a list of number variables. lshuf is { 1, 2, 3, 4 }
 
@@ -511,13 +554,13 @@ check examining checkerboard:
 		wfak;
 		say "Black square left again. And again. Always a black square. You start trying to leave a white square.";
 		wfak;
-		say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squaers. The areas before [ct of 5] all took out...a black square. [ct of 5] took out a white square. That would leave two extra black squares...";
+		say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squares. The areas before [ct of 5] all took out...a black square. [ct of 5] took out a white square. That would leave two extra black squares...";
 		wfak;
 		say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
 		wfak;
 		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread (73/-13 meant a score of 43-30. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
 		wfak;
-		say "Sitting in [ct of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interersting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
+		say "Sitting in [ct of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interesting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
 		wfak;
 		say "You realize just how much time you've spent navel-gazing about where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff you can look into. It got you out of the doldrums for a while.";
 		wfak;
@@ -544,7 +587,7 @@ every turn when cur-level is 5:
 		now ever-mag is true;
 	else if player has magnets:
 		if location of player is location of dominoes and player does not have dominoes:
-			say "The dominoes latch on to the magnets[if player has checkerboard]. They're stuck to the checkerboard, so you can probably EXAMINE it agaiin to figure things out more[end if].";
+			say "The dominoes latch on to the magnets[if player has checkerboard]. They're stuck to the checkerboard, so you can probably EXAMINE it again to figure things out more[end if].";
 			now ever-mag-coll is true;
 			now player has dominoes;
 		if location of player is location of checkerboard and player does not have checkerboard:
@@ -602,7 +645,7 @@ carry out gwting:
 
 carry out gamewinning:
 	say "You suddenly, and those jobs aren't necessarily good or evil by themselves, and you feel briefly ashamed you didn't try harder.";
-	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesing than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
+	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesting than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
 	end the story finally;
 
 after printing the locale description:
@@ -649,9 +692,9 @@ to say analysis:
 	else if player has magnets:
 		say ". Maybe something [if player has checkerboard or player has dominoes]more [end if]could have gone with the magnets";
 	else if dominoes are not off-stage and location of dominoes is not visited:
-		say ". You maybe didn't search everwhere this time";
+		say ". You maybe didn't search everywhere this time";
 	else if magnets are not off-stage and location of magnets is not visited:
-		say ". You maybe didn't search everwhere this time";
+		say ". You maybe didn't search everywhere this time";
 	else if player has dominoes and player does not have checkerboard:
 		say ". Too bad you don't have something to put the dominoes on. Maybe you could've done something";
 	else if player has checkerboard and player does not have dominoes:
@@ -715,7 +758,7 @@ after printing the locale description:
 
 the printed name of a room is "[ct of cur-level], [xing of the item described]".
 
-the description of a room is "You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room]."
+the description of a room is "[if map-view is true][my-map][else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
