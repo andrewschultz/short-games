@@ -162,7 +162,12 @@ the print standard inventory rule is not listed in any rulebook.
 check taking inventory:
 	if number of things carried by player is 0, say "You're carrying nothing." instead;
 	if number of things carried by player is 1, say "That blob of Evil-B-Gone is floating around you." instead;
-	say "Somehow, a few corporeal things stuck to you in addition to the blob of Evil-B-Gone you're carrying around: [list of things carried by player]." instead;
+	say "Somehow, a few corporeal things stuck to you in addition to the blob of Evil-B-Gone you're carrying around: [the list of vacuumed things]." instead;
+
+definition: a thing (called th) is vacuumed:
+	if th is evil-b-gone, no;
+	if th is carried, yes;
+	no;
 
 does the player mean examining something not carried: it is very likely.
 
@@ -223,24 +228,24 @@ understand "m" as mapiting.
 
 carry out mapiting:
 	if map-view is true, say "You shouldn't need to, with map view on, but here it is anyway.[paragraph break]";
-	say "[my-map]";
+	say "[bold type]Map of [ct of cur-level][roman type][paragraph break]";
+	say "[my-map][line break]";
 
 to say my-map:
-	say "[bold type]Map of [ct of cur-level]ville[roman type][paragraph break]";
 	say "+ = visited, . = unvisited, * = church.";
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
 	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
 	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
 	say "O [sta of r30] [sta of r31] [sta of r32] [sta of r33] [sta of r34] [line break]";
-	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44] [line break][variable letter spacing]";
+	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44][variable letter spacing]";
 
 to say sta of (rm - a room):
 	if debug-state is true and rm is location of checkerboard:
-		say "X";
+		say "[if rm is visited]X[else]x[end if]";
 	else if debug-state is true and rm is location of magnets:
-		say "M";
+		say "[if rm is visited]M[else]m[end if]";
 	else if debug-state is true and rm is location of dominoes:
-		say "D";
+		say "[if rm is visited]D[else]d[end if]";
 	else if rm is location of player:
 		say "U";
 	else if rm is visited:
@@ -253,7 +258,7 @@ to say sta of (rm - a room):
 chapter verbing
 
 to say my-verbs:
-	say "You can't do much here except go in the four basic directions, or try to take or examine things. [bold type]RUN/R[roman type] (direction) or, for instance, EE, lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description[paragraph break][bold type]ABOUT[roman type] displays information about the game"
+	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or, for instance, [bold type]EE[roman type], lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description[paragraph break][bold type]ABOUT[roman type] displays information about the game. [bold type]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disable in order to simplify the game"
 
 chapter verbsing
 
@@ -291,6 +296,7 @@ carry out runing:
 		if noun is okay, say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
+	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
 	try looking;
 	check-trapped;
 
@@ -454,12 +460,7 @@ to start-play:
 	move player to r40;
 	now blocked-room is blockedoff;
 	continue the action;]
-	if cur-level is 1:
-		now blocked-room is r22;
-		now blocked-room is blockedoff;
-		move player to r33;
-		continue the action;
-	if cur-level is 5:
+	if cur-level is 5: [if anything is NOT commented out above, delete it.]
 		if number of fivevalid rooms is 0:
 			now all fivedone rooms are fivevalid;
 		now blocked-room is a random fivevalid room;
@@ -471,11 +472,7 @@ to start-play:
 	now right hand status line is "X=[xing of blocked-room]";
 	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";
-	if past-start is false:
-		move player to random unblocked room, without printing a room description;
-		now past-start is true;
-	else:
-		move player to random unblocked room;
+	move player to random unblocked room, without printing a room description;
 	if cur-level is 5:
 		let valid-config be false;
 		let count be 0;
@@ -548,6 +545,8 @@ instead of doing something with winnable:
 
 the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words][if board-width is not 5], with opposite corners cut off[try-thru][else], and it's easy to trace a way through. Sort of like the current map, only there's not a hole where the church is[end if]."
 
+understand "checker/chess board" and "board" as checkerboard.
+
 check examining checkerboard:
 	if player has magnets and player has dominoes:
 		say "You shuffle the dominoes around. Of course they can't cover the whole checkerboard. But you try to cover everything except--well, what would be where the church is. First time you try, a black square is still visible. You shuffle the dominoes some more. Each time, a black square comes up. You have as much time as you want, and you realize you might be in a no-win situation anyway this time, so you give yourself an hour.";
@@ -595,12 +594,14 @@ every turn when cur-level is 5:
 			now ever-mag-coll is true;
 			now player has checkerboard;
 
+[ comments for below: random(x) = 1 ... x]
+
 Include (-
 
 [ shuffle n i j tmp;
   for(i = n: i > 1: i-- )
   {
-	j = random(i + 1);
+	j = random(i);
 
 	tmp = profs-->j;
 	profs-->j = profs-->i;
@@ -678,6 +679,7 @@ to check-trapped:
 			say "[line break]There's a swirling, and you're back in [ct of cur-level], but everything feels a bit different, now.";
 		now all rooms are unvisited;
 		start-play;
+		try looking;
 
 to say analysis:
 	if location of checkerboard is unvisited:
@@ -718,6 +720,7 @@ to do-the-next:
 	say "You hear ethereal applause once you step on the final intersection. [one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ct of 4] next.[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
 	start-play;
+	try looking;
 
 to decide whether walled-in:
 	if north is okay, decide no;
@@ -758,7 +761,7 @@ after printing the locale description:
 
 the printed name of a room is "[ct of cur-level], [xing of the item described]".
 
-the description of a room is "[if map-view is true][my-map][else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
+the description of a room is "[if map-view is true][my-map][no line break][else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -774,7 +777,7 @@ before going:
 	let q be the room noun of location of player;
 	if q is nowhere, say "You're at the [noun] edge of [ct of cur-level]." instead;
 	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
-	if q is visited, say "Wait, no, you've already been [noun] to [description of room noun of location of player] already." instead;
+	if q is visited, say "Wait, no, you've already been [noun] to [printed name of room noun of location of player] already." instead;
 
 definition: a direction (called d) is alreadied:
 	let r be location of player;
