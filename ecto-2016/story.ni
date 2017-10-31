@@ -183,7 +183,7 @@ instead of thinking:
 
 chapter mapview toggle
 
-mving is an action applying to nothing.
+mving is an action out of world.
 
 understand the command "mv" as something new.
 
@@ -228,7 +228,7 @@ understand "m" as mapiting.
 
 carry out mapiting:
 	if map-view is true, say "You shouldn't need to, with map view on, but here it is anyway.[paragraph break]";
-	say "[bold type]Map of [ct of cur-level][roman type][paragraph break]";
+	say "[bold type]Map of [ctv of cur-level][roman type][paragraph break]";
 	say "[my-map][line break]";
 
 to say my-map:
@@ -349,6 +349,32 @@ check restarting the game:
 
 check quitting the game:
 	say "You don't need some silly fetch assignment. It takes away from...general meditative lingering you'd rather be doing, you guess[if five-failed > 1]. You wonder if someone is pulling your chain, or maybe they're trying to help you realize something weird and interesting[end if].";
+
+chapter guess the verb from the original game
+
+gamewinning is an action applying to nothing.
+
+understand the command "parity" as something new.
+understand the command "color" as something new.
+understand the command "colors" as something new.
+understand the command "count" as something new.
+understand the command "corner" as something new.
+understand the command "corners" as something new.
+understand the command "prove" as something new.
+understand the command "disprove" as something new.
+
+understand "parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove" as gamewinning when cur-level is 5.
+
+gwting is an action applying to one topic.
+
+understand "parity [text]" and "color [text]" and "colors [text]" and "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
+
+carry out gwting:
+	try gamewinning instead;
+
+carry out gamewinning:
+	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ctv of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesting than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
+	end the story finally;
 
 volume main game
 
@@ -543,9 +569,11 @@ instead of doing something with winnable:
 	if current action is examining or current action is taking, continue the action;
 	say "You're incorporeal, so you can't do much other than EXAMINE the [noun].";
 
+chapter checkerboard
+
 the checkerboard is a winnable. "A slightly mutilated checkerboard with the corners cut off[if board-width is 6], slightly smaller than the last,[else if board-width is 4 and esmall is false], even smaller than the last,[end if] lies here.". description is "It's [board-width in words] by [board-width in words][if board-width is not 5], with opposite corners cut off[try-thru][else], and it's easy to trace a way through. Sort of like the current map, only there's not a hole where the church is[end if]."
 
-understand "checker/chess board" and "board" as checkerboard.
+understand "checker/chess/board" and "checker/chess board" as checkerboard.
 
 check examining checkerboard:
 	if player has magnets and player has dominoes:
@@ -553,13 +581,13 @@ check examining checkerboard:
 		wfak;
 		say "Black square left again. And again. Always a black square. You start trying to leave a white square.";
 		wfak;
-		say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squares. The areas before [ct of 5] all took out...a black square. [ct of 5] took out a white square. That would leave two extra black squares...";
+		say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squares. The areas before [ctv of 5] all took out...a black square. [ctv of 5] took out a white square. That would leave two extra black squares...";
 		wfak;
 		say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
 		wfak;
 		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread (73/-13 meant a score of 43-30. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
 		wfak;
-		say "Sitting in [ct of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interesting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
+		say "Sitting in [ctv of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interesting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
 		wfak;
 		say "You realize just how much time you've spent navel-gazing about where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff you can look into. It got you out of the doldrums for a while.";
 		wfak;
@@ -570,12 +598,16 @@ check examining checkerboard:
 		the rule succeeds;
 
 to say try-thru:
-	say ". You try several times to trace a way through, [if board-width is 8]but you fail[else if board-width is 6]and you seem to figure that it can't be done, but you don't know how to express it[else]and you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ct of 5], somehow, but you don't know how to PROVE it[end if]"
+	say ". You try several times to trace a way through, [if board-width is 8]but you fail[else if board-width is 6]and you seem to figure that it can't be done, but you don't know how to express it[else]and you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ctv of 5], somehow, but you don't know how to PROVE it[end if]"
+
+chapter magnets
 
 the magnets are a plural-named winnable. description is "[if player has checkerboard and player has magnets]They're attracting both the dominoes and checkerboard, so if you want to play with the checkerboard, try X CHECKERBOARD[else if player has checkerboard]They're stuck to the checkerboard[else if player has dominoes]They're stuck inside the dominoes[else]You aren't actually carrying them--they're more magnetically attracted to you[end if]."
 
 check going when number of carried things is 4:
 	say "No. With your new set of toys, you may just want to X CHECKERBOARD. There's ... something there." instead;
+
+chapter dominoes
 
 the dominoes are a plural-named winnable. description is "They are two squares glued together. Squares about the same size you saw on the checkerboard[if player has magnets]. The magnets are embedded in them[end if]."
 
@@ -606,48 +638,39 @@ Include (-
 	tmp = profs-->j;
 	profs-->j = profs-->i;
 	profs-->i = tmp;
+
+	tmp = whines-->j;
+	whines-->j = whines-->i;
+	whines-->i = tmp;
+
+	tmp = reals-->j;
+	reals-->j = reals-->i;
+	reals-->i = tmp;
   }
 ];
 
 Array profs --> 5 "Lawyer" "Doctor" "Professor" "Investor" "Programmer";
 
+Array whines --> 5 "Ugh. Lawyers. You were intimidated from that racket by watching the right (or wrong) TV shows. And from all the lawyer jokes you heard." "Doctors. You remember some real know-it-alls in the pre-med program. Looked down on general practicioners or dentists or nurses." "You remember professors who seemed impatient with dumb questions, rumors of stupid academic squabbles getting in the way of real stuff." "How could you forget all the junk bond scandals and articles on how mutual funds really zapped you with fees? You'd probably have to cheat to beat the market." "You remember silly show-offs in the computer lab that got in the way of you playing Civilization or even completing a last-minute introductory coding assignment.";
+
+Array reals --> 5 "Lawyers aren't all just about yelling at people and getting fees and weaseling for full partnership like on TV. Some actually get at the truth. They just aren't the noisy ones." "Of course, some doctors are all about the money, but you remember doctors from when you were a kid who were really nice to you, just because." "College was a cynical time for you, and while some professors taught weed-out courses, others actually cared and wanted to help. You didn't ask for enough." "Investing by itself isn't immoral. Of course crooked junk bond investors made the news, but you do wish you'd saved a bit more for retirement, and there were a few common sense strategies you never took." "You remember trying to program simple games as a kid and being told they wouldn't be any good. You sort of let yourself give up on that, and you remember how stuff like HTML seemed too easy and should be beneath you. But you should have done something.";
+
 -)
 
-to say ct of (n - a number):
+to say ctv of (n - a number):
 	(- print (string)profs-->{n}, "ville"; -)
 
-understand "checker/chess/board" and "checker/chess board" as checkerboard.
+to say wh of (n - a number):
+	(- print (string)whines-->{n}; -)
+
+to say re of (n - a number):
+	(- print (string)reals-->{n}; -)
 
 after examining checkerboard: now chex is true.
 
 chex is a truth state that varies.
 
 board-width is a number that varies. board-width is 8.
-
-gamewinning is an action applying to nothing.
-
-understand the command "parity" as something new.
-understand the command "color" as something new.
-understand the command "colors" as something new.
-understand the command "count" as something new.
-understand the command "corner" as something new.
-understand the command "corners" as something new.
-understand the command "prove" as something new.
-understand the command "disprove" as something new.
-
-understand "parity" and "color" and "colors"or "corners" and "corner" and "count" and "prove" and "disprove" as gamewinning when cur-level is 5.
-
-gwting is an action applying to one topic.
-
-understand "parity [text]" and "color [text]" and "colors [text]" and "corners [text]" and "corner [text]" and "count [text]" and "prove [text]" and "disprove [text]" as gwting when cur-level is 5.
-
-carry out gwting:
-	try gamewinning instead;
-
-carry out gamewinning:
-	say "You suddenly, and those jobs aren't necessarily good or evil by themselves, and you feel briefly ashamed you didn't try harder.";
-	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ct of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesting than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
-	end the story finally;
 
 after printing the locale description:
 	check-trapped;
@@ -666,7 +689,7 @@ to check-trapped:
 			say "[list of unvisited rooms].";
 			repeat with Q running through unvisited rooms: say "[Q].";]
 		if cur-level < 5:
-			say "Oh no! You are trapped! You hear a hum from the blob, then a crackle.[paragraph break]'Oh, come on,' you hear an authoritative voice say. 'Surely you can do better than that? If we didn't have all the time in the world, we'd get rid of you for wasting ours.'[paragraph break]You're sent back. [ct of cur-level] looks slightly different now.";
+			say "Oh no! You are trapped! You hear a hum from the blob, then a crackle.[paragraph break]'Oh, come on,' you hear an authoritative voice say. 'Surely you can do better than that? If we didn't have all the time in the world, we'd get rid of you for wasting ours.'[paragraph break]You're sent back. [ctv of cur-level] looks slightly different now.";
 		else:
 			increment five-failed;
 			say "The blob crackles. 'HAVEN'T FIGURED IT OUT, HAVE YOU?' ";
@@ -676,7 +699,7 @@ to check-trapped:
 				say "You felt like you could've covered more ground, so you look back on what you did";
 			say "[analysis].";
 			move-board;
-			say "[line break]There's a swirling, and you're back in [ct of cur-level], but everything feels a bit different, now.";
+			say "[line break]There's a swirling, and you're back in [ctv of cur-level], but everything feels a bit different, now.";
 		now all rooms are unvisited;
 		start-play;
 		try looking;
@@ -717,8 +740,10 @@ to move-board:
 	now chex is false;
 
 to do-the-next:
-	say "You hear ethereal applause once you step on the final intersection. [one of]'Not bad! OK, on to the next suburb, [ct of 2].'[or]'You're getting the hang of it! [ct of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ct of 4] next.[or]'Good, but nobody's done [ct of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
+	say "You hear ethereal applause once you step on the final intersection. And you also take time to reflect. [re of cur-level]";
+	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
+	say "Oh, look. [ctv of cur-level]. That brings back memories.[paragraph break][wh of cur-level]";
 	start-play;
 	try looking;
 
@@ -759,7 +784,7 @@ after printing the locale description:
 		now map-help is true;
 		say "[italic type][bracket]This game has few verbs. ABOUT shows them all.[close bracket][roman type][line break]";
 
-the printed name of a room is "[ct of cur-level], [xing of the item described]".
+the printed name of a room is "[ctv of cur-level], [xing of the item described]".
 
 the description of a room is "[if map-view is true][my-map][no line break][else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
 
@@ -775,7 +800,7 @@ before going:
 	if noun is not linear:
 		say "No cutting through buildings." instead;
 	let q be the room noun of location of player;
-	if q is nowhere, say "You're at the [noun] edge of [ct of cur-level]." instead;
+	if q is nowhere, say "You're at the [noun] edge of [ctv of cur-level]." instead;
 	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
 	if q is visited, say "Wait, no, you've already been [noun] to [printed name of room noun of location of player] already." instead;
 
