@@ -244,7 +244,7 @@ carry out mapiting:
 
 to say my-map:
 	if debug-state is true and cur-level is 5, say "NOTE: spoilers for the dominoes/magnets/checkerboard only appear in debug mode.";
-	say "+ = visited, . = unvisited, * = church.";
+	say "+ = visited, . = unvisited, S = start, U = where you are now, * = church.";
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
 	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
 	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
@@ -260,6 +260,8 @@ to say sta of (rm - a room):
 		say "[if rm is visited]D[else]d[end if]";
 	else if rm is location of player:
 		say "U";
+	else if rm is start-room:
+		say "S";
 	else if rm is visited:
 		say "+";
 	else if rm is blockedoff:
@@ -320,7 +322,7 @@ carry out runing:
 		now q is the room noun of q;
 		increment moved;
 		if noun is okay and location of player is littered and missed-something is false:
-			say "Whoa! What was that? You missed something as you ran past. Hope it wasn't TOO important.";
+			say "Whoa! What was that? You missed something as you ran past. Hope it wasn't TOO important. Eh, whatever it is, maybe it'll turn up elsewhere.";
 			now missed-something is true;
 	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
 	try looking;
@@ -783,7 +785,7 @@ to do-the-next:
 	say "You hear ethereal applause once you step on the final intersection. And you also take time to reflect. [re of cur-level][paragraph break]";
 	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! It won't be that hard. Only later...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
-	say "That name just brings back memories.[paragraph break][wh of cur-level][paragraph break]";
+	say "[line break]That name just brings back memories. [wh of cur-level][paragraph break]";
 	start-play;
 	try looking;
 
@@ -852,7 +854,7 @@ after printing the locale description:
 
 the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room][end if]."
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -912,8 +914,13 @@ skip-ask-this-time is a truth state that varies.
 
 mypath is a list of rooms variable.
 
-after looking when skip-ask-this-time is false:
+jumptest-this-turn is a truth state that varies.
+
+every turn: now jumptest-this-turn is false;
+
+report looking when skip-ask-this-time is false and jumptest-this-turn is false:
 	consider the win-jump rule;
+	now jumptest-this-turn is true;
 	continue the action;
 
 blocked-this-time is a truth state that varies.
