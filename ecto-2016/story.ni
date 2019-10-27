@@ -325,6 +325,7 @@ carry out runing:
 	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
 	try looking;
 	check-trapped;
+	if moved is 1, say "A short run, but hey, you never get exhausted in the afterlife.";
 
 definition: a room (called rm) is littered:
 	if dominoes are in rm or checkerboard is in rm or magnets are in rm, yes;
@@ -780,7 +781,7 @@ to move-board:
 
 to do-the-next:
 	say "You hear ethereal applause once you step on the final intersection. And you also take time to reflect. [re of cur-level][paragraph break]";
-	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
+	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! It won't be that hard. Only later...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
 	say "That name just brings back memories.[paragraph break][wh of cur-level][paragraph break]";
 	start-play;

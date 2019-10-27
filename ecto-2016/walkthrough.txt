@@ -1,6 +1,22 @@
 Here is a walkthrough for the re-release of A Checkered Haunting.
 
-First four ways through are these or a mirror image/rotation. Regardless of where you start, you can follow the conveyor belt.
+First I'd like to mention some things that may seem odd or unusual.
+
+If you feel a sense of worry, it means you've cut the board in two. For instance, below, no matter which way you go next, north or south, one-half of the board is unreachable.
+
+.....
+.....
+S>>>>
+.....
+.....
+
+If you feel uneasiness, it means you've created two dead ends. A dead end is defined as a room you are not adjacent to that has only one exit. If you create a dead end, you'll need to end your journey there to have any hope of clearing the board. If you create two, you've left yourself too much to do. A simple example of how this happens is below.
+
+*.123
+..S.4
+....5
+
+The maps of each city are chosen at random and reset at random if you fail. For the first four towns, there are only four possibilities, not including rotation and mirror images. You can start at the center, halfway to a corner, at a corner, or at the middle of a side. Regardless of where you start, you can follow the arrows for a way through.
 
 X>>>v
 >^v<v
@@ -26,14 +42,44 @@ X>>>v
 ^>>^v
 ^<<<<
 
-Last one is not solvable because of a mathematical trick. If you label the map like a checkerboard there are 13 "black" squares and 11 "red" but you alternate between black and red.
+These four levels aren't intended to be too hard, but if you run through too fast without checking your work, you may get stuck like so:
+
+.@..*
+!.S>v
+^<<<v
+>>>^v
+^<<<<
+
+No matter how you get to @, you'll leave either the upper left or next-upper-left square unfilled, while you still need to go east to fill in that dead end. In this case, I locked myself out by not going N E S first. In this case, you'll note that the necessary ending square is the same color as the starting square.
+
+The final city has two possibilities. You can either start on the edge or inside.
+
+.1.1.
+1.2.1
+.2.2.
+1.2.1
+.1.1.
+
+But whether you have configuration 1 or 2, this is never solvable. A bit of mathematics proves this. Color the 5x5 board with black and red suqares alternately, like a checkerboard, with black in the upper left. Note that all the squares removed are red. That leaves 13 "black" squares and 11 "red," but you alternate between black and red.
+
+Since you alternate between black and red squares, you will have visited all the red squares after 22 moves, leaving you with two black squares to visit. That can't happen.
 
 But what happens is, there's a checkerboard to examine. It goes from 8x8 to 6x6 to 4x4 to 5x5. Also, some dominoes appear. They and the checkerboard push you away, so you can't take them on your own.
 
 Then you'll note that there's also a magnet, and you're pulled to it at the start. The magnet can pick up the checkerboard and dominoes. If you get the magnet first, and you get the checkerboard and dominoes later, you can then X the checkerboard until you want to SOLVE it. You're strictly on your honor for this, but the more you examine, the more hints/perspective you get. Eventually examining it just leads to solving it, anyway.
 
-So the solution is to keep examining the checkerboard when you find it in Programmerville (always the last) and then get the magnet once it appears. Then you should be able to stumble across the board and dominoes. While there may be a configuration that gives makes getting the magnet first then getting the other two items impossible, or you may run across a non-magnet first by accident, the game does check for configurations that don't work, and you can always restart. In addition, if we consider the 5x5 map a checkerboard of its own and the corner squares are black and the other squares are white, all the items are on white squares. So if you get a route that takes out everything but the two black squares, you will hit all three items.
+So the solution is to keep examining the checkerboard when you find it in Programmerville (always the last) and then get the magnet once it appears. Then you should be able to stumble across the board and dominoes.
 
-So eventually, you should get everything in the right order.
+While there may be a configuration that gives makes getting the magnet first then getting the other two items impossible, or you may run across a non-magnet first by chance, the game does check for configurations that don't work, and I sort of bailed by allowing infinite restarts.
+
+I also tried to tilt the odds of having a valid configuration in your favor. If you consider the 5x5 map a checkerboard with corner squares all black e.g.
+
+BWBWB
+WBWBW
+BWBWB
+WBWBW
+BWBWB
+
+I've put all the items on white squares. So if you get a route that takes out everything but the two black squares, you will hit all three items. Maybe not in the right order, but there should be clues where the magnet pops up.
 
 You may notice it's quicker to run into a dead end right away to get to the next checkerboard, and there's no penalty for doing so. This may save a few moves.
