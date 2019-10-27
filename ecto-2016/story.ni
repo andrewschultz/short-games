@@ -12,6 +12,8 @@ debug-state is a truth state that varies.
 
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
+cardinals is a list of directions variable. cardinals is {north, south, east, west}.
+
 volume silly i6 change
 
 five-failed is a number that varies.
@@ -250,11 +252,11 @@ to say my-map:
 	say "P [sta of r40] [sta of r41] [sta of r42] [sta of r43] [sta of r44][variable letter spacing]";
 
 to say sta of (rm - a room):
-	if debug-state is true and rm is location of checkerboard:
+	if debug-state is true and rm is location of checkerboard and player does not have checkerboard:
 		say "[if rm is visited]X[else]x[end if]";
-	else if debug-state is true and rm is location of magnets:
+	else if debug-state is true and rm is location of magnets and player does not have magnets:
 		say "[if rm is visited]M[else]m[end if]";
-	else if debug-state is true and rm is location of dominoes:
+	else if debug-state is true and rm is location of dominoes and player does not have dominoes:
 		say "[if rm is visited]D[else]d[end if]";
 	else if rm is location of player:
 		say "U";
@@ -509,6 +511,8 @@ definition: a room (called myr) is curlev:
 
 past-start is a truth state that varies.
 
+start-room is a room that varies.
+
 to start-play:
 	now skip-ask-this-time is false;
 	now blocked-this-time is false;
@@ -531,6 +535,7 @@ to start-play:
 	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";
 	move player to random unblocked room, without printing a room description;
+	now start-room is location of player;
 	if cur-level is 5:
 		let valid-config be false;
 		let count be 0;
@@ -540,11 +545,11 @@ to start-play:
 			now checkerboard is off-stage;
 			now dominoes are off-stage;
 			now magnets are off-stage;
-			move checkerboard to random clearblack room;
+			move checkerboard to random clearwhite room;
 			if cheat-prog > 1:
-				move dominoes to random clearblack room;
+				move dominoes to random clearwhite room;
 			if cheat-prog > 2:
-				move magnets to random clearblack room;
+				move magnets to random clearwhite room;
 				if location of magnets is edgy and location of dominoes is edgy and location of checkerboard is edgy and location of player is edgy:
 					let realmag be clockval of location of magnets;
 					let realdom be clockval of location of dominoes;
@@ -617,7 +622,9 @@ check examining checkerboard:
 		wfak;
 		say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
 		wfak;
-		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread (73/-13 meant a score of 43-30. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
+		let losers be a random number from 20 to 30;
+		let winners be a random number from losers to 40;
+		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread ([winners + losers]/[winners - losers] meant a score of [winners]-[losers]. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
 		wfak;
 		say "Sitting in [ctv of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interesting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
 		wfak;
@@ -786,6 +793,24 @@ to decide whether walled-in:
 	if west is okay, decide no;
 	decide yes;
 
+definition: a room (called myrm) is deadendy:
+	if myrm is location of player, no;
+	if myrm is adjacent to location of player, no;
+	if myrm is blocked-room, no;
+	if myrm is visited, no;
+	if okexits of myrm is 1, yes;
+	no;
+
+to decide what number is okexits of (rm - a room):
+	let temp be 0;
+	repeat with ca running through cardinals:
+		let r2 be the room ca of rm;
+		if r2 is nowhere, next;
+		if r2 is blocked-room, next;
+		if r2 is visited, next;
+		increment temp;
+	decide on temp;
+
 definition: a room (called myrm) is available:
 	if player is in myrm, decide no;
 	if myrm is visited, decide no;
@@ -793,8 +818,15 @@ definition: a room (called myrm) is available:
 	if myrm is touched, decide no;
 	decide yes;
 
-definition: a room (called myrm) is clearblack:
-	if the remainder after dividing rval of myrm by 2 is 0, decide no;
+to decide what number is blackness of (rm - a room):
+	decide on the remainder after dividing rval of rm by 2;
+
+definition: a room (called myrm) is black:
+	if blackness of myrm is 0, yes;
+	no;
+
+definition: a room (called myrm) is clearwhite:
+	if myrm is black, no;
 	if player is in myrm, decide no;
 	if checkerboard is in myrm, decide no;
 	if dominoes are in myrm, decide no;
@@ -817,9 +849,9 @@ after printing the locale description:
 		now map-help is true;
 		say "[italic type][bracket]NOTE: ABOUT shows general information for this game, and VERBS shows the cut-down list of verbs you need to win.[close bracket][roman type][line break]";
 
-the printed name of a room is "[ctv of cur-level], [xing of the item described]".
+the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -867,11 +899,11 @@ check restarting the game:
 volume undoing stuff
 
 Rule for deciding whether to allow undo:
-	if cur-level is 5:
+	if cur-level < 5:
 		say "Don't worry. Even if you mess up, you'll get as many times to try again as you want. All kinds of time in the afterlife.";
-		deny undo;
 	else:
 		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.";
+	deny undo;
 
 volume skip-and-jump
 
@@ -901,6 +933,16 @@ this is the win-jump rule:
 		say "You feel a sense of worry.";
 		now blocked-this-time is true;
 		continue the action;
+	if number of deadendy rooms > 1:
+		say "You feel a strange uneasiness.";
+		now blocked-this-time is true;
+		continue the action;
+	if number of deadendy rooms is 1:
+		let rde be a random deadendy room;
+		if blackness of rde is blackness of start-room:
+			say "You blink a bit. Maybe you messed up, maybe you didn't.";
+			now blocked-this-time is true;
+			continue the action;
 	now all rooms are not touched;
 	while myx is not up and myx is not down:
 		now cur is touched;
@@ -909,8 +951,13 @@ this is the win-jump rule:
 		add cur to mypath;
 	if debug-state is true, say "DEBUG: [number of unvisited rooms] unvisited, [number of touched rooms] untouched.";
 	if number of unvisited rooms is 1 + number of touched rooms:
-		say "You consider where you are and where you've been. You're pretty sure there's only one way through town. Take it?";
-		if the player consents:
+		say "You consider where you are and where you've been. You're pretty sure there's only one way through town. (J)ump ahead using it or (K)eep back?";
+		let X be 0;
+		while 1 is 1:
+			now X is the chosen letter;
+			if X is 74 or X is 106 or X is 75 or X is 107, break; [ I'd like to use (Y)es and (N)o but N conflicts with North. ]
+			say "(J)ump ahead or (K)eep back?";
+		if X is 74 or X is 106:
 			let temp be 0;
 			say "You rush through: ";
 			repeat with myp running through mypath:
@@ -920,7 +967,7 @@ this is the win-jump rule:
 			say ".[paragraph break]";
 			do-the-next;
 		else:
-			say "OK. I won't ask again.";
+			say "OK. I won't ask again during this run.";
 			now skip-ask-this-time is true;
 	else if number of touched rooms > 0 and myx is up: [this is pretty hacky. up = 0 ways out, down = 2 ways out]
 		say "You feel very uneasy indeed.";
@@ -936,8 +983,7 @@ to spread-out (rr - a room):
 
 to decide which direction is only-exit of (rm - a room):
 	let dir be up;
-	let X be {north, south, east, west};
-	repeat with X2 running through X:
+	repeat with X2 running through cardinals:
 		let X3 be the room X2 of rm;
 		if X3 is nothing, next;
 		if X3 is visited or X3 is blockedoff or X3 is touched, next;
