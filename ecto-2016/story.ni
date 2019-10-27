@@ -10,8 +10,6 @@ include conditional undo by Jesse McGrew.
 
 debug-state is a truth state that varies.
 
-use no scoring.
-
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
 volume silly i6 change
@@ -159,13 +157,15 @@ the can't push what's fixed in place rule is not listed in any rulebook.
 the print empty inventory rule is not listed in any rulebook.
 the print standard inventory rule is not listed in any rulebook.
 
+chapter inventory
+
 check taking inventory:
 	if number of things carried by player is 0, say "You're carrying nothing." instead;
 	if number of things carried by player is 1, say "That blob of Evil-B-Gone is floating around you." instead;
 	say "Somehow, a few corporeal things stuck to you in addition to the blob of Evil-B-Gone you're carrying around: [the list of vacuumed things]." instead;
 
 definition: a thing (called th) is vacuumed:
-	if th is evil-b-gone, no;
+	if th is evil b gone, no;
 	if th is carried, yes;
 	no;
 
@@ -180,6 +180,15 @@ instead of waiting, say "[one of]You have all the time in the world. Nobody upbr
 instead of thinking:
 	say "You contemplate where you are and where you've been.[paragraph break]";
 	try mapiting;
+
+chapter cussin
+
+the block swearing obscenely rule is not listed in any rulebook.
+the block swearing mildly rule is not listed in any rulebook.
+
+check swearing obscenely: say "Bad idea. That is extra risky in the afterlife." instead;
+
+check swearing mildly: try swearing obscenely instead;
 
 chapter mapview toggle
 
@@ -210,7 +219,7 @@ understand "about" as abouting.
 understand "credits" as abouting.
 
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.";
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended, and the final version is scheduled for 2019.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.[paragraph break]Victor Ojuel helped me send out a post-comp release.";
 
 chapter mapiting
 
@@ -232,6 +241,7 @@ carry out mapiting:
 	say "[my-map][line break]";
 
 to say my-map:
+	if debug-state is true and cur-level is 5, say "NOTE: spoilers for the dominoes/magnets/checkerboard only appear in debug mode.";
 	say "+ = visited, . = unvisited, * = church.";
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
 	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
@@ -255,12 +265,10 @@ to say sta of (rm - a room):
 	else:
 		say "-"
 
-chapter verbing
+chapter verbsing
 
 to say my-verbs:
-	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or, for instance, [bold type]EE[roman type], lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description[paragraph break][bold type]ABOUT[roman type] displays information about the game. [bold type]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disable in order to simplify the game"
-
-chapter verbsing
+	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or typing the direction abbreviation twice ([bold type]NN/SS/EE/WW[roman type]) lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description[paragraph break][bold type]ABOUT[roman type] displays information about the game. [bold type]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [bold type]X[roman type] or [bold type]EXAMINE[roman type] any items you run across."
 
 verbsing is an action applying to nothing.
 
@@ -276,6 +284,18 @@ carry out verbsing:
 	say "[my-verbs].";
 	the rule succeeds;
 
+chapter xyzzying
+
+xyzzying is an action applying to nothing.
+
+understand the command "xyzzy" as something new.
+
+understand "xyzzy" as xyzzying.
+
+carry out xyzzying:
+	say "Fermat's proof of his famous theorem appears in a flash of light! Well, if it exists. If not, let's just pretend it's several different snappy proofs of the Pythagorean Theorem.";
+	the rule succeeds.
+
 chapter runing
 
 runing is an action applying to one visible thing.
@@ -289,6 +309,7 @@ understand "r [direction]" as runing.
 carry out runing:
 	unless noun is linear, try going noun instead;
 	let moved be 0;
+	let missed-something be false;
 	let q be the room noun of location of player;
 	if noun is not okay, say "[if q is nowhere]You can't go further[else if q is blockedoff]The church is[else]You've already been[end if] [noun]." instead;
 	while noun is okay:
@@ -296,9 +317,16 @@ carry out runing:
 		if noun is okay, say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
+		if noun is okay and location of player is littered and missed-something is false:
+			say "Whoa! What was that? You missed something as you ran past. Hope it wasn't TOO important.";
+			now missed-something is true;
 	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
 	try looking;
 	check-trapped;
+
+definition: a room (called rm) is littered:
+	if dominoes are in rm or checkerboard is in rm or magnets are in rm, yes;
+	no;
 
 section eastruning
 
@@ -339,7 +367,7 @@ understand "ss" and "rs" and "sr" as southruning.
 chapter parser
 
 rule for printing a parser error (this is the simplify parser errors rule):
-	say "[my-verbs].";
+	say "That wasn't a recognized verb--you mustly just need directions and X to examine, but try [bold type]VERBS[roman type] to see them all.";
 	reject the player's command;
 
 chapter core meta stuff
@@ -440,10 +468,11 @@ volume other initialization
 
 lshuf is a list of number variables. lshuf is { 1, 2, 3, 4 }
 
-the player carries the blob of Evil-B-Gone. description of blob is "It pulses as you look at it."
+the player carries the blob of Evil B Gone. description of blob is "A message appears in the blob as you stare at the swirly gases:[paragraph break]1. Don't touch the church[line break]2. Don't cross your own path[line break]3. Visit everywhere you can[line break]4. Don't worry if you mess up.". printed name of Evil B Gone is "blob of Evil-B-Gone".
 
 instead of doing something with the blob:
-	say "You can really only examine it. It will emit protective gases or whatever as you move."
+	if current action is examining, continue the action;
+	say "The blob is just, well, there. It will emit protective gases or whatever as you move, and you can examine it to remember what to do."
 
 when play begins:
 	shuf-rand;
@@ -454,15 +483,17 @@ when play begins:
 		else:
 			now blocklevel of G is entry (blocklevel of G) in lshuf;
 	start-play;
-	say "Limbo isn't so bad, really. There's not a whole lot to do, even if you wind up reflecting more on what you never got around to doing. There was so much you were interested in, but time just slipped away. Almost too late in life, you found you were just interested in ... stuff ... and all those high powered professions you thought you couldn't be, that you lashed out at--well, they had bad apples, but they also might've been you.[paragraph break]You weren't enough of a jerk for hell, but you didn't do nearly enough in life to escape limbo. You heard of opportunities to move up, to learn a bit more, even if the afterlife, but you never really pursued them. Judgment day HAD to be a few billion years away.";
+	say "Limbo isn't so bad, really. A bit boring, to reflect on what you never got around to doing. You did your best late in life, no longer intimidated by people in high-powered professions whining about how hard it was. You didn't want to be like them, and one way was -- not to really apply yourself![paragraph break]So you weren't enough of a jerk for hell, but you didn't do nearly enough in life to escape limbo. You heard of opportunities to move up, to learn a bit more, even if the afterlife, but you never really pursued them. Judgment day HAD to be a few billion years away. Someone else more motivated probably deserved it more.";
 	wfak;
-	say "But it's a bit boring. Then one day you hear a voice boom 'They'll do,' The them is you![paragraph break]'You've spent enough time as a ghost, and we've been watching you. You up for some remedial devil proofing?";
+	say "[line break]Then you hear a voice. 'Psst! Got an opportunity. It might not pop up for another million years!'";
 	wfak;
-	say "[line break]'Before you can ask about details, you're handed a weird blob. They explain it'll spray enough that if you cover all the intersections in a suburb, the worst evil can't enter. The blob will emit its spray whenever you move. You just need to be efficient. No crossing back where you've been. No retracing where you've gone before. It's like crossing the wires in Ghostbusters. And no getting too near the church. Again, weird science.";
+	say "[line break]You shrug, wary of evil spirits. You've heard there are opportunities to move DOWN, too. But you aren't forced to sign anything. What the hey? You're handed a blob. 'Okay. Ready for the rules?'";
 	wfak;
-	say "[line break]'You missed a lot of films you wanted to see, but you DID see that one, at least? Good. Anyway. Too long to explain. if you'd paid more attention to science while living, maybe we could, but you didn't, so we can't. Anyway, you up for it?";
+	say "[line break]You nod.[paragraph break]'Here's the deal. This blob is full of Evil-B-Gone. You need to spread it around a few small towns. You can't run by the church, and you can't cross over your own path. Sort of a Ghostbusters thing.";
 	wfak;
-	say "Well, you have nothing better to do. The areas are only five by five blocks. How hard can it be? You read the list of place names: jobs you never had the initiative to get and assumed you weren't good enough for, and sometimes you even lashed out against elitists and eggheads who GOT those jobs, but you never even tried.";
+	say "[line break]'I know you missed a lot of films you wanted to see, but you DID see that one, at least? Good. Anyway. Too long to explain. If you'd paid more attention to science while living, you'd get it, but you didn't, so we can't. Anyway, you up for it?'";
+	wfak;
+	say "[line break]You're not sure if that last bit was evil or just snark, but you have to admit it's factual enough. You read the list of place names: jobs you never had the initiative to get and assumed you weren't good enough for, and sometimes you even lashed out against elitists and eggheads who GOT those jobs, but you never even tried. And the towns--they're rather small. This can't take too long.";
 	wfak;
 
 to shuf-rand:
@@ -479,6 +510,7 @@ definition: a room (called myr) is curlev:
 past-start is a truth state that varies.
 
 to start-play:
+	now skip-ask-this-time is false;
 	now blocked-this-time is false;
 	now all rooms are unvisited;
 	now blocked-room is not blockedoff; [cheat yourself into a certain position here, or in cur-level is 5 below]
@@ -598,7 +630,7 @@ check examining checkerboard:
 		the rule succeeds;
 
 to say try-thru:
-	say ". You try several times to trace a way through, [if board-width is 8]but you fail[else if board-width is 6]and you seem to figure that it can't be done, but you don't know how to express it[else]and you think you can prove that no loop exists in such cramped quarters. Maybe that holds for [ctv of 5], somehow, but you don't know how to PROVE it[end if]"
+	say ". You try several times to trace a way through, [if board-width is 8]but you fail[else if board-width is 6]and you seem to figure that it can't be done. There are a lot fewer possible ways through than for the 8x8 board, but still too many for you to figure anything definitive[else]and it seems no matter where you start, you eventually wind up with two dead ends, and you can only fill one. Maybe that holds for [ctv of 5], somehow, but you don't know how to PROVE it[end if]"
 
 chapter magnets
 
@@ -651,7 +683,7 @@ Include (-
 
 Array profs --> 5 "Lawyer" "Doctor" "Professor" "Investor" "Programmer";
 
-Array whines --> 5 "Ugh. Lawyers. You were intimidated from that racket by watching the right (or wrong) TV shows. And from all the lawyer jokes you heard." "Doctors. You remember some real know-it-alls in the pre-med program. Looked down on general practicioners or dentists or nurses." "You remember professors who seemed impatient with dumb questions, rumors of stupid academic squabbles getting in the way of real stuff." "How could you forget all the junk bond scandals and articles on how mutual funds really zapped you with fees? You'd probably have to cheat to beat the market." "You remember silly show-offs in the computer lab that got in the way of you playing Civilization or even completing a last-minute introductory coding assignment.";
+Array whines --> 5 "Ugh. Lawyers. You were intimidated from that racket by watching the right (or wrong) TV shows. And from all the lawyer jokes you heard." "Doctors. You remember some real know-it-alls in the pre-med program. Looked down on general practicioners or dentists or nurses." "You remember professors who seemed impatient with dumb questions, rumors of stupid academic squabbles getting in the way of real stuff." "How could you forget all the junk bond scandals and articles on how mutual funds really zapped you with fees? You'd probably have to cheat to beat the market." "You remember silly show-offs in the computer lab that got in the way of you playing Civilization or FreeCell or even half-heartedly completing a last-minute introductory coding assignment.";
 
 Array reals --> 5 "Lawyers aren't all just about yelling at people and getting fees and weaseling for full partnership like on TV. Some actually get at the truth. They just aren't the noisy ones." "Of course, some doctors are all about the money, but you remember doctors from when you were a kid who were really nice to you, just because." "College was a cynical time for you, and while some professors taught weed-out courses, others actually cared and wanted to help. You didn't ask for enough." "Investing by itself isn't immoral. Of course crooked junk bond investors made the news, but you do wish you'd saved a bit more for retirement, and there were a few common sense strategies you never took." "You remember trying to program simple games as a kid and being told they wouldn't be any good. You sort of let yourself give up on that, and you remember how stuff like HTML seemed too easy and should be beneath you. But you should have done something.";
 
@@ -740,10 +772,10 @@ to move-board:
 	now chex is false;
 
 to do-the-next:
-	say "You hear ethereal applause once you step on the final intersection. And you also take time to reflect. [re of cur-level]";
+	say "You hear ethereal applause once you step on the final intersection. And you also take time to reflect. [re of cur-level][paragraph break]";
 	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! Still, it can't be THAT hard. Most others got through easily...then...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
-	say "Oh, look. [ctv of cur-level]. That brings back memories.[paragraph break][wh of cur-level]";
+	say "That name just brings back memories.[paragraph break][wh of cur-level][paragraph break]";
 	start-play;
 	try looking;
 
@@ -781,12 +813,13 @@ map-help is a truth state that varies.
 
 after printing the locale description:
 	if map-help is false:
+		say "Okay, starting in [ctv of cur-level]. [wh of cur-level][paragraph break]";
 		now map-help is true;
-		say "[italic type][bracket]This game has few verbs. ABOUT shows them all.[close bracket][roman type][line break]";
+		say "[italic type][bracket]NOTE: ABOUT shows general information for this game, and VERBS shows the cut-down list of verbs you need to win.[close bracket][roman type][line break]";
 
 the printed name of a room is "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is "[if map-view is true][my-map][no line break][else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
+the description of a room is "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -802,7 +835,7 @@ before going:
 	let q be the room noun of location of player;
 	if q is nowhere, say "You're at the [noun] edge of [ctv of cur-level]." instead;
 	if q is blockedoff, say "Whoah! The church is to the [noun]." instead;
-	if q is visited, say "Wait, no, you've already been [noun] to [printed name of room noun of location of player] already." instead;
+	if q is visited, say "Wait, no, you've already been [noun] to [xing of room noun of location of player] already." instead;
 
 definition: a direction (called d) is alreadied:
 	let r be location of player;
@@ -926,9 +959,11 @@ carry out cheating:
 
 volume standard verb tweaks
 
-check dropping:
-	if player does not have noun, say "You don't have that." instead;
-	say "That kind of jumped up at you, so it's hard to put down." instead;
+chapter the score
+
+procedural rule: ignore the print final score rule.
+
+check requesting the score: say "There is no score in this story, but you are in town [cur-level] of 5." instead;
 
 volume debug - not for release
 
