@@ -2,6 +2,19 @@ Version 1/211205 of Checkered Haunting Tests by Andrew Schultz begins here.
 
 "Tests and Diagnostics for Checkered Haunting"
 
+chapter fixing
+
+fixing is an action out of world.
+
+understand the command "fix" as something new.
+
+understand "fix" as fixing.
+
+carry out fixing:
+	sort lshuf;
+	start-play;
+	the rule succeeds;
+
 chapter sbing
 
 definition: a number (called n) is out-of-range:
@@ -48,6 +61,21 @@ carry out sbing:
 	now blocked-room is blockedoff;
 	now test-start is true;
 	move player to start-room, without printing a room description;
+	start-play;
+	the rule succeeds;
+
+chapter lving
+
+lving is an action applying to one number.
+
+understand the command "lv" as something new.
+
+understand "lv [number]" as lving.
+
+carry out lving:
+	if number understood < 1 or number understood > 5, say "You must choose levels 1-5." instead;
+	now cur-level is number understood;
+	say "Restarting level [cur-level]. Make sure you remembered to FIX, too.";
 	start-play;
 	the rule succeeds;
 
