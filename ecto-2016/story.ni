@@ -2,11 +2,19 @@
 
 the story headline is "A puzzling afterlife experience".
 
+the story description is "You're never too incorporeal to learn something neat.".
+
+the release number is 2.
+
+Release along with the "Parchment" interpreter.
+
 volume includes
 
 include Basic Screen Effects by Emily Short.
 
 include conditional undo by Jesse McGrew.
+
+include trivial niceties by Andrew Schultz.
 
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
