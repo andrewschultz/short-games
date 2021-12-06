@@ -26,6 +26,7 @@ to decide which room is inv-room of (n - a number):
 	decide on r00;
 
 carry out sbing:
+	if cur-level is 5, say "WARNING! Using SB/BS with the final level may force you to ABSTRACT for a test case.";
 	let start-num be number understood / 100;
 	let blocked-num be the remainder after dividing number understood by 100;
 	if start-num is out-of-range, say "The starting room needs a value from 0 to 24." instead;
@@ -34,9 +35,6 @@ carry out sbing:
 		say "The starting room can't be the same as the blocked room." instead;
 	let blocked-temp be inv-room of blocked-num;
 	let start-temp be inv-room of start-num;
-	say "Is [blocked-temp] in [list of curlev rooms], level [cur-level]?";
-	repeat with rm running through rooms:
-		say "[rm] level = [rval of rm] rval, [blocklevel of rm], [whether or not rm is curlev].";
 	if blocked-temp is not curlev:
 		now nums-on is true;
 		say "Blocked room must be one of [list of curlev rooms].";
@@ -44,6 +42,7 @@ carry out sbing:
 		the rule fails;
 	say "OK, you are starting at [start-temp] with [blocked-temp] blocked off.";
 	now start-room is start-temp;
+	now start-room is visited;
 	now blocked-room is unblocked;
 	now blocked-room is blocked-temp;
 	now blocked-room is blockedoff;
