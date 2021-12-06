@@ -2,6 +2,46 @@ Version 1/211205 of Checkered Haunting Tests by Andrew Schultz begins here.
 
 "Tests and Diagnostics for Checkered Haunting"
 
+chapter sbing
+
+definition: a number (called n) is out-of-range:
+	if n > 25, yes;
+	if n < 1, yes;
+	no;
+
+sbing is an action applying to one number.
+
+understand the command "sb" as something new.
+
+understand "sb [number]" as sbing.
+
+nums-on is a truth state that varies;
+
+for printing the name of a room (called rm) when nums-on is true: say "[rval of rm]"
+
+to decide which room is inv-room of (n - a number):
+	repeat with rm running through rooms:
+		if rval of rm is n, decide on rm;
+	say "Oops! Couldn't decide on a room.";
+	decide on r00;
+
+carry out sbing:
+	let start-num be number understood / 100;
+	let blocked-num be the remainder after dividing number understood by 100;
+	if start-num is out-of-range, say "The starting room needs a value from 1 to 25." instead;
+	if blocked-num is out-of-range, say "The starting room needs a value from 1 to 25." instead;
+	if start-num is blocked-num:
+		say "The starting room can't be the same as the blocked room.";
+	let blocked-room be inv-room of blocked-num;
+	let start-room be inv-room of start-num;
+	if blocked-room is not curlev:
+		now nums-on is true;
+		say "Blocked room must be one of [list of curlev rooms].";
+		now nums-on is false;
+		the rule fails;
+	say "OK, you are starting at [start-room] with [blocked-room] blocked off.";
+	the rule succeeds;
+
 chapter esping
 
 esping is an action out of world.
@@ -52,3 +92,4 @@ carry out fiving:
 Checkered Haunting Tests ends here.
 
 ---- DOCUMENTATION ----
+	Glar
