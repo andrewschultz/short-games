@@ -5,8 +5,8 @@ Version 1/211205 of Checkered Haunting Tests by Andrew Schultz begins here.
 chapter sbing
 
 definition: a number (called n) is out-of-range:
-	if n > 25, yes;
-	if n < 1, yes;
+	if n > 24, yes;
+	if n < 0, yes;
 	no;
 
 sbing is an action applying to one number.
@@ -28,19 +28,42 @@ to decide which room is inv-room of (n - a number):
 carry out sbing:
 	let start-num be number understood / 100;
 	let blocked-num be the remainder after dividing number understood by 100;
-	if start-num is out-of-range, say "The starting room needs a value from 1 to 25." instead;
-	if blocked-num is out-of-range, say "The starting room needs a value from 1 to 25." instead;
+	if start-num is out-of-range, say "The starting room needs a value from 0 to 24." instead;
+	if blocked-num is out-of-range, say "The blocked room needs a value from 0 to 24." instead;
 	if start-num is blocked-num:
-		say "The starting room can't be the same as the blocked room.";
-	let blocked-room be inv-room of blocked-num;
-	let start-room be inv-room of start-num;
-	if blocked-room is not curlev:
+		say "The starting room can't be the same as the blocked room." instead;
+	let blocked-temp be inv-room of blocked-num;
+	let start-temp be inv-room of start-num;
+	say "Is [blocked-temp] in [list of curlev rooms], level [cur-level]?";
+	repeat with rm running through rooms:
+		say "[rm] level = [rval of rm] rval, [blocklevel of rm], [whether or not rm is curlev].";
+	if blocked-temp is not curlev:
 		now nums-on is true;
 		say "Blocked room must be one of [list of curlev rooms].";
 		now nums-on is false;
 		the rule fails;
-	say "OK, you are starting at [start-room] with [blocked-room] blocked off.";
+	say "OK, you are starting at [start-temp] with [blocked-temp] blocked off.";
+	now start-room is start-temp;
+	now blocked-room is unblocked;
+	now blocked-room is blocked-temp;
+	now blocked-room is blockedoff;
+	now test-start is true;
+	move player to start-room, without printing a room description;
+	start-play;
 	the rule succeeds;
+
+section bsing
+
+bsing is an action applying to one number.
+
+understand the command "bs" as something new.
+
+understand "bs [number]" as bsing.
+
+carry out bsing:
+	let num1 be number understood / 100;
+	let num2 be the remainder after dividing number understood by 100;
+	try sbing (num2 * 100) + num1;
 
 chapter esping
 
