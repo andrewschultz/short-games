@@ -8,11 +8,15 @@ include Basic Screen Effects by Emily Short.
 
 include conditional undo by Jesse McGrew.
 
-debug-state is a truth state that varies.
-
 Include (- Switches z; -) after "ICL Commands" in "Output.i6t".
 
 cardinals is a list of directions variable. cardinals is {north, south, east, west}.
+
+section variables for testing/tracing that cannot fully be put in test module
+
+debug-state is a truth state that varies.
+
+test-start is a truth state that varies.
 
 volume silly i6 change
 
@@ -354,6 +358,10 @@ blocklevel of r22 is 4.
 to wfak:
 	if debug-state is false, wait for any key;
 
+section debug stuff - not for release
+
+a room is usually not privately-named.
+
 chapter edginess
 
 a room can be edgy or inny. a room is usually edgy.
@@ -423,25 +431,27 @@ to start-play:
 	now skip-ask-this-time is false;
 	now blocked-this-time is false;
 	now all rooms are unvisited;
-	now blocked-room is not blockedoff; [cheat yourself into a certain position here, or in cur-level is 5 below]
-[	now blocked-room is r42;
-	move player to r40;
-	now blocked-room is blockedoff;
-	continue the action;]
-	if cur-level is 5: [if anything is NOT commented out above, delete it.]
-		if number of fivevalid rooms is 0:
-			now all fivedone rooms are fivevalid;
-		now blocked-room is a random fivevalid room;
-		now blocked-room is fivedone;
-	else:
-		now blocked-room is a random curlev room;
-	now blocked-room is blockedoff;
-	now left hand status line is "([cur-level]) [location of player]";
-	now right hand status line is "X=[xing of blocked-room]";
+	if test-start is false:
+	[	now blocked-room is r42;
+		move player to r40;
+		now blocked-room is blockedoff;
+		continue the action;]
+		now blocked-room is not blockedoff; [cheat yourself into a certain position here, or in cur-level is 5 below]
+		if cur-level is 5: [if anything is NOT commented out above, delete it.]
+			if number of fivevalid rooms is 0:
+				now all fivedone rooms are fivevalid;
+			now blocked-room is a random fivevalid room;
+			now blocked-room is fivedone;
+		else:
+			now blocked-room is a random curlev room;
+		now blocked-room is blockedoff;
+		move player to random unblocked room, without printing a room description;
+		now start-room is location of player;
+	now test-start is false;
 	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";
-	move player to random unblocked room, without printing a room description;
-	now start-room is location of player;
+	now left hand status line is "([cur-level]) [location of player]";
+	now right hand status line is "X=[xing of blocked-room]";
 	if cur-level is 5:
 		let valid-config be false;
 		let count be 0;
@@ -757,7 +767,7 @@ after printing the locale description:
 
 the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room][end if]."
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room][end if]."
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -844,8 +854,8 @@ this is the win-jump rule:
 		if blackness of rde is blackness of start-room:
 			now blackness-flag is true;
 		let MR be a random deadendy room;
-		now testx is only-exit of MR; [here we work backward from the dead end to see which squares have to be filled. This may help catch other no-win situations via how the "available" status considers the "touched" status.]
-		whilte testx is not up and testx is not down:
+		let testx be only-exit of MR; [here we work backward from the dead end to see which squares have to be filled. This may help catch other no-win situations via how the "available" status considers the "touched" status.]
+		while testx is not up and testx is not down:
 			now MR is touched;
 			now MR is room testx of MR;
 			now testx is only-exit of MR;
@@ -933,7 +943,7 @@ check requesting the score: say "There is no score in this story, but you are in
 
 volume debug - not for release
 
-include Checkered Haunting Testing by Andrew Schultz
+include Checkered Haunting Tests by Andrew Schultz
 
 volume byte shedding
 
