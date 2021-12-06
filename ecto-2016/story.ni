@@ -118,6 +118,7 @@ understand "mv" as mving.
 carry out mving:
 	now map-view is whether or not map-view is false;
 	say "Map view is now [on-off of map-view].";
+	if map-view is true, say "[my-legend][my-map][line break]";
 	the rule succeeds;
 
 map-view is a truth state that varies.
@@ -155,11 +156,13 @@ understand "m" as mapiting.
 carry out mapiting:
 	if map-view is true, say "You shouldn't need to, with map view on, but here it is anyway.[paragraph break]";
 	say "[bold type]Map of [ctv of cur-level][roman type][paragraph break]";
-	say "[my-map][line break]";
+	say "[my-legend][my-map][line break]";
 
-to say my-map:
+to say my-legend:
 	if debug-state is true and cur-level is 5, say "NOTE: spoilers for the dominoes/magnets/checkerboard only appear in debug mode.";
 	say "+ = visited, . = unvisited, S = start, U = where you are now, * = church.";
+
+to say my-map:
 	say "[fixed letter spacing]  1 2 3 4 5[line break]L [sta of r00] [sta of r01] [sta of r02] [sta of r03] [sta of r04] [line break]";
 	say "M [sta of r10] [sta of r11] [sta of r12] [sta of r13] [sta of r14] [line break]";
 	say "N [sta of r20] [sta of r21] [sta of r22] [sta of r23] [sta of r24] [line break]";
@@ -287,7 +290,7 @@ understand "ss" and "rs" and "sr" as southruning.
 chapter parser
 
 rule for printing a parser error (this is the simplify parser errors rule):
-	say "That wasn't a recognized verb--you mustly just need directions and X to examine, but try [bold type]VERBS[roman type] to see them all.";
+	say "That command wasn't recognized. You only need directions and [b]X[r] to examine in order to win, but [bold type]VERBS[roman type] will show some actions, too.";
 	reject the player's command;
 
 chapter core meta stuff
@@ -771,11 +774,11 @@ after printing the locale description:
 	if map-help is false:
 		say "Okay, starting in [ctv of cur-level]. [wh of cur-level][paragraph break]";
 		now map-help is true;
-		say "[italic type][bracket]NOTE: ABOUT shows general information for this game, and VERBS shows the cut-down list of verbs you need to win.[close bracket][roman type][line break]";
+		say "[italic type][bracket]NOTE: [b]ABOUT[r][i] shows general information for this game, and [b]VERBS[r][i] shows the cut-down list of verbs you need to win. If you are not using a screen reader, you may find the [b]MV[r][i] (map view) command helpful to visualize the town more easily.[close bracket][roman type][line break]";
 
 the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][my-map][no line break][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room][end if]."
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -947,7 +950,7 @@ chapter the score
 
 procedural rule: ignore the print final score rule.
 
-check requesting the score: say "There is no score in this story, but you are in town [cur-level] of 5." instead;
+check requesting the score: say "While there's no score per se, you are in town [cur-level] of 5." instead;
 
 volume debug - not for release
 
