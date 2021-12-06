@@ -935,22 +935,31 @@ this is the win-jump rule:
 	let uv be number of unvisited rooms;
 	if uv <= 2, continue the action; [it's just annoying if the person is 1 square away. Also, this probably isn't relevant, and you've probably been asked anyway.]
 	now mypath is {};
+	let blackness-flag be false;
+	if number of deadendy rooms is 1: [if a dead end is the same as the starting color, we have a parity problem. Square #1 must be the opposite color of square #24.]
+		let rde be a random deadendy room;
+		if blackness of rde is blackness of start-room:
+			now blackness-flag is true;
+		let MR be a random deadendy room;
+		now testx is only-exit of MR; [here we work backward from the dead end to see which squares have to be filled. This may help catch other no-win situations via how the "available" status considers the "touched" status.]
+		whilte testx is not up and testx is not down:
+			now MR is touched;
+			now MR is room testx of MR;
+			now testx is only-exit of MR;
 	let rr be a random available room;
 	spread-out rr;
-	if number of available rooms > 0:
+	if number of available rooms > 0: [this is printed if you split the board]
 		say "You feel a sense of worry.";
 		now blocked-this-time is true;
 		continue the action;
-	if number of deadendy rooms > 1:
+	if number of deadendy rooms > 1: [two dead ends is a problem]
 		say "You feel a strange uneasiness.";
 		now blocked-this-time is true;
 		continue the action;
-	if number of deadendy rooms is 1:
-		let rde be a random deadendy room;
-		if blackness of rde is blackness of start-room:
-			say "You blink a bit. Maybe you messed up, maybe you didn't.";
-			now blocked-this-time is true;
-			continue the action;
+	if blackness-flag is true:
+		say "You blink a bit. Maybe you messed up, maybe you didn't.";
+		now blocked-this-time is true;
+		continue the action;
 	now all rooms are not touched;
 	while myx is not up and myx is not down:
 		now cur is touched;
