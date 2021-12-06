@@ -6,14 +6,20 @@ chapter fixing
 
 fixing is an action out of world.
 
+fixed-levels is a truth state that varies.
+
 understand the command "fix" as something new.
 
 understand "fix" as fixing.
 
 carry out fixing:
+	if fixed-levels is true, say "You already fixed the levels." instead;
 	sort lshuf;
 	start-play;
 	the rule succeeds;
+
+this is the fix-first rule:
+	if fixed-levels is false, say "You need to [b]FIX[r] first before using this test command." instead;
 
 chapter sbing
 
@@ -39,6 +45,7 @@ to decide which room is inv-room of (n - a number):
 	decide on r00;
 
 carry out sbing:
+	abide by the fix-first rule;
 	if cur-level is 5, say "WARNING! Using SB/BS with the final level may force you to ABSTRACT for a test case.";
 	let start-num be number understood / 100;
 	let blocked-num be the remainder after dividing number understood by 100;
@@ -73,9 +80,10 @@ understand the command "lv" as something new.
 understand "lv [number]" as lving.
 
 carry out lving:
+	abide by the fix-first rule;
 	if number understood < 1 or number understood > 5, say "You must choose levels 1-5." instead;
 	now cur-level is number understood;
-	say "Restarting level [cur-level]. Make sure you remembered to FIX, too.";
+	say "Restarting level [cur-level].";
 	start-play;
 	the rule succeeds;
 
@@ -101,6 +109,7 @@ understand the command "esp" as something new.
 understand "esp" as esping.
 
 carry out esping:
+	if cur-level is not 5, say "ESP can't be used until the final level." instead;
 	say "magnets: [location of magnets].";
 	say "checkerboard: [location of checkerboard].";
 	say "dominoes: [location of dominoes].";
