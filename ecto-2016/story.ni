@@ -835,26 +835,20 @@ Rule for deciding whether to allow undo:
 		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.";
 	deny undo;
 
-volume skip-and-jump
+volume skip asking "all the way to end?"
 
 skip-ask-this-time is a truth state that varies.
 
 mypath is a list of rooms variable.
 
-jumptest-this-turn is a truth state that varies.
-
-every turn: now jumptest-this-turn is false;
-
-report looking when skip-ask-this-time is false and jumptest-this-turn is false:
+after printing the locale description (this is the check for jump wins rule):
 	consider the win-jump rule;
-	now jumptest-this-turn is true;
 	continue the action;
 
 blocked-this-time is a truth state that varies.
 
 this is the win-jump rule:
-	if blocked-this-time is true:
-		continue the action;
+	if blocked-this-time is true, continue the action;
 	if skip-ask-this-time is true, continue the action;
 	let cur be location of player;
 	let myx be only-exit of cur;
