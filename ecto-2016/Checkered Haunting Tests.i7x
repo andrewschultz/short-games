@@ -2,20 +2,39 @@ Version 1/211205 of Checkered Haunting Tests by Andrew Schultz begins here.
 
 "Tests and Diagnostics for Checkered Haunting"
 
+test crash with "fix/sb 104/ss/w/rules all/nn"
+
+volume overhead prep
+
+a room has a number called orig-level.
+
+when play begins (this is the keep backup room levels for testing rule):
+	repeat with rm running through rooms:
+		now orig-level of rm is blocklevel of rm;
+
+volume commands
+
 chapter fixing
 
 fixing is an action out of world.
 
 fixed-levels is a truth state that varies.
 
+understand the command "f" as something new.
 understand the command "fix" as something new.
 
+understand "f" as fixing.
 understand "fix" as fixing.
 
 carry out fixing:
 	if fixed-levels is true, say "You already fixed the levels." instead;
 	sort lshuf;
+	repeat with rm running through rooms:
+		[if orig-level of rm is not blocklevel of rm, say "[rm]: [blocklevel of rm] to [orig-level of rm].";]
+		now blocklevel of rm is orig-level of rm;
 	start-play;
+	now fixed-levels is true;
+	opt-map-view;
 	the rule succeeds;
 
 this is the fix-first rule:
@@ -62,13 +81,14 @@ carry out sbing:
 		the rule fails;
 	say "OK, you are starting at [start-temp] with [blocked-temp] blocked off.";
 	now start-room is start-temp;
-	now start-room is visited;
+	now all rooms are unvisited;
 	now blocked-room is unblocked;
 	now blocked-room is blocked-temp;
 	now blocked-room is blockedoff;
 	now test-start is true;
 	move player to start-room, without printing a room description;
 	start-play;
+	opt-map-view;
 	the rule succeeds;
 
 chapter lving

@@ -115,10 +115,13 @@ understand the command "mv" as something new.
 
 understand "mv" as mving.
 
+to opt-map-view:
+	if map-view is true, say "[my-legend][my-map][line break]";
+
 carry out mving:
 	now map-view is whether or not map-view is false;
 	say "Map view is now [on-off of map-view].";
-	if map-view is true, say "[my-legend][my-map][line break]";
+	opt-map-view;
 	the rule succeeds;
 
 map-view is a truth state that varies.
