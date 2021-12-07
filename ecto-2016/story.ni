@@ -26,6 +26,10 @@ debug-state is a truth state that varies.
 
 test-start is a truth state that varies.
 
+section debug - not for release
+
+include Checkered Haunting Tests by Andrew Schultz. [keep this up here, because it's easier to have the one "when play begins" rule fire off first by default.]
+
 volume silly i6 change
 
 five-failed is a number that varies.
@@ -237,12 +241,13 @@ carry out runing:
 	let missed-something be false;
 	let q be the room noun of location of player;
 	if noun is not okay, say "[if q is nowhere]You can't go further[else if q is blockedoff]The church is[else]You've already been[end if] [noun]." instead;
-	while noun is okay:
+	while 1 is 1:
 		move player to q, without printing a room description;
+		if noun is not okay, break;
 		if noun is okay, say "[bold type][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
-		if noun is okay and location of player is littered and missed-something is false:
+		if location of player is littered and missed-something is false:
 			say "Whoa! What was that? You missed something as you ran past. Hope it wasn't TOO important. Eh, whatever it is, maybe it'll turn up elsewhere.";
 			now missed-something is true;
 	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
@@ -461,6 +466,7 @@ to start-play:
 		now blocked-room is blockedoff;
 		move player to random unblocked room, without printing a room description;
 		now start-room is location of player;
+	now start-room is visited;
 	now test-start is false;
 	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";
@@ -560,7 +566,7 @@ check examining checkerboard:
 		wfak;
 		say "You realize just how much time you've spent navel-gazing about where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff you can look into. It got you out of the doldrums for a while.";
 		wfak;
-		say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Lots more than you think would've given up...'";
+		say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Many more others than you think would've given up...'";
 		wfak;
 		say "You spend an hour kicking yourself over all the stuff you meant to learn when alive but didn't. You won't be able to learn it directly, but with plenty of time to haunt libraries and classes and laboratories (nobody'll see you) you'll get to see and do enough.";
 		end the story saying "YOU LEARNED SOMETHING COOL";
@@ -669,9 +675,8 @@ to check-trapped:
 			say "[analysis].";
 			move-board;
 			say "[line break]There's a swirling, and you're back in [ctv of cur-level], but everything feels a bit different, now.";
-		now all rooms are unvisited;
 		start-play;
-		try looking;
+		carry out the printing the locale description activity with location of player;
 
 to say analysis:
 	if location of checkerboard is unvisited:
@@ -781,7 +786,13 @@ after printing the locale description:
 
 the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else]You can go [list of okay directions][alreadies]. The church is at [xing of blocked-room].[end if]"
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else][remaining-dirs][end if]. The church is at [xing of blocked-room]."
+
+to say remaining-dirs:
+	if number of okay directions is 0:
+		say "You look around for places nearby you haven't gone yet. You can't find any";
+	else:
+		say "You can go [list of okay directions][alreadies]";
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
@@ -948,10 +959,6 @@ chapter the score
 procedural rule: ignore the print final score rule.
 
 check requesting the score: say "While there's no score per se, you are in town [cur-level] of 5." instead;
-
-volume debug - not for release
-
-include Checkered Haunting Tests by Andrew Schultz
 
 volume byte shedding
 
