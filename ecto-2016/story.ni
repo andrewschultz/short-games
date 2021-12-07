@@ -116,8 +116,10 @@ chapter mapview toggle
 mving is an action out of world.
 
 understand the command "mv" as something new.
+understand the command "mt" as something new.
 
 understand "mv" as mving.
+understand "mt" as mving.
 
 to opt-map-view:
 	if map-view is true, say "[my-legend][my-map][line break]";
@@ -132,6 +134,25 @@ map-view is a truth state that varies.
 
 to say on-off of (ts - a truth state):
 	say "[if ts is true]on[else]off[end if]"
+
+section map yes/no
+
+understand the command "my" as something new.
+
+understand "my" as mying.
+
+carry out mying:
+	say "Map-view is [if map-view is false]already[else]now[end if] on.";
+	now map-view is true;
+	opt-map-view;
+
+understand the command "mn" as something new.
+
+understand "mn" as mning.
+
+carry out mning:
+	say "Map-view is [if map-view is false]already[else]now[end if] off.";
+	now map-view is false;
 
 chapter abouting
 
@@ -197,7 +218,7 @@ to say sta of (rm - a room):
 chapter verbsing
 
 to say my-verbs:
-	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or typing the direction abbreviation twice ([bold type]NN/SS/EE/WW[roman type]) lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description[paragraph break][bold type]ABOUT[roman type] displays information about the game. [bold type]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [bold type]X[roman type] or [bold type]EXAMINE[roman type] any items you run across."
+	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or typing the direction abbreviation twice ([bold type]NN/SS/EE/WW[roman type]) lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description. [b]MY[r] and [b]MN[r] turn map view on and off, while [b]MV[r] or [b]MT[r] toggles it.[paragraph break][bold type]ABOUT[roman type] displays information about the game. [bold type]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [bold type]X[roman type] or [bold type]EXAMINE[roman type] any items you run across."
 
 verbsing is an action applying to nothing.
 
