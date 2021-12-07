@@ -137,6 +137,8 @@ to say on-off of (ts - a truth state):
 
 section map yes/no
 
+mying is an action out of world.
+
 understand the command "my" as something new.
 
 understand "my" as mying.
@@ -145,6 +147,8 @@ carry out mying:
 	say "Map-view is [if map-view is false]already[else]now[end if] on.";
 	now map-view is true;
 	opt-map-view;
+
+mning is an action out of world.
 
 understand the command "mn" as something new.
 
@@ -248,6 +252,22 @@ carry out xyzzying:
 	say "Fermat's proof of his famous theorem appears in a flash of light! Well, if it exists. If not, let's just pretend it's several different snappy proofs of the Pythagorean Theorem.";
 	the rule succeeds.
 
+chapter releveling
+
+releveling is an action applying to nothing.
+
+understand the command "re" as something new.
+
+understand "re" as releveling.
+
+carry out releveling:
+	if number of visited rooms is 1, say "You can't restart until you move around a bit." instead;
+	if blocked-this-time is true:
+		say "You're pretty sure you were stuck. You think you hear a voice whisper 'Hey, nothing wrong with admitting when you're stuck.'";
+	else:
+		say "A loud sigh arises from the heavens. They wonder if you tried, or not.";
+	start-play;
+
 chapter runing
 
 runing is an action applying to one visible thing.
@@ -257,6 +277,23 @@ understand the command "r" as something new.
 
 understand "run [direction]" as runing.
 understand "r [direction]" as runing.
+understand "r" as runing.
+
+rule for supplying a missing noun when runing:
+	if number of okay directions is 1:
+		let ROK be random okay direction;
+		say "The only way you haven't been is [ROK], so let's run that way.";
+		now noun is ROK;
+		continue the action;
+	if number of visited rooms is 1:
+		say "If you want to restart, you need to explore a bit first. If you want to run, leave a direction, since you can currently go [list of okay directions].";
+		reject the player's command;
+	say "There is more than one direction to run: [list of okay directions]. Did you mean to restart instead?";
+	if the player consents:
+		start-play;
+	else:
+		say "OK. [b]RE[r] will restart without this nag, and [b]R[r]/[b]RUN[r] needs a direction unless there is only one way to go.";
+	reject the player's command;
 
 carry out runing:
 	unless noun is linear, try going noun instead;
