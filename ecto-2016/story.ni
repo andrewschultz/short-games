@@ -163,6 +163,8 @@ understand the command "credits" as something new.
 
 understand "about" as abouting.
 understand "credits" as abouting.
+understand "a" as abouting.
+understand "c" as abouting.
 
 carry out abouting:
 	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended, and the final version is scheduled for 2019.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.[paragraph break]Victor Ojuel helped me send out a post-comp release.";
@@ -862,12 +864,18 @@ volume undoing stuff
 
 Rule for deciding whether to allow undo:
 	if cur-level < 5:
-		say "Don't worry. Even if you mess up, you'll get as many times to try again as you want. All kinds of time in the afterlife.";
+		say "Don't worry. Even if you mess up, you'll get as many times to try again as you want. All kinds of time in the afterlife.[paragraph break]";
 	else:
 		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.";
+	if number of visited rooms > 1:
+		say "You can, however, restart this area if you want to. Do so?";
+		if the player yes-consents:
+			start-play;
+	else:
+		say "However, after you've moved, UNDO will restart this area.";
 	deny undo;
 
-volume skip asking "all the way to end?"
+volume skip asking all the way to end?
 
 skip-ask-this-time is a truth state that varies.
 
