@@ -8,6 +8,8 @@ the release number is 2.
 
 Release along with the "Parchment" interpreter.
 
+Release along with cover art.
+
 volume includes
 
 include Basic Screen Effects by Emily Short.
