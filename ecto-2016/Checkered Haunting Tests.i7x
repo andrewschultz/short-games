@@ -28,6 +28,7 @@ understand "fix" as fixing.
 
 carry out fixing:
 	if fixed-levels is true, say "You already fixed the levels." instead;
+	say "Fixing levels in original order for testing purposes.";
 	sort lshuf;
 	repeat with rm running through rooms:
 		[if orig-level of rm is not blocklevel of rm, say "[rm]: [blocklevel of rm] to [orig-level of rm].";]

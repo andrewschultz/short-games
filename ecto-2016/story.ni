@@ -524,7 +524,7 @@ to start-play:
 		else:
 			now blocked-room is a random curlev room;
 		now blocked-room is blockedoff;
-		move player to random unblocked room, without printing a room description;
+		move player to random unblocked room;
 		now start-room is location of player;
 	now start-room is visited;
 	now test-start is false;
@@ -908,6 +908,8 @@ Rule for deciding whether to allow undo:
 		say "You can, however, restart this area if you want to. Do so?";
 		if the player yes-consents:
 			start-play;
+		else:
+			say "OK.";
 	else:
 		say "However, after you've moved, UNDO will restart this area.";
 	deny undo;
@@ -919,6 +921,7 @@ skip-ask-this-time is a truth state that varies.
 mypath is a list of rooms variable.
 
 after printing the locale description (this is the check for jump wins rule):
+	now location of player is visited;
 	consider the win-jump rule;
 	continue the action;
 
