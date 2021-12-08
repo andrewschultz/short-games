@@ -3,10 +3,57 @@
 
 * main-thru
 
+# let's test options first! We can break this off later.
+
+#this needs to be set to pass the get-any-key Jump/Keep
+>au 0
+
+>my
+Map view is now on.
+>my
+Map view is already on.
+>mn
+Map view is now off.
+>mn
+Map view is already off.
+>my
+Map view is now on.
+
 >fix
->sb  104
+>sb 104
 >ss
 You feel a sense of worry.
 >w
 >nn
 Oh no! You are trapped!
+
+>sb 4
+>au -1
+>ss
+>ee
+>nn
+>w
+>n
+>ww
+>ss
+>ee
+You consider where you are and where you've been. You're pretty sure there's only one way through town. (J)ump ahead using it or (K)eep back?
+OK. I won't ask again during this run.
+
+>sb 4
+>au 1
+>ss
+>ee
+>nn
+>w
+>n
+>ww
+>ss
+>ee
+You consider where you are and where you've been. You're pretty sure there's only one way through town. (J)ump ahead using it or (K)eep back?
+
+>au 0
+>score
+While there's no score per se, you are in town 2 of 5.
+
+

@@ -146,7 +146,7 @@ understand the command "my" as something new.
 understand "my" as mying.
 
 carry out mying:
-	say "Map-view is [if map-view is true]already[else]now[end if] on.";
+	say "Map view is [if map-view is true]already[else]now[end if] on.";
 	now map-view is true;
 	opt-map-view;
 
@@ -157,7 +157,7 @@ understand the command "mn" as something new.
 understand "mn" as mning.
 
 carry out mning:
-	say "Map-view is [if map-view is false]already[else]now[end if] off.";
+	say "Map view is [if map-view is false]already[else]now[end if] off.";
 	now map-view is false;
 
 chapter abouting
@@ -309,6 +309,7 @@ carry out runing:
 	let q be the room noun of location of player;
 	if noun is not okay, say "[if q is nowhere]You can't go further[else if q is blockedoff]The church is[else]You've already been[end if] [noun]." instead;
 	while 1 is 1:
+		say "Moving to [q].";
 		move player to q, without printing a room description;
 		if noun is not okay, break;
 		if noun is okay, say "[b][q][roman type][paragraph break]";
@@ -318,7 +319,7 @@ carry out runing:
 			say "Whoa! What was that? You missed something as you ran past. Hope it wasn't TOO important. Eh, whatever it is, maybe it'll turn up elsewhere.";
 			now missed-something is true;
 	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
-	try looking;
+	carry out the printing the locale description activity with location of player;
 	check-trapped;
 	if moved is 1, say "A short run, but hey, you never get exhausted in the afterlife.";
 
@@ -661,7 +662,7 @@ the dominoes are a plural-named winnable. description is "They are two squares g
 
 every turn when cur-level is 5:
 	if player does not have magnets and magnets are in location of player:
-		say "The magnets jump up and hover near you. You obviously attracted them, somehow.";
+		say "The magnets jump up and hover near you. You obviously attracted them, somehow. They'll be following you around, for better or worse. [b]INVENTORY[r] or [b]I[r] will confirm this.";
 		now player has magnets;
 		now ever-mag is true;
 	else if player has magnets:
@@ -947,6 +948,7 @@ this is the win-jump rule:
 	let cur be location of player;
 	let myx be only-exit of cur;
 	now all rooms are not touched;
+	if number of visited rooms < 2, continue the action;
 	let uv be number of unvisited rooms;
 	if uv <= 2, continue the action; [it's just annoying if the person is 1 square away. Also, this probably isn't relevant, and you've probably been asked anyway.]
 	now mypath is {};
@@ -985,11 +987,11 @@ this is the win-jump rule:
 	if number of unvisited rooms is 1 + number of touched rooms:
 		say "You consider where you are and where you've been. You're pretty sure there's only one way through town. (J)ump ahead using it or (K)eep back?";
 		let X be 0;
-		while 1 is 1:
+		while 1 is 1 and yn-auto is 0:
 			now X is the chosen letter;
 			if X is 74 or X is 106 or X is 75 or X is 107, break; [ I'd like to use (Y)es and (N)o but N conflicts with North. ]
 			say "(J)ump ahead or (K)eep back?";
-		if X is 74 or X is 106:
+		if yn-auto is 1 or (X is 74 or X is 106):
 			let temp be 0;
 			say "You rush through: ";
 			repeat with myp running through mypath:
