@@ -1,0 +1,12 @@
+** game: /home/andrew/prt/debug-checkered-haunting.z8
+** interpreter: /home/andrew/prt/dfrotz -q
+
+* main-thru
+
+>fix
+>sb  104
+>ss
+You feel a sense of worry.
+>w
+>nn
+Oh no! You are trapped!
