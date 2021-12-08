@@ -146,7 +146,7 @@ understand the command "my" as something new.
 understand "my" as mying.
 
 carry out mying:
-	say "Map-view is [if map-view is false]already[else]now[end if] on.";
+	say "Map-view is [if map-view is true]already[else]now[end if] on.";
 	now map-view is true;
 	opt-map-view;
 
@@ -172,8 +172,13 @@ understand "credits" as abouting.
 understand "a" as abouting.
 understand "c" as abouting.
 
+note-a-c is a truth state that varies.
+
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended, and the final version is scheduled for 2019.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.[paragraph break]Victor Ojuel helped me send out a post-comp release.";
+	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended, and the final/second version (minus maintenance releases) dropped 2021.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Victor Ojuel helped me send out a post-comp release back in 2018 or so. The delays were all my fault![paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.";
+	if note-a-c is false:
+		now note-a-c is true;
+		say "[line break][bracket]Note: [b]ABOUT[r][i] and [b]CREDITS[r][i] give the same output.[close bracket][r][line break]";
 
 chapter mapiting
 
@@ -226,7 +231,7 @@ to say sta of (rm - a room):
 chapter verbsing
 
 to say my-verbs:
-	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or typing the direction abbreviation twice ([bold type]NN/SS/EE/WW[roman type]) lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description. [b]MY[r] and [b]MN[r] turn map view on and off, while [b]MV[r] or [b]MT[r] toggles it.[paragraph break][bold type]ABOUT[roman type] displays information about the game. [bold type]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [bold type]X[roman type] or [bold type]EXAMINE[roman type] any items you run across."
+	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or typing the direction abbreviation twice ([bold type]NN/SS/EE/WW[roman type]) lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description. [b]MY[r] and [b]MN[r] turn map view on and off, while [b]MV[r] or [b]MT[r] toggles it.[paragraph break][bold type]ABOUT[roman type] or [b]CREDITS[r] displays information about the game. [b]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [b]X[roman type] or [b]EXAMINE[roman type] any items you run across"
 
 verbsing is an action applying to nothing.
 
@@ -306,7 +311,7 @@ carry out runing:
 	while 1 is 1:
 		move player to q, without printing a room description;
 		if noun is not okay, break;
-		if noun is okay, say "[bold type][q][roman type][paragraph break]";
+		if noun is okay, say "[b][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
 		if location of player is littered and missed-something is false:
@@ -360,7 +365,7 @@ understand "ss" and "rs" and "sr" as southruning.
 chapter parser
 
 rule for printing a parser error (this is the simplify parser errors rule):
-	say "That command wasn't recognized. You only need directions and [b]X[r] to examine in order to win, but [bold type]VERBS[roman type] will show some actions, too.";
+	say "That command wasn't recognized. You only need directions and [b]X[r] to examine in order to win, but [b]VERBS[r] will show some actions, too.";
 	reject the player's command;
 
 chapter core meta stuff
@@ -508,6 +513,8 @@ past-start is a truth state that varies.
 
 start-room is a room that varies.
 
+in-init is a truth state that varies.
+
 to start-play:
 	now skip-ask-this-time is false;
 	now blocked-this-time is false;
@@ -526,7 +533,11 @@ to start-play:
 		else:
 			now blocked-room is a random curlev room;
 		now blocked-room is blockedoff;
-		move player to random unblocked room;
+		if in-init is false:
+			move player to random unblocked room, without printing a room description;
+			now in-init is true;
+		else:
+			move player to random unblocked room;
 		now start-room is location of player;
 	now start-room is visited;
 	now test-start is false;
@@ -844,17 +855,18 @@ after printing the locale description:
 	if map-help is false:
 		say "Okay, starting in [ctv of cur-level]. [wh of cur-level][paragraph break]";
 		now map-help is true;
-		say "[italic type][bracket]NOTE: [b]ABOUT[r][i] shows general information for this game, and [b]VERBS[r][i] shows the cut-down list of verbs you need to win. If you are not using a screen reader, you may find the [b]MV[r][i] (map view) command helpful to visualize the town more easily.[close bracket][roman type][line break]";
+		say "[italic type][bracket]NOTE: [b]ABOUT[r][i] shows general information for this game, and [b]VERBS[r][i] shows the cut-down list of verbs you need to win. If you are not using a screen reader, the [b]M[r][i] command will show a helpful visual map once, and [b]MY[r][i] will show it by default.[close bracket][r][line break]";
 
 the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else][remaining-dirs][end if]. The church is at [xing of blocked-room]."
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else][remaining-dirs][end if]."
 
 to say remaining-dirs:
 	if number of okay directions is 0:
 		say "You look around for places nearby you haven't gone yet. You can't find any";
 	else:
 		say "You can go [list of okay directions][alreadies]";
+	say ". The church is at [xing of blocked-room]";
 
 to say alreadies:
 	if number of alreadied directions is 0, continue the action;
