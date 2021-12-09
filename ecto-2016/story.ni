@@ -175,7 +175,7 @@ understand "c" as abouting.
 note-a-c is a truth state that varies.
 
 carry out abouting:
-	say "[italic type]A Checkered Haunting[roman type] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended, and the final/second version (minus maintenance releases) dropped 2021.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Victor Ojuel helped me send out a post-comp release back in 2018 or so. The delays were all my fault![paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.";
+	say "[italic type]A Checkered Haunting[r] was an entrant in 2016 EctoComp's Petite Mort division. It received a post-comp tweak soon after the comp ended, and the final/second version (minus maintenance releases) dropped 2021.[paragraph break]Thanks to verityvirtue for pointing out a debug-text bug in the comp version, which led to other fixes. Thanks to Billy Mays for a review and Duncan Bowsman for a PM that led to a tweak.[paragraph break]Victor Ojuel helped me send out a post-comp release back in 2018 or so. The delays were all my fault![paragraph break]Wade Clarke notified me of bugs in the release version.[paragraph break]Also, don't overthink the game. You can complete the final level without getting through it.";
 	if note-a-c is false:
 		now note-a-c is true;
 		say "[line break][bracket]Note: [b]ABOUT[r][i] and [b]CREDITS[r][i] give the same output.[close bracket][r][line break]";
@@ -196,7 +196,7 @@ understand "m" as mapiting.
 
 carry out mapiting:
 	if map-view is true, say "You shouldn't need to, with map view on, but here it is anyway.[paragraph break]";
-	say "[bold type]Map of [ctv of cur-level][roman type][paragraph break]";
+	say "[b]Map of [ctv of cur-level][r][paragraph break]";
 	say "[my-legend][my-map][line break]";
 
 to say my-legend:
@@ -231,7 +231,7 @@ to say sta of (rm - a room):
 chapter verbsing
 
 to say my-verbs:
-	say "You can't do much here except go in the four basic directions ([bold type]N/S/E/W[roman type]), or try to take or examine things. [bold type]RUN/R[roman type] (direction) or typing the direction abbreviation twice ([bold type]NN/SS/EE/WW[roman type]) lets you run as far as possible in that direction.[paragraph break][bold type]MAPIT/MAP/M[roman type] lets you see a map. [bold type]MV[roman type] toggles seeing a map in a room description, which may help you navigate easier than the text based description. [b]MY[r] and [b]MN[r] turn map view on and off, while [b]MV[r] or [b]MT[r] toggles it.[paragraph break][bold type]ABOUT[roman type] or [b]CREDITS[r] displays information about the game. [b]VERBS[roman type] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [b]X[roman type] or [b]EXAMINE[roman type] any items you run across"
+	say "You can't do much here except go in the four basic directions ([b]N/S/E/W[r]), or try to take or examine things. You can also run as far as you can to save keystrokes. For east, you oculd say [b]RUN E[r], [b]RE[r], [b]ER[r], or [b]EE[r].[paragraph break][b]MAPIT/MAP/M[r] lets you see a map. [b]MV[r] toggles seeing a map in a room description, which may help you navigate easier than the text based description. [b]MY[r] and [b]MN[r] turn map view on and off, while [b]MV[r] or [b]MT[r] toggles it.[paragraph break][b]ABOUT[r] or [b]CREDITS[r] displays information about the game. [b]VERBS[r] or any command I can't process will give this. Many standard verbs have been disabled in order to simplify the game.[paragraph break]You may also wish to [b]X[r] or [b]EXAMINE[r] any items you run across"
 
 verbsing is an action applying to nothing.
 
@@ -263,9 +263,9 @@ chapter releveling
 
 releveling is an action applying to nothing.
 
-understand the command "re" as something new.
+understand the command "rt" as something new.
 
-understand "re" as releveling.
+understand "rt" as releveling.
 
 carry out releveling:
 	if number of visited rooms is 1, say "You can't restart until you move around a bit." instead;
@@ -299,7 +299,7 @@ rule for supplying a missing noun when runing:
 	if the player consents:
 		start-play;
 	else:
-		say "OK. [b]RE[r] will restart without this nag, and [b]R[r]/[b]RUN[r] needs a direction unless there is only one way to go.";
+		say "OK. [b]RT[r] will restart without this nag, and [b]R[r]/[b]RUN[r] needs a direction unless there is only one way to go.";
 	reject the player's command;
 
 carry out runing:
@@ -918,15 +918,8 @@ Rule for deciding whether to allow undo:
 	if cur-level < 5:
 		say "Don't worry. Even if you mess up, you'll get as many times to try again as you want. All kinds of time in the afterlife.[paragraph break]";
 	else:
-		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.";
-	if number of visited rooms > 1:
-		say "You can, however, restart this area if you want to. Do so?";
-		if the player yes-consents:
-			start-play;
-		else:
-			say "OK.";
-	else:
-		say "However, after you've moved, UNDO will restart this area.";
+		say "NOTE: there are no fatal mistakes in the game. You will, at worst, keep looping until you get things right.[paragraph break]";
+	say "[if number of visited rooms > 1]You can, however, retry another random configuration of this area with [b]RT[r] if you want to[else]However, after you've moved, [b]RT[r] will restart this area[end if].";
 	deny undo;
 
 volume skip asking all the way to end?
