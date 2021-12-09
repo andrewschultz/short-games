@@ -400,8 +400,15 @@ carry out gwting:
 	try gamewinning instead;
 
 carry out gamewinning:
-	say "Suddenly, you realize what's up. Like [if checkerboard is off-stage]a[else]the[end if] checkerboard with the corners out, a 5x5 checkerboard with a non-corner hole out has thirteen of one color, eleven of the other. And since each path alternates between colors...[paragraph break]You're ready to flee [ctv of 5], assured you'll never figure out the people who live there, but at least knowing why you can't. You get in a big argument with the spirits who sent you there and you realize, a bit late, they weren't from heaven. They brush off your knowledge and at the same time rip you for not learning that sort of thing when you were alive. You'd have actually been useful to them, figuring that sort of weird stuff out. But now? Well, you don't know it, but at least hell is more interesting than Limbo.[paragraph break]Perhaps it is. Unfortunately, you don't get to learn much in Limbo, but maybe you can poke those other spirits and stop moping? And maybe learn something else? It'd be something at least.";
-	end the story finally;
+	say "You sit down and have a think. A good long one. Perhaps there's no way through. The thought makes you bitter at first. Why did they lead you on a wild goose chase? You're pretty sure you can SHOW there's no way to get through, with the church where it is. You wonder about other squares. It looks like, well, there are thirteen squares the church can be at where you can sweep through and twelve where it can't.";
+	wfak;
+	say "You think for a long while. The spirits who sent you on the chase haven't struck you down yet. Then you draw out a 5x5 checkerboard in your head. You're not sure why. Black squares at the corner. You keep trying to work your way through, and you notice something that keeps happening.";
+	wfak;
+	do-whole-proof;
+
+every turn when cur-level is 5 and dominoes-yet is false:
+	if dominoes are touchable, now dominoes-yet is true;
+	continue the action;
 
 volume main game
 
@@ -626,25 +633,27 @@ check examining checkerboard:
 	if player has magnets and player has dominoes:
 		say "You shuffle the dominoes around. Of course they can't cover the whole checkerboard. But you try to cover everything except--well, what would be where the church is. First time you try, a black square is still visible. You shuffle the dominoes some more. Each time, a black square comes up. You have as much time as you want, and you realize you might be in a no-win situation anyway this time, so you give yourself an hour.";
 		wfak;
-		say "Black square left again. And again. Always a black square. You start trying to leave a white square.";
-		wfak;
-		say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squares. The areas before [ctv of 5] all took out...a black square. [ctv of 5] took out a white square. That would leave two extra black squares...";
-		wfak;
-		say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
-		wfak;
-		let losers be a random number from 20 to 30;
-		let winners be a random number from losers to 40;
-		say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread ([winners + losers]/[winners - losers] meant a score of [winners]-[losers]. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
-		wfak;
-		say "Sitting in [ctv of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interesting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
-		wfak;
-		say "You realize just how much time you've spent navel-gazing about where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff you can look into. It got you out of the doldrums for a while.";
-		wfak;
-		say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Many more others than you think would've given up...'";
-		wfak;
-		say "You spend an hour kicking yourself over all the stuff you meant to learn when alive but didn't. You won't be able to learn it directly, but with plenty of time to haunt libraries and classes and laboratories (nobody'll see you) you'll get to see and do enough.";
-		end the story saying "YOU LEARNED SOMETHING COOL";
-		the rule succeeds;
+
+to do-whole-proof:
+	say "Black square left again. And again. Always a black square. You start trying to leave a white square.";
+	wfak;
+	say "About the hundredth time, it hits you. There are thirteen black squares and twelve white squares. The areas before [ctv of 5] all took out...a black square. [ctv of 5] took out a white square. That would leave two extra black squares...";
+	wfak;
+	say "A-ha! That's it! You realize what's going on here. You never had a chance. That's kind of neat--and the 8x8/6x6/4x4 checkerboards, the same thing![paragraph break]You wonder why these people put you up to it, how if they're the good guys, they'd give you such grunt work.";
+	wfak;
+	let losers be a random number from 20 to 30;
+	let winners be a random number from losers to 40;
+	say "Then you remember people from the past: the cool science teacher with weird experiments, the math teacher who showed you how to predict games['] final scores by the over/under and point spread ([winners + losers]/[winners - losers] meant a score of [winners]-[losers]. ALGEBRA!) and that English teacher who'd throw out a crazy paradox every Friday. All that frustrated you, too, but it made you want to learn more, and somehow you put it aside because you figured you needed to be focused on something that'd give you a decent job...";
+	wfak;
+	say "Sitting in [ctv of 5] you even remember your first attempts at silly games and how other kids put them down and wound up doing so much better than you in Advanced Placement Computer Science, and you thought you didn't Have It, whatever it was. You just stopped asking interesting questions, but you hoped you'd get a decent enough job and so forth some day. Well, you did.";
+	wfak;
+	say "You realize just how much time you've spent navel-gazing about where people in Limbo go on Judgment Day. And whoever THEY were, they got you interested again in stuff you can look into. It got you out of the doldrums for a while.";
+	wfak;
+	say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Many more others than you think would've given up...'";
+	wfak;
+	say "You spend an hour kicking yourself over all the stuff you meant to learn when alive but didn't. You won't be able to learn it directly, but with plenty of time to haunt libraries and classes and laboratories (nobody'll see you) you'll get to see and do enough.";
+	end the story saying "YOU LEARNED SOMETHING COOL";
+	the rule succeeds;
 
 to say try-thru:
 	say ". You try several times to trace a way through, [if board-width is 8]but you fail[else if board-width is 6]and you seem to figure that it can't be done. There are a lot fewer possible ways through than for the 8x8 board, but still too many for you to figure anything definitive[else]and it seems no matter where you start, you eventually wind up with two dead ends, and you can only fill one. Maybe that holds for [ctv of 5], somehow, but you don't know how to PROVE it[end if]"
