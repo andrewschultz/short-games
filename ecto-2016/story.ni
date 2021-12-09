@@ -296,10 +296,10 @@ rule for supplying a missing noun when runing:
 		say "If you want to restart, you need to explore a bit first. If you want to run, leave a direction, since you can currently go [list of okay directions].";
 		reject the player's command;
 	say "There is more than one direction to run: [list of okay directions]. Did you mean to restart instead?";
-	if the player consents:
+	if the player yes-consents:
 		start-play;
 	else:
-		say "OK. [b]RT[r] will restart without this nag, and [b]R[r]/[b]RUN[r] needs a direction unless there is only one way to go.";
+		say "OK. [b]RT[r] will retry without this nag, and [b]R[r]/[b]RUN[r] needs a direction unless there is only one way to go.";
 	reject the player's command;
 
 carry out runing:
@@ -307,21 +307,22 @@ carry out runing:
 	let moved be 0;
 	let missed-something be false;
 	let q be the room noun of location of player;
+	let prevvis be number of visited rooms;
 	if noun is not okay, say "[if q is nowhere]You can't go further[else if q is blockedoff]The church is[else]You've already been[end if] [noun]." instead;
 	while 1 is 1:
-		say "Moving to [q].";
 		move player to q, without printing a room description;
+		say "[b][q][r][paragraph break]";
 		if noun is not okay, break;
-		if noun is okay, say "[b][q][roman type][paragraph break]";
 		now q is the room noun of q;
 		increment moved;
 		if location of player is littered and missed-something is false:
 			say "Whoa! What was that? You missed something as you ran past. Hope it wasn't TOO important. Eh, whatever it is, maybe it'll turn up elsewhere.";
 			now missed-something is true;
 	if the room noun of location of player is blockedoff, say "You stop before you run into the church.";
-	carry out the printing the locale description activity with location of player;
+	say "[description of location of player]";
+	describe locale for location of player;
 	check-trapped;
-	if moved is 1, say "A short run, but hey, you never get exhausted in the afterlife.";
+	if moved is 1 and prevvis < number of visited rooms, say "A short run, but hey, you never get exhausted in the afterlife.";
 
 definition: a room (called rm) is littered:
 	if dominoes are in rm or checkerboard is in rm or magnets are in rm, yes;
@@ -405,10 +406,6 @@ carry out gamewinning:
 	say "You think for a long while. The spirits who sent you on the chase haven't struck you down yet. Then you draw out a 5x5 checkerboard in your head. You're not sure why. Black squares at the corner. You keep trying to work your way through, and you notice something that keeps happening.";
 	wfak;
 	do-whole-proof;
-
-every turn when cur-level is 5 and dominoes-yet is false:
-	if dominoes are touchable, now dominoes-yet is true;
-	continue the action;
 
 volume main game
 
@@ -541,13 +538,13 @@ to start-play:
 		else:
 			now blocked-room is a random curlev room;
 		now blocked-room is blockedoff;
-		if in-init is false:
-			move player to random unblocked room, without printing a room description;
-			now in-init is true;
-		else:
-			move player to random unblocked room;
-		now start-room is location of player;
-	now start-room is visited;
+		now start-room is a random unblocked room;
+		now start-room is visited;
+	if in-init is false:
+		move player to start-room, without printing a room description;
+		now in-init is true;
+	else:
+		move player to start-room;
 	now test-start is false;
 	if debug-state is true:
 		say "DEBUG: [blocked-room] is unavailable.";
@@ -629,7 +626,8 @@ the checkerboard is a winnable. "A slightly mutilated checkerboard with the corn
 
 understand "checker/chess/board" and "checker/chess board" as checkerboard.
 
-found-full-ending is a truth state that varies;
+found-full-ending is a truth state that varies.
+
 check examining checkerboard:
 	if player has magnets and player has dominoes:
 		say "You shuffle the dominoes around. Of course they can't cover the whole checkerboard. But you try to cover everything except--well, what would be where the church is. First time you try, a black square is still visible. You shuffle the dominoes some more. Each time, a black square comes up. You have as much time as you want, and you realize you might be in a no-win situation anyway this time, so you give yourself an hour.";
@@ -656,7 +654,7 @@ to do-whole-proof:
 	say "Surely there must be other ways to discover things you never quite got around to while you were living. You have to go find them. You think you hear applause from the blob before it swirls into itself, and a voice saying 'Many more others than you think would've given up...'";
 	wfak;
 	say "You spend an hour kicking yourself over all the stuff you meant to learn when alive but didn't. You won't be able to learn it directly, but with plenty of time to haunt libraries and classes and laboratories (nobody'll see you) you'll get to see and do enough.";
-	say "[paragraph break][i][brackets]NOTE: there are two ways to win. One is to guess the verb PROVE[if found-full-ending is false], which you did[end if], and the other is to walk through the final town until you pick up a checkerboard, dominoes, and magnets[if found-full-ending is true], which you did[end if]. Either way, good job making it through!";
+	say "[paragraph break][i][bracket]NOTE: there are two ways to win. One is to guess the verb PROVE[if found-full-ending is false], which you did[end if], and the other is to walk through the final town until you pick up a checkerboard, dominoes, and magnets[if found-full-ending is true], which you did[end if]. Either way, good job making it through!";
 	end the story saying "YOU LEARNED SOMETHING COOL";
 	the rule succeeds;
 
@@ -746,6 +744,7 @@ to check-trapped:
 	now location of player is visited;
 	if number of unvisited rooms is 1:
 		do-the-next;
+		try looking;
 	if walled-in:
 [		if debug-state is true:
 			say "[number of unvisited rooms].";
@@ -803,11 +802,10 @@ to move-board:
 
 to do-the-next:
 	say "You hear ethereal applause once you step on the final intersection. And you also take time to reflect. [re of cur-level][paragraph break]";
-	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! It won't be that hard. Only later...'[or]'Keep goin[']. Attaghost! That's the spirit, spirit!' They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
+	say "[one of]'Not bad! OK, on to the next suburb, [ctv of 2].'[or]'You're getting the hang of it! [ctv of 3] next! It won't be that hard. Only later...'[or]'Keep goin[']. That's the spirit, spirit!' You cringe a bit. 'Attaghost!' You cringe a bit more. They drop you off in [ctv of 4] next.[or]'Good, but nobody's done [ctv of 5] yet. Maybe you'll be the one. It's just the same thing, we're sure.'[stopping]";
 	increment cur-level;
 	say "[line break]That name just brings back memories. [wh of cur-level][paragraph break]";
 	start-play;
-	try looking;
 
 to decide whether walled-in:
 	if north is okay, decide no;
@@ -874,7 +872,7 @@ after printing the locale description:
 
 the printed name of a room is usually "[ctv of cur-level], [xing of the item described]".
 
-the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else][remaining-dirs][end if]."
+the description of a room is usually "[if number of unvisited rooms is 2]This--this looks like the last intersection to cover.[else if map-view is true][one of][my-legend][or][stopping][my-map][else if number of okay directions is 0 and number of unvisited rooms is 0]Uh oh. You've been everywhere nearby[else][remaining-dirs].[end if]"
 
 to say remaining-dirs:
 	if number of okay directions is 0:
